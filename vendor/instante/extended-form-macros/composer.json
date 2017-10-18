@@ -1,0 +1,35 @@
+{
+    "name": "instante/extended-form-macros",
+    "type": "library",
+    "description": "Extended form rendering macros for Nette framework",
+    "keywords": [
+        "nette",
+        "forms",
+        "latte",
+        "macros"
+    ],
+    "license": [
+        "BSD-3-Clause",
+        "GPL-2.0",
+        "GPL-3.0"
+    ],
+    "require": {
+        "latte/latte": "~2.4",
+        "nette/bootstrap": "~2.4",
+        "nette/di": "~2.4",
+        "nette/forms": "~2.4",
+        "instante/utils": "~1.2"
+    },
+    "require-dev": {
+        "nette/tester": "@dev",
+        "nette/application": "~2.4",
+        "instante/php-test-suite": "@dev",
+        "mockery/mockery": "@dev",
+        "jakub-onderka/php-parallel-lint": "~0.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Instante\\ExtendedFormMacros\\": "src/"
+        }
+    }
+}

@@ -4,11 +4,36 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit091ed5d24b4127ffc48411e34be2086f
+class ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb
 {
     public static $files = array (
         '7745382c92b7799bf1294b1f43023ba2' => __DIR__ . '/..' . '/tracy/tracy/src/shortcuts.php',
         'e7a6fd2e7a869bb207158e9416bdd9b0' => __DIR__ . '/..' . '/nette/application/src/compatibility.php',
+        'a1d067aa2e53d6b47171c03cfc0ea5be' => __DIR__ . '/..' . '/nette/safe-stream/src/loader.php',
+    );
+
+    public static $prefixLengthsPsr4 = array (
+        'I' => 
+        array (
+            'Instante\\ExtendedFormMacros\\' => 28,
+            'Instante\\Bootstrap3Renderer\\' => 28,
+            'Instante\\' => 9,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Instante\\ExtendedFormMacros\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/instante/extended-form-macros/src',
+        ),
+        'Instante\\Bootstrap3Renderer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/instante/bootstrap-3-renderer/src',
+        ),
+        'Instante\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/instante/utils/src',
+        ),
     );
 
     public static $classMap = array (
@@ -375,7 +400,9 @@ class ComposerStaticInit091ed5d24b4127ffc48411e34be2086f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit091ed5d24b4127ffc48411e34be2086f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb::$classMap;
 
         }, null, ClassLoader::class);
     }
