@@ -3,7 +3,6 @@
 namespace App\Presenters;
 
 use Nette;
-use Nette\Security\User;
 use App\Model\UserManager;
 use Nette\Application\UI\Form;
 

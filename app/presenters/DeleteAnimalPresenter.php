@@ -8,8 +8,12 @@
 
 namespace App\Presenters;
 
+use Nette;
 
-class DeleteAnimalPresenter
+class DeleteAnimalPresenter extends \Nette\Application\UI\Presenter
 {
+    public function renderDefault(){
+
+    }
 
 }
