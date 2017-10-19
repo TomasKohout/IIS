@@ -2,20 +2,10 @@
 return array (
   0 => 
   array (
-    'App\\Presenters\\HomepagePresenter' => 
-    array (
-      'file' => '/opt/lampp/htdocs/nette/app/presenters/HomepagePresenter.php',
-      'time' => 1508356201,
-    ),
     'App\\Presenters\\SignPresenter' => 
     array (
       'file' => '/opt/lampp/htdocs/nette/app/presenters/SignPresenter.php',
       'time' => 1503386850,
-    ),
-    'App\\Presenters\\MainPagePresenter' => 
-    array (
-      'file' => '/opt/lampp/htdocs/nette/app/presenters/MainPagePresenter.php',
-      'time' => 1508356330,
     ),
     'App\\Presenters\\BasePresenter' => 
     array (
@@ -61,6 +51,16 @@ return array (
     array (
       'file' => '/opt/lampp/htdocs/nette/app/forms/SignUpFormFactory.php',
       'time' => 1508353327,
+    ),
+    'App\\Presenters\\HomepagePresenter' => 
+    array (
+      'file' => '/opt/lampp/htdocs/nette/app/presenters/HomepagePresenter.php',
+      'time' => 1508404442,
+    ),
+    'App\\Presenters\\MainPagePresenter' => 
+    array (
+      'file' => '/opt/lampp/htdocs/nette/app/presenters/MainPagePresenter.php',
+      'time' => 1508405908,
     ),
   ),
   1 => 

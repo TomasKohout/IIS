@@ -1,1 +1,34 @@
-Ahoj
+{block content}
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" n:href="MainPage:default">ZooWis</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a n:href="MainPage:">Home</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Zvíře<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a n:href="AddAnimal:">Přidat</a></li>
+                    <li><a n:href="DeleteAnimal:">Odebrat</a></li>
+                    <li><a n:href="UpdateAnimal:">Upravit</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Page 2</a></li>
+            <li><a href="#">Page 3</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+    {foreach $data as $one_piece_of_data}
+        <div class="row">
+            <div class="col-sm-1">Jmeno: </div>
+            <div class="col-sm-2">{$one_piece_of_data->jmeno}</div>
+            <div class="col-sm-3">Poslední krmení: </div>
+            <div class="col-lg-4">{$one_piece_of_data->cas}</div>
+        </div>
+    {/foreach}
+
+{/block}
