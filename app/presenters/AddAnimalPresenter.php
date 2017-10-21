@@ -46,6 +46,7 @@ class AddAnimalPresenter extends Nette\Application\UI\Presenter
             ->setAttribute('placeholder', 'rrrr.mm.dd')
             ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
 
+        $form->addSubmit('submit', 'Přidat');
         $form->onSuccess[] = [$this, 'addAnimalSucceed'];
         return $form;
 
