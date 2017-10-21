@@ -23,8 +23,9 @@
 </head>
 
 <body class="color-mtf">
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
-
+	{foreach $flashes as $flash}
+		<div class="alert alert-{$flash->type}">{$flash->message}</div>
+	{/foreach}
 	{default $log_page = false}
 	{if $log_page}
 
@@ -43,7 +44,6 @@
 					<ul class="dropdown-menu">
 						<li><a n:href="SearchAnimal:">Hledat</a></li>
 						<li><a n:href="AddAnimal:">Přidat</a></li>
-						<li><a n:href="DeleteAnimal:">Odebrat</a></li>
 						<li><a n:href="UpdateAnimal:">Upravit</a></li>
 					</ul>
 				</li>

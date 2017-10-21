@@ -17,4 +17,15 @@ class AnimalModel {
     {
         $this->database = $database;
     }
+
+    public function addAnimal(array $values)
+    {
+        $this->database->table('zvire')->insert($values);
+    }
+
+    public function updateAnimal(array $values){
+        $this->database->table('zvire')->where('id_zvire', $values['id_zvire'])
+            ->update($values);
+    }
+
 }
