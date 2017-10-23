@@ -30,13 +30,13 @@ class AddAnimalPresenter extends Nette\Application\UI\Presenter
 
     public function createComponentAddAnimal()
     {
+        $model = new AnimalModel($this->database);
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form = $this->formFactory->create();
         $form->addText('jmeno', 'Jméno zvířete: ')
-            ->setAttribute('class' ,'col-sm-2')
             ->setRequired();
-        $form->addText('jeDruhu', 'Druh:')
-            ->setRequired();
+        $form->addSelect('jeDruhu', 'Druh:', $model->getDruh())
+            ->setPrompt('Zvol druh');
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
             ->setRequired();
         $form->addText('vaha', 'Váha:')
@@ -47,10 +47,9 @@ class AddAnimalPresenter extends Nette\Application\UI\Presenter
             ->setRequired();
         $form->addText('jmeno_otce', 'Jméno otce:')
             ->setRequired();
-        $form->addText('obyva', 'Výběh číslo:')
-            ->addRule($form::PATTERN, 'Výběhy označujeme číslem', '\d*')
-            ->setRequired('Výběh je povinný údaj!');
-        $form->addText('date', "Datum:")
+        $form->addSelect('obyva', 'Výběh číslo:', $model->getTypVybehu())
+            ->setPrompt('Vybeh');
+        $form->addText('datum_narozeni', "Datum:")
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr.mm.dd')
