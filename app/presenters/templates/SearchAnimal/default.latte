@@ -1,3 +1,22 @@
 {block content}
+    <div class="col-sm-5">
+    {control searchAnimal}
+    </div>
 
+    <div class="col-sm-10">
+        {default $showAnimals = false}
+        {if $showAnimals}
+            {foreach $data as $one_piece_of_data}
+                <div class="row">
+                    <div class="col-sm-1">ID: </div>
+                    <div class="col-sm-1">{$one_piece_of_data->id_zvire}</div>
+                    <div class="col-sm-1">Jmeno: </div>
+                    <div class="col-sm-1">{$one_piece_of_data->jmeno}</div>
+                    <div class="col-sm-3">Datum narození: </div>
+                    <div class="col-sm-3">{$one_piece_of_data->datum_narozeni}</div>
+                </div>
+            {/foreach}
+        {else}
+        {/if}
+    </div>
 {/block}

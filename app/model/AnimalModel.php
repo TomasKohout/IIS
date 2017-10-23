@@ -28,6 +28,11 @@ class AnimalModel {
             ->update($values);
     }
 
+    public function searchAnimal(array $values){
+
+        return $this->database->table('zvire')->where('jmeno', $values['jmeno']);
+    }
+
     public function getTypVybehu()
     {
         $vybeh = $this->database->table('vybeh');
