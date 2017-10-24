@@ -18,6 +18,15 @@ class AnimalModel {
         $this->database = $database;
     }
 
+
+    /**
+     * @param $id_zvire
+     * @return Nette\Database\Table\ActiveRow
+     */
+    public function getAnimalValues($id_zvire){
+        return $this->database->table('zvire')->get($id_zvire);
+    }
+
     public function addAnimal(array $values)
     {
         $this->database->table('zvire')->insert($values);

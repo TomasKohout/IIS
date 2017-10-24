@@ -39,7 +39,7 @@
                         <td>{$data_row->datum_umrti}</td>
                         <td>{$data_row->jmeno_matky}</td>
                         <td>{$data_row->jmeno_otce}</td>
-                        <td><button>Upravit</button></td>
+                        <td><a n:href="UpdateAnimal:default $data_row->id_zvire" class="btn btn-default">Upravit</a></td>
                         </tr>
                     {/foreach}
                 </tbody>

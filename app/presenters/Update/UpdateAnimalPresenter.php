@@ -14,6 +14,7 @@ use Nette\Forms\Form;
 class UpdateAnimalPresenter extends BasePresenter
 {
     protected $database;
+    protected $id_zvire;
 
     public function __construct(Nette\Database\Context $database)
     {
@@ -21,7 +22,10 @@ class UpdateAnimalPresenter extends BasePresenter
     }
 
 
-    public function renderUmrti()
+    public function renderDefault($id_zvire){
+        $this->id_zvire = $id_zvire;
+    }
+    public function renderUmrti($id_zvire)
     {
 
     }
@@ -48,28 +52,40 @@ class UpdateAnimalPresenter extends BasePresenter
     public function createComponentUpdateAnimal(){
         $form = $this->form();
         $model = new AnimalModel($this->database);
+        $values = $model->getAnimalValues($this->id_zvire);
+
         $sex = ['M' => 'muž', 'Z' => 'žena'];
-        $form->addSelect('id_zvire', 'Vyber zvíře:', $model->getZvire())
-            ->setPrompt('Zvol zvíře');
+        $form->addHidden('id_zvire',$values['id_zvire']);
+        $form->addText('jmeno', 'Jméno:')
+            ->setDefaultValue($values['jmeno']);
         $form->addSelect('jeDruhu', 'Druh:', $model->getDruh())
-            ->setPrompt('Zvol druh');
+            ->setDefaultValue($values['jeDruhu']);
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
+            ->setDefaultValue($values['pohlavi'])
             ->setRequired();
         $form->addText('vaha', 'Váha:')
+            ->setDefaultValue($values['vaha'])
             ->setRequired();
         $form->addText('vyska', 'Výška:')
+            ->setDefaultValue($values['vyska'])
             ->setRequired();
         $form->addText('jmeno_matky', 'Jméno matky:')
+            ->setDefaultValue($values['jmeno_matky'])
             ->setRequired();
         $form->addText('jmeno_otce', 'Jméno otce:')
+            ->setDefaultValue($values['jmeno_otce'])
             ->setRequired();
         $form->addSelect('obyva', 'Výběh číslo:', $model->getTypVybehu())
+            ->setDefaultValue($values['obyva'])
             ->setPrompt('Vybeh');
+        $form->addSelect('zeme_puvodu', 'Země původu:', $this->getCountries())
+            ->setDefaultValue($values['zeme_puvodu']);
         $form->addText('datum_narozeni', "Datum:")
+            ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
 
         $form->addSubmit('submit', 'Upravit zvíře');
 
@@ -82,7 +98,7 @@ class UpdateAnimalPresenter extends BasePresenter
         $model = new AnimalModel($this->database);
         $model->updateAnimal($form->getValues(true));
         $this->flashMessage('Zvíře upraveno!', 'success');
-        $this->redirect('UpdateAnimal:');
+        $this->redirect('SearchAnimal:');
     }
 
 }
