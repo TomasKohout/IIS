@@ -21,11 +21,12 @@
                     <th>Datum úmrtí</th>
                     <th>Jméno matky</th>
                     <th>Jméno otce</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                     {foreach $data as $data_row}
-                    <tr>
+                        <tr>
                         <td>{$data_row->id_zvire}</td>
                         <td>{$data_row->jmeno}</td>
                         <td>{$druh[$data_row->jeDruhu]}</td>
@@ -38,7 +39,8 @@
                         <td>{$data_row->datum_umrti}</td>
                         <td>{$data_row->jmeno_matky}</td>
                         <td>{$data_row->jmeno_otce}</td>
-                    </tr>
+                        <td><button>Upravit</button></td>
+                        </tr>
                     {/foreach}
                 </tbody>
             </table>
