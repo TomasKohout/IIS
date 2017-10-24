@@ -10,12 +10,10 @@ namespace App\Presenters;
 use App\Model\AnimalModel;
 use Nette;
 use Nette\Application\UI\Form;
+use Nextras;
 
-class AddAnimalPresenter extends Nette\Application\UI\Presenter
+class AddAnimalPresenter extends BasePresenter
 {
-
-    /** @var \Instante\ExtendedFormMacros\IFormFactory @inject */
-    public $formFactory;
     protected $database;
 
     public function __construct(Nette\Database\Context $database)
@@ -32,7 +30,7 @@ class AddAnimalPresenter extends Nette\Application\UI\Presenter
     {
         $model = new AnimalModel($this->database);
         $sex = ['M' => 'muž', 'Z' => 'žena'];
-        $form = $this->formFactory->create();
+        $form = $this->form();
         $form->addText('jmeno', 'Jméno zvířete: ')
             ->setRequired();
         $form->addSelect('jeDruhu', 'Druh:', $model->getDruh())
@@ -40,8 +38,10 @@ class AddAnimalPresenter extends Nette\Application\UI\Presenter
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
             ->setRequired();
         $form->addText('vaha', 'Váha:')
+            ->setHtmlType('number')
             ->setRequired();
         $form->addText('vyska', 'Výška:')
+            ->setHtmlType('number')
             ->setRequired();
         $form->addText('jmeno_matky', 'Jméno matky:')
             ->setRequired();

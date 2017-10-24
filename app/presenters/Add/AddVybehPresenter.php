@@ -9,7 +9,7 @@
 namespace App\Presenters;
 use Nette;
 
-class AddVybehPresenter extends Nette\Application\UI\Presenter
+class AddVybehPresenter extends BasePresenter
 {
     public function renderDefault()
     {

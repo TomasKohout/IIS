@@ -9,7 +9,7 @@
 namespace App\Presenters;
 use Nette;
 
-class MainPagePresenter extends \Nette\Application\UI\Presenter
+class MainPagePresenter extends BasePresenter
 {
     protected $database;
 
