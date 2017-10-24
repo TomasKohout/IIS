@@ -9,7 +9,7 @@
 namespace App\Presenters;
 use Nette;
 
-class AddDruhZviretePresenter extends Nette\Application\UI\Presenter
+class AddDruhZviretePresenter extends BasePresenter
 {
     public function renderDefault()
     {

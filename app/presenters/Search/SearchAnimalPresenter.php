@@ -11,7 +11,7 @@ use App\Model\AnimalModel;
 use Nette;
 use Nette\Application\UI\Form;
 
-class SearchAnimalPresenter extends \Nette\Application\UI\Presenter
+class SearchAnimalPresenter extends BasePresenter
 {
 
     protected $database;
@@ -28,9 +28,9 @@ class SearchAnimalPresenter extends \Nette\Application\UI\Presenter
     }
 
     public function createComponentSearchAnimal(){
-        $form = new Form;
+        $form = $this->form();
         $form->addText('jmeno', 'Jméno zvířete: ')
-            ->setRequired();
+            ->setRequired('Jmeno');
 
         $form->addSubmit('submit', 'Vyhledat zvíře');
         $form->onSuccess[] = [$this, 'renderAnimalSucceed'];

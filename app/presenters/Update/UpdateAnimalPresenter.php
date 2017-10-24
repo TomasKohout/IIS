@@ -11,11 +11,8 @@ use App\Model\AnimalModel;
 use Nette;
 use Nette\Forms\Form;
 
-class UpdateAnimalPresenter extends \Nette\Application\UI\Presenter
+class UpdateAnimalPresenter extends BasePresenter
 {
-
-    /** @var \Instante\ExtendedFormMacros\IFormFactory @inject */
-    public $formFactory;
     protected $database;
 
     public function __construct(Nette\Database\Context $database)
@@ -30,7 +27,7 @@ class UpdateAnimalPresenter extends \Nette\Application\UI\Presenter
     }
 
     public function createComponentDeadAnimal(){
-        $form = $this->formFactory->create();
+        $form = $this->form();
         $model = new AnimalModel($this->database);
 
         $form->addSelect('id_zvire', 'Vyber zvíře:', $model->getZvire())
@@ -49,7 +46,7 @@ class UpdateAnimalPresenter extends \Nette\Application\UI\Presenter
     }
 
     public function createComponentUpdateAnimal(){
-        $form = $this->formFactory->create();
+        $form = $this->form();
         $model = new AnimalModel($this->database);
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form->addSelect('id_zvire', 'Vyber zvíře:', $model->getZvire())

@@ -9,7 +9,7 @@
 namespace App\Presenters;
 use Nette;
 
-class AddZamestnanecPresenter extends Nette\Application\UI\Presenter
+class AddZamestnanecPresenter extends BasePresenter
 {
     public function renderDefault()
     {

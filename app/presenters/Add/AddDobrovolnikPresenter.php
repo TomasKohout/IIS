@@ -9,8 +9,9 @@
 namespace App\Presenters;
 use Nette;
 
-class AddDobrovolnikPresenter extends Nette\Application\UI\Presenter
+class AddDobrovolnikPresenter extends BasePresenter
 {
+
     public function renderDefault(){
 
     }

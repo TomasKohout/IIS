@@ -9,7 +9,7 @@
 namespace App\Presenters;
 use Nette;
 
-class AddSkoleniPresenter extends Nette\Application\UI\Presenter
+class AddSkoleniPresenter extends BasePresenter
 {
     public function renderDefault()
     {
