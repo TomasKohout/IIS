@@ -40,6 +40,7 @@ class SearchAnimalPresenter extends \Nette\Application\UI\Presenter
     public function renderAnimalSucceed(Form $form){
         $model = new AnimalModel($this->database);
         $this->template->data = $model->searchAnimal($form->getValues(true));
+        $this->template->druh = $model->getDruh();
         $this->template->showAnimals = true;
     }
 
