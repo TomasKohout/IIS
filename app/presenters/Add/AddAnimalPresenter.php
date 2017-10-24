@@ -49,6 +49,8 @@ class AddAnimalPresenter extends BasePresenter
             ->setRequired();
         $form->addSelect('obyva', 'Výběh číslo:', $model->getTypVybehu())
             ->setPrompt('Vybeh');
+        $form->addSelect('zeme_puvodu','Země původu', $this->getCountries())
+            ->setPrompt('Zvol zemi');
         $form->addText('datum_narozeni', "Datum:")
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
