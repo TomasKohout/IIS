@@ -6,16 +6,42 @@
     <div class="col-sm-10">
         {default $showAnimals = false}
         {if $showAnimals}
-            {foreach $data as $one_piece_of_data}
-                <div class="row">
-                    <div class="col-sm-1">ID: </div>
-                    <div class="col-sm-1">{$one_piece_of_data->id_zvire}</div>
-                    <div class="col-sm-1">Jmeno: </div>
-                    <div class="col-sm-1">{$one_piece_of_data->jmeno}</div>
-                    <div class="col-sm-3">Datum narození: </div>
-                    <div class="col-sm-3">{$one_piece_of_data->datum_narozeni}</div>
-                </div>
-            {/foreach}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Jmeno</th>
+                    <th>Druh</th>
+                    <th>Datum narození</th>
+                    <th>Pohlaví</th>
+                    <th>Obývá</th>
+                    <th>Země původu</th>
+                    <th>Váha</th>
+                    <th>Výška</th>
+                    <th>Datum úmrtí</th>
+                    <th>Jméno matky</th>
+                    <th>Jméno otce</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {foreach $data as $data_row}
+                    <tr>
+                        <td>{$data_row->id_zvire}</td>
+                        <td>{$data_row->jmeno}</td>
+                        <td>{$druh[$data_row->jeDruhu]}</td>
+                        <td>{$data_row->datum_narozeni}</td>
+                        <td>{$data_row->pohlavi}</td>
+                        <td>{$data_row->obyva}</td>
+                        <td>{$data_row->zeme_puvodu}</td>
+                        <td>{$data_row->vaha}</td>
+                        <td>{$data_row->vyska}</td>
+                        <td>{$data_row->datum_umrti}</td>
+                        <td>{$data_row->jmeno_matky}</td>
+                        <td>{$data_row->jmeno_otce}</td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
         {else}
         {/if}
     </div>
