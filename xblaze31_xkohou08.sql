@@ -200,21 +200,21 @@ INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '7');
 
 
 
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('1', '3', 'Bambino', 'M', '3', '4', 'Zimbabwe', 'Pepa', 'Sisa','2006.02.21');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('2', '1', 'Kongo', 'M', '3', '7', 'Brno', 'Karel', 'Linda','2006.02.11');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('3', '4', 'Žvak', 'M', '3', '4', 'Praha', 'Ondra', 'Sisa','2006.03.01');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('4', '6', 'Fňak', 'M', '78', '40', 'Oslo', 'Tomáš', 'Lisa','2007.02.02');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('4', '5', 'Bobek', 'M', '30', '4', 'Berlin', 'Jura', 'Sara','2007.04.30');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('2', '2', 'Bob', 'M', '13', '14', 'Brno', 'Dušan', 'Susan','2007.08.23');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('3', '4', 'Božena', 'M', '36', '48', 'Ostrava', 'Pepa', 'Veronika','2006.09.20');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('1', '3', 'Kobliha', 'Z', '23', '44', 'Jihlava', 'Olda', 'Monika','2006.01.23');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('2', '1', 'Milena', 'Z', '18', '14', 'Bratislava', 'Jarda', 'Sisa','2006.09.08');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('3', '4', 'Růža', 'Z', '3', '6', 'Vídeň', 'Karel', 'Karolína','2008.01.01');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('4', '6', 'Alena', 'Z', '2', '1', 'Bern', 'Pepa', 'Jarmila','2008.2.58');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('4', '5', 'Lenka', 'Z', '11', '22', 'New York', 'Pepa', 'Lila','2006.2.36');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('2', '2', 'Lea', 'Z', '17', '19', 'Miami', 'Gugu', 'Risa','2007.01.05');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('3', '4', 'Džena', 'Z', '5', '7', 'Kongo', 'Fufu', 'Sira','2007.02.21');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('1', '1', 'Božena', 'Z', '7', '8', 'Aš', 'Fufin', 'Pipi','2006.02.27');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('1', '3', 'Bambino', 'M', '3', '4', 'Belgie', 'Pepa', 'Sisa','2006.02.21');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('2', '1', 'Kongo', 'M', '3', '7', 'Belgie', 'Karel', 'Linda','2006.02.11');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('3', '4', 'Žvak', 'M', '3', '4', 'Belgie', 'Ondra', 'Sisa','2006.03.01');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('4', '6', 'Fňak', 'M', '78', '40', 'Belgie', 'Tomáš', 'Lisa','2007.02.02');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('4', '5', 'Bobek', 'M', '30', '4', 'Belgie', 'Jura', 'Sara','2007.04.30');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('2', '2', 'Bob', 'M', '13', '14', 'Belgie', 'Dušan', 'Susan','2007.08.23');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('3', '4', 'Božena', 'M', '36', '48', 'Belgie', 'Pepa', 'Veronika','2006.09.20');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('1', '3', 'Kobliha', 'Z', '23', '44', 'Belgie', 'Olda', 'Monika','2006.01.23');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('2', '1', 'Milena', 'Z', '18', '14', 'Belgie', 'Jarda', 'Sisa','2006.09.08');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('3', '4', 'Růža', 'Z', '3', '6', 'Belgie', 'Karel', 'Karolína','2008.01.01');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('4', '6', 'Alena', 'Z', '2', '1', 'Belgie', 'Pepa', 'Jarmila','2008.2.58');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('4', '5', 'Lenka', 'Z', '11', '22', 'Belgie', 'Pepa', 'Lila','2006.2.36');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('2', '2', 'Lea', 'Z', '17', '19', 'Belgie', 'Gugu', 'Risa','2007.01.05');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('3', '4', 'Džena', 'Z', '5', '7', 'Belgie', 'Fufu', 'Sira','2007.02.21');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_matky, jmeno_otce, datum_narozeni) VALUES ('1', '1', 'Božena', 'Z', '7', '8', 'Belgie', 'Fufin', 'Pipi','2006.02.27');
 
 
 INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('1', '2008.12.20', 'zrní', '50');
