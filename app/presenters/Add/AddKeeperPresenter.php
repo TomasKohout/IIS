@@ -63,7 +63,8 @@ class AddKeeperPresenter extends BasePresenter
                 ->toggle('pozice')
             ->endCondition()
             ->addCondition($form::EQUAL, '2')
-                ->toggle('organizace');
+                ->toggle('organizace')
+                ->toggle('zodpovedna_osoba');
 
         //Zaměstanec
         $form->addText('mzda', 'Mzda: ')
@@ -77,6 +78,8 @@ class AddKeeperPresenter extends BasePresenter
         //Dobrovolnik
         $form->addText('organizace', 'Organizace: ')
             ->setOption('id', 'organizace');
+        $form->addSelect('zodpovedna_osoba', 'Zodpovědná osoba: ', $model->getRodneCisloByLogin())
+            ->setOption('id', 'zodpovedna_osoba');
 
 
 
@@ -97,7 +100,7 @@ class AddKeeperPresenter extends BasePresenter
             $model->addKeeperVolunteer($values);
         }
 
-        $this->flashMessage('Ošetřovatel přidán!' ,'success');
+        $this->flashMessage('Záznam přidán!' ,'success');
         $this->redirect('AddKeeper:');
 
     }
