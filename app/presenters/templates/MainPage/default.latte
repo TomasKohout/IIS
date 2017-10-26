@@ -1,13 +1,12 @@
 {block content}
-
-{foreach $data as $one_piece_of_data}
-<div class="row">
-            <div class="col-sm-1">Jmeno: </div>
-            <div class="col-sm-2">{$one_piece_of_data->jmeno}</div>
-            <div class="col-sm-3">Poslední krmení: </div>
-            <div class="col-lg-4">{$one_piece_of_data->cas}</div>
+    <div class="container">
+        {foreach $data as $one_piece_of_data}
+        <div class="row">
+                    <div class="col-sm-1">Jmeno: </div>
+                    <div class="col-sm-2">{$one_piece_of_data->jmeno}</div>
+                    <div class="col-sm-2">Poslední krmení: </div>
+                    <div class="col-sm-2">{$one_piece_of_data->cas}</div>
         </div>
-
-{/foreach}
-
+        {/foreach}
+    </div>
 {/block}
