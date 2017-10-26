@@ -39,7 +39,7 @@ class AddKeeperPresenter extends BasePresenter
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
             ->setRequired();
-        $form->addText('datum_narozeni', "Datum:")
+        $form->addText('datum_narozeni', "Datum narození:")
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr.mm.dd')
@@ -48,30 +48,35 @@ class AddKeeperPresenter extends BasePresenter
             ->setRequired();
         $form->addText('adresa', 'Bydliště: ')
             ->setRequired();
-        $form->addText('titul', 'Tituly: ')
-            ->setRequired();
+        $form->addText('titul', 'Tituly: ');
         $form->addText('login', 'Uživatelské jméno:')
             ->setRequired();
         $form->addText('heslo', 'Heslo:')
             ->setRequired();
 
-        $role = ['Z' => 'zaměstnanec', 'D' => 'dobrovolník'];
-        $form->addRadioList('role', 'Typ zařadění: ', $role)
-            ->addCondition($form::EQUAL, 'Z')
-                ->toggle('address-streets')
-                ->toggle('address-zipcode')
+
+        $role = ['0' => 'Admin', '1' => 'Zaměstnanec', '2' => 'Dobrovolník'];
+        $form->addRadioList('role', 'Typ zařadění: ', $role)->setDefaultValue('1')
+            ->addCondition($form::EQUAL, '1')
+                ->toggle('mzda')
+                ->toggle('specializace')
+                ->toggle('pozice')
             ->endCondition()
-            ->addCondition($form::EQUAL, 'D')
-                ->toggle('address');
-        $form['role']->setDefaultValue('Z');
+            ->addCondition($form::EQUAL, '2')
+                ->toggle('organizace');
+
+        //Zaměstanec
+        $form->addText('mzda', 'Mzda: ')
+            ->setOption('id', 'mzda');
+        $form->addText('specializace', 'Specializace: ')
+            ->setOption('id', 'specializace');
+        $form->addText('pozice', 'Pozice: ')
+            ->setOption('id', 'pozice');
 
 
-        $form->addText('street', 'prvni')
-            ->setOption('id', 'address-streets');
-        $form->addText('zipcode', 'druhy')
-            ->setOption('id', 'address-zipcode');
-        $form->addText('sret', 'treti')
-            ->setOption('organizace', 'organizace');
+        //Dobrovolnik
+        $form->addText('organizace', 'Organizace: ')
+            ->setOption('id', 'organizace');
 
 
 
@@ -84,7 +89,14 @@ class AddKeeperPresenter extends BasePresenter
     public function addKeeperSucceed(Form $form, Nette\Utils\ArrayHash $values)
     {
         $model = new KeeperModel($this->database);
-        $model->addKeeper($form->getValues(true));
+        if($values->role == 0){
+            $model->addKeeper($values);
+        } else if($values->role == 1) {
+            $model->addKeeperEmployee($values);
+        } else {
+            $model->addKeeperVolunteer($values);
+        }
+
         $this->flashMessage('Ošetřovatel přidán!' ,'success');
         $this->redirect('AddKeeper:');
 
