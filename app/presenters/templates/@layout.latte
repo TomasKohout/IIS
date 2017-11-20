@@ -23,7 +23,58 @@
 </head>
 
 <body class="color-mtf">
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+	{foreach $flashes as $flash}
+		<div class="alert alert-{$flash->type}">{$flash->message}</div>
+	{/foreach}
+	{default $log_page = false}
+	{if $log_page}
+
+	{else}
+	<nav class="navbar navbar-inverse">
+
+
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" n:href="MainPage:default">ZooWis</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a n:href="MainPage:">Home</a></li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Zvíře<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a n:href="Animal:search">Hledat zvíře</a></li>
+						<li><a n:href="Animal:add">Přidat zvíře</a></li>
+						<li><a n:href="Animal:umrti">Úmrtí zvířete</a></li>
+						<li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Ošetřovatel<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a n:href="Keeper:add">Přidat ošetřovatele</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Výběh<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a n:href="Coop:add">Přidat výběh</a></li>
+						<li><a n:href="Coop:search">Hledat výběh</a></li>
+						<li><a n:href="Coop:show">Vypsat výběhy</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Školení<span class="caret"></span> </a>
+					<ul class="dropdown-menu">
+						<li><a n:href="Training:add">Přidat školení</a></li>
+						<li><a n:href="Training:delete">Odstranit školení</a></li>
+						<li><a n:href="Training:show">Vypsat školení</a></li>
+					</ul>
+
+				</li>
+			</ul>
+		</div>
+	</nav>
+	{/if}
 
 	{include content}
 

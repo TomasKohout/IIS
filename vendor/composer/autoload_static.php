@@ -13,6 +13,10 @@ class ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb
     );
 
     public static $prefixLengthsPsr4 = array (
+        'N' => 
+        array (
+            'Nextras\\Forms\\' => 14,
+        ),
         'I' => 
         array (
             'Instante\\ExtendedFormMacros\\' => 28,
@@ -22,6 +26,10 @@ class ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb
     );
 
     public static $prefixDirsPsr4 = array (
+        'Nextras\\Forms\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nextras/forms/src',
+        ),
         'Instante\\ExtendedFormMacros\\' => 
         array (
             0 => __DIR__ . '/..' . '/instante/extended-form-macros/src',

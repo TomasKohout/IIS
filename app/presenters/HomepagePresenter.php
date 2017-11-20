@@ -3,16 +3,13 @@
 namespace App\Presenters;
 
 use Nette;
-use Nette\Security\User;
 use App\Model\UserManager;
 use Nette\Application\UI\Form;
 
 
 
-class HomepagePresenter extends \Nette\Application\UI\Presenter
+class HomepagePresenter extends BasePresenter
 {
-    /** @var \Instante\ExtendedFormMacros\IFormFactory @inject */
-    public $formFactory;
     protected $database;
 
     public function __construct(Nette\Database\Context $database)
@@ -22,13 +19,12 @@ class HomepagePresenter extends \Nette\Application\UI\Presenter
 
     protected function createComponentSignInForm()
     {
-        $form = $this->formFactory->create();
+        $form = $this->form();
         $form->addText('user', 'Uživatelské jméno:')
              ->setRequired('Zadejte uživatelské jméno:');
         $form->addPassword('password', 'Uživatelské heslo:')
              ->setRequired('Zadejte uživatelské heslo:');
         $form->addSubmit('send', 'Přihlásit');
-        $form->getRenderer()->setLabelColumns(4,4);
         $form->onSuccess[] = [$this, 'singInFormSucceeded'];
         return $form;
     }
@@ -51,6 +47,6 @@ class HomepagePresenter extends \Nette\Application\UI\Presenter
 
     public function renderDefault()
 	{
-		$this->template->anyVariable = 'any value';
+	    $this->template->log_page = true;
 	}
 }

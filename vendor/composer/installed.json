@@ -1543,5 +1543,60 @@
             "bootstrap3",
             "nette"
         ]
+    },
+    {
+        "name": "nextras/forms",
+        "version": "v2.0.4",
+        "version_normalized": "2.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nextras/forms.git",
+            "reference": "aacb1cd9100b863a060c38e5f54146991f0dce0f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nextras/forms/zipball/aacb1cd9100b863a060c38e5f54146991f0dce0f",
+            "reference": "aacb1cd9100b863a060c38e5f54146991f0dce0f",
+            "shasum": ""
+        },
+        "require": {
+            "latte/latte": "~2.4",
+            "nette/application": "~2.4",
+            "nette/component-model": "~2.3",
+            "nette/forms": "~2.4",
+            "nette/utils": "~2.4",
+            "php": ">=5.6"
+        },
+        "require-dev": {
+            "nette/tester": "~1.4"
+        },
+        "time": "2017-09-30T12:34:02+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Nextras\\Forms\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nextras Community",
+                "homepage": "https://github.com/nextras/forms/graphs/contributors"
+            }
+        ],
+        "description": "Form components for Nette Framework.",
+        "keywords": [
+            "form",
+            "nette"
+        ]
     }
 ]

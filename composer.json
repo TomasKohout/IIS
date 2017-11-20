@@ -32,7 +32,8 @@
 		"latte/latte": "^2.4",
 		"tracy/tracy": "^2.4",
 		"dg/adminer-custom": "^1.9",
-		"instante/bootstrap-3-renderer": "^2.0"
+		"instante/bootstrap-3-renderer": "^2.0",
+		"nextras/forms": "^2.0"
 	},
 	"require-dev": {
 		"nette/tester": "^2.0"
