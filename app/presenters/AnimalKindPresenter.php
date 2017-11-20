@@ -28,7 +28,7 @@ class AnimalKindPresenter extends BasePresenter
     public function createComponentAddDruhZvirete(){
         $model = new AnimalModel($this->database);
         $form = $this->form();
-        $form->addSelect('naSkoleni', 'Vyber potřebné školení:', $model->getSkoleni())
+        $form->addSelect('naSkoleni', 'Vyber potřebné školení:', $this->model->getSkoleni())
             ->setRequired('Školení je požadovaná hodnota!');
         $form->addText('nazev', 'Název druhu:')
             ->setDefaultValue('Název')

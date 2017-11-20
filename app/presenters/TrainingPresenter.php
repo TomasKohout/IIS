@@ -1,26 +1,43 @@
 <?php
 namespace App\Presenters;
+use App\Model\AnimalModel;
+use App\Model\TrainingModel;
+use Nette\Application\UI\Form;
 use Nette;
 
 
 class TrainingPresenter extends BasePresenter
 {
     protected $database;
+    protected $model;
 
     public function __construct(Nette\Database\Context $database)
     {
         $this->database = $database;
+        $this->model    = new TrainingModel($database);
     }
 
     public function renderAdd(){
 
     }
 
-    public function renderDelete(){
+    public function renderDelete($id_skoleni){
 
     }
 
+    public function renderUpdate($id_skoleni){
+
+    }
     public function renderShow(){
+        $this->template->dataAll = $this->model->getAllTraining();
+    }
+
+    public function createComponentShowTraining(){
+        $form = $this->form();
+        return $form;
+    }
+
+    public function showTrainingSucceed(){
 
     }
 
@@ -50,10 +67,10 @@ class TrainingPresenter extends BasePresenter
 
     public function addSkoleniSucceed(Form $form, Nette\Utils\ArrayHash $values){
         $model = new AnimalModel($this->database);
-        $model->addSkoleni($form->getValues(true));
+        $this->model->addSkoleni($form->getValues(true));
 
         $this->flashMessage('Školení přidáno!' ,'success');
-        $this->redirect('AddSkoleni:');
+        $this->redirect('Training:add');
 
 
     }
