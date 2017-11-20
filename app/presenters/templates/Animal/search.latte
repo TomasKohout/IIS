@@ -30,13 +30,13 @@
                             <td>{$data_row->id_zvire}</td>
                             <td>{$data_row->jmeno}</td>
                             <td>{$druh[$data_row->jeDruhu]}</td>
-                            <td>{$data_row->datum_narozeni}</td>
+                            <td>{substr($data_row->datum_narozeni,0,10)}</td>
                             <td>{$data_row->pohlavi}</td>
                             <td>{$data_row->obyva}</td>
                             <td>{$data_row->zeme_puvodu}</td>
                             <td>{$data_row->vaha}</td>
                             <td>{$data_row->vyska}</td>
-                            <td>{$data_row->datum_umrti}</td>
+                            <td>{substr($data_row->datum_umrti,0,10)}</td>
                             <td>{$data_row->jmeno_matky}</td>
                             <td>{$data_row->jmeno_otce}</td>
                             <td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>
@@ -69,13 +69,13 @@
                             <td>{$data_row->id_zvire}</td>
                             <td>{$data_row->jmeno}</td>
                             <td>{$druh[$data_row->jeDruhu]}</td>
-                            <td>{$data_row->datum_narozeni}</td>
+                            <td>{substr($data_row->datum_narozeni,0,10)}</td>
                             <td>{$data_row->pohlavi}</td>
                             <td>{$data_row->obyva}</td>
                             <td>{$data_row->zeme_puvodu}</td>
                             <td>{$data_row->vaha}</td>
                             <td>{$data_row->vyska}</td>
-                            <td>{$data_row->datum_umrti}</td>
+                            <td>{substr($data_row->datum_umrti,0,10)}</td>
                             <td>{$data_row->jmeno_matky}</td>
                             <td>{$data_row->jmeno_otce}</td>
                             <td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>
