@@ -3,15 +3,16 @@
  * Created by PhpStorm.
  * User: tom
  * Date: 19.10.17
- * Time: 15:28
+ * Time: 11:51
  */
-namespace App\Presenters;
 
+namespace App\Presenters;
 use App\Model\AnimalModel;
 use Nette;
-use Nette\Forms\Form;
+use Nette\Application\UI\Form;
+use Nextras;
 
-class UpdateAnimalPresenter extends BasePresenter
+class AnimalPresenter extends BasePresenter
 {
     protected $database;
     protected $id_zvire;
@@ -21,12 +22,19 @@ class UpdateAnimalPresenter extends BasePresenter
         $this->database = $database;
     }
 
+    public function renderAdd()
+    {
 
-    public function renderDefault($id_zvire){
+    }
+
+    public function renderSearch()
+    {
+
+    }
+    public function renderUpdate($id_zvire){
         $this->id_zvire = $id_zvire;
     }
-    public function renderUmrti($id_zvire)
-    {
+    public function renderUmrti($id_zvire){
 
     }
 
@@ -98,7 +106,70 @@ class UpdateAnimalPresenter extends BasePresenter
         $model = new AnimalModel($this->database);
         $model->updateAnimal($form->getValues(true));
         $this->flashMessage('Zvíře upraveno!', 'success');
-        $this->redirect('SearchAnimal:');
+        $this->redirect('Animal:search');
     }
 
+
+    public function createComponentAddAnimal()
+    {
+        $model = new AnimalModel($this->database);
+        $sex = ['M' => 'muž', 'Z' => 'žena'];
+        $form = $this->form();
+        $form->addText('jmeno', 'Jméno zvířete: ')
+            ->setRequired();
+        $form->addSelect('jeDruhu', 'Druh:', $model->getDruh())
+            ->setPrompt('Zvol druh');
+        $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
+            ->setRequired();
+        $form->addText('vaha', 'Váha:')
+            ->setHtmlType('number')
+            ->setRequired();
+        $form->addText('vyska', 'Výška:')
+            ->setHtmlType('number')
+            ->setRequired();
+        $form->addText('jmeno_matky', 'Jméno matky:')
+            ->setRequired();
+        $form->addText('jmeno_otce', 'Jméno otce:')
+            ->setRequired();
+        $form->addSelect('obyva', 'Výběh číslo:', $model->getTypVybehu())
+            ->setPrompt('Vybeh');
+        $form->addSelect('zeme_puvodu', 'Země původu:',$this->getCountries())
+            ->setPrompt('Zvol zemi');
+        $form->addText('datum_narozeni', "Datum:")
+            ->setRequired("Datum narození je povinný údaj")
+            ->setAttribute("class", "dtpicker col-sm-2")
+            ->setAttribute('placeholder', 'rrrr.mm.dd')
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+
+        $form->addSubmit('submit', 'Přidat');
+        $form->onSuccess[] = [$this, 'addAnimalSucceed'];
+        return $form;
+
+    }
+
+    public function addAnimalSucceed(Form $form, Nette\Utils\ArrayHash $values)
+    {
+        $model = new AnimalModel($this->database);
+        $model->addAnimal($form->getValues(true));
+        $this->flashMessage('Zvíře přidáno!' ,'success');
+        $this->redirect('Animal:add');
+
+    }
+
+    public function createComponentSearchAnimal(){
+        $form = $this->form();
+        $form->addText('jmeno', 'Jméno zvířete: ')
+            ->setRequired('Jmeno');
+
+        $form->addSubmit('submit', 'Vyhledat zvíře');
+        $form->onSuccess[] = [$this, 'renderAnimalSucceed'];
+        return $form;
+    }
+
+    public function renderAnimalSucceed(Form $form){
+        $model = new AnimalModel($this->database);
+        $this->template->data = $model->searchAnimal($form->getValues(true));
+        $this->template->druh = $model->getDruh();
+        $this->template->showAnimals = true;
+    }
 }

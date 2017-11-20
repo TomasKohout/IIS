@@ -1,0 +1,32 @@
+{block content}
+<div class="col-md-offset-4 col-md-4">
+    {control searchCoop}
+</div>
+<div class="col-md-12 table-responsive">
+    {default $show = false}
+    {if $show}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Poloha</th>
+            <th>Rozloha</th>
+            <th>Popis</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $data as $data_row}
+        <tr>
+            <td>{$data_row->id_vybeh}</td>
+            <td>{$data_row->poloha}</td>
+            <td>{$data_row->rozloha}</td>
+            <td>{$data_row->popis}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {else}
+    {/if}
+</div>
+{/block}
