@@ -68,7 +68,7 @@ class AnimalModel {
         return $ret_array;
     }
 
-    public function getZvire()
+    public function getAnimal()
     {
         $zvire = $this->database->table('zvire');
 
@@ -97,8 +97,27 @@ class AnimalModel {
 
     }
 
-    public function getDefaultValuesForZvireTable(){
+    public function addDruh(array $values){
+        $this->database->table('druh_zvirete')->insert($values);
+    }
 
+    public function addSkoleni(array $values){
+        $this->database->table('skoleni')->insert($values);
+    }
+
+    public function getSkoleni()
+    {
+        $skoleni = $this->database->table('skoleni');
+        $ret_array = array();
+        foreach ($skoleni as $item){
+            if (strlen($item->nazev) != 1)
+            {
+                $ret_array[$item->id_skoleni] = array();
+                $ret_array[$item->id_skoleni] = $item->nazev;
+            }
+        }
+
+        return $ret_array;
     }
 
 }
