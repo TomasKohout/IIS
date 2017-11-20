@@ -37,9 +37,20 @@ class TrainingModel
         return $ret_array;
     }
 
-    public function addSkoleni(array $values){
+    public function addTraining(array $values){
         $this->database->table('skoleni')->insert($values);
     }
 
+    public function deleteTraining($id_skoleni){
+        $this->database->table('skoleni')->where('id_skoleni', $id_skoleni)->delete();
+    }
+
+    public function getTraining($id_skoleni){
+        return $this->database->table('skoleni')->get($id_skoleni);
+    }
+
+    public function updateTraining(array $values){
+        $this->database->table('skoleni')->where('id_skoleni', $values['id_skoleni'])->update($values);
+    }
 
 }

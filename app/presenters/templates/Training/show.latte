@@ -21,7 +21,7 @@
             <tr>
                 <td>{$data_row->id_skoleni}</td>
                 <td>{$data_row->nazev}</td>
-                <td>{$data_row->datum}</td>
+                <td>{substr($data_row->datum,0,10)}</td>
                 <td>{$data_row->popis}</td>
                 <td><a n:href="Training:update $data_row->id_skoleni" class="btn btn-default">Upravit</a></td>
                 <td><a n:href="Training:delete $data_row->id_skoleni" class="btn btn-default">Smazat</a></td>
@@ -45,7 +45,7 @@
             <tr>
                 <td>{$data_row->id_skoleni}</td>
                 <td>{$data_row->nazev}</td>
-                <td>{$data_row->datum}</td>
+                <td>{substr($data_row->datum,0,10)}</td>
                 <td>{$data_row->popis}</td>
                 <td><a n:href="Training:update $data_row->id_skoleni" class="btn btn-default">Upravit</a></td>
                 <td><a n:href="Training:delete $data_row->id_skoleni" class="btn btn-default">Smazat</a></td>

@@ -7,6 +7,7 @@
  */
 
 namespace App\Presenters;
+use App\Model\TrainingModel;
 use Nette;
 use App\Model\AnimalModel;
 
@@ -14,10 +15,12 @@ class AnimalKindPresenter extends BasePresenter
 {
 
     protected $database;
+    protected $model;
 
     public function __construct(Nette\Database\Context $database)
     {
         $this->database = $database;
+        $this->model    = new TrainingModel($database);
     }
 
     public function renderAdd()
@@ -26,9 +29,8 @@ class AnimalKindPresenter extends BasePresenter
     }
 
     public function createComponentAddDruhZvirete(){
-        $model = new AnimalModel($this->database);
         $form = $this->form();
-        $form->addSelect('naSkoleni', 'Vyber potřebné školení:', $this->model->getSkoleni())
+        $form->addSelect('naSkoleni', 'Vyber potřebné školení:', $this->model->getTrainings())
             ->setRequired('Školení je požadovaná hodnota!');
         $form->addText('nazev', 'Název druhu:')
             ->setDefaultValue('Název')
