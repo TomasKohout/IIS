@@ -18,7 +18,7 @@
                 {input $input class => form-control}
                 {elseif $input->getOption(type) in [select, p]}
                 {input $input class => form-control}
-                <span class="help-block">Pokud není vytvořeno školení pro daný druh, tak nelze tento druh přidat! Vytvoř proto nejdříve školení a poté druh <a href="{link :AddSkoleni:default}">zde</a>.</span>
+                <span class="help-block">Pokud není vytvořeno školení pro daný druh, tak nelze tento druh přidat! Vytvoř proto nejdříve školení a poté druh <a href="{link :Training:add}">zde</a>.</span>
 
                 {elseif $input->getOption(type) === button}
                 {input $input class => "btn btn-primary button"}

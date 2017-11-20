@@ -1,11 +1,18 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: tom
+ * Date: 20.11.17
+ * Time: 17:20
+ */
+
 namespace App\Presenters;
 use Nette;
 use App\Model\AnimalModel;
-use Nette\Utils\Html;
 
-class AddDruhZviretePresenter extends BasePresenter
+class AnimalKindPresenter extends BasePresenter
 {
+
     protected $database;
 
     public function __construct(Nette\Database\Context $database)
@@ -13,7 +20,7 @@ class AddDruhZviretePresenter extends BasePresenter
         $this->database = $database;
     }
 
-    public function renderDefault()
+    public function renderAdd()
     {
 
     }
@@ -40,6 +47,6 @@ class AddDruhZviretePresenter extends BasePresenter
         $model = new AnimalModel($this->database);
         $model->addDruh($form->getValues(true));
         $this->flashMessage('Druh přidán!' ,'success');
-        $this->redirect('AddDruhZvirete:');
+        $this->redirect('AnimalKind:');
     }
 }

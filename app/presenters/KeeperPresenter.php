@@ -12,7 +12,7 @@ use App\Model\KeeperModel;
 use Nette\Application\UI\Form;
 use Nette;
 
-class AddKeeperPresenter extends BasePresenter
+class KeeperPresenter extends BasePresenter
 {
     protected $database;
 
@@ -23,6 +23,10 @@ class AddKeeperPresenter extends BasePresenter
 
     public function renderDefault()
     {
+
+    }
+
+    public function renderAdd(){
 
     }
 
@@ -101,7 +105,7 @@ class AddKeeperPresenter extends BasePresenter
         }
 
         $this->flashMessage('Záznam přidán!' ,'success');
-        $this->redirect('AddKeeper:');
+        $this->redirect('Keeper:');
 
     }
 
