@@ -15,16 +15,19 @@ class SearchAnimalPresenter extends BasePresenter
 {
 
     protected $database;
-    public $result;
+    public $model;
 
 
     public function __construct(Nette\Database\Context $database)
     {
         $this->database = $database;
+        $this->model = new AnimalModel($this->database);
     }
 
     public function renderDefault()
     {
+        $this->template->dataAll = $this->model->allAnimals();
+        $this->template->druh = $this->model->getDruh();
     }
 
     public function createComponentSearchAnimal(){
@@ -37,10 +40,9 @@ class SearchAnimalPresenter extends BasePresenter
         return $form;
     }
 
-    public function renderAnimalSucceed(Form $form){
-        $model = new AnimalModel($this->database);
-        $this->template->data = $model->searchAnimal($form->getValues(true));
-        $this->template->druh = $model->getDruh();
+    public function renderAnimalSucceed(Nette\Application\UI\Form $form){
+        $this->template->data = $this->model->searchAnimal($form->getValues(true));
+        //$this->template->druh = $this->model->getDruh();
         $this->template->showAnimals = true;
     }
 

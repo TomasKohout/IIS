@@ -38,8 +38,12 @@ class AnimalModel {
     }
 
     public function searchAnimal(array $values){
-
         return $this->database->table('zvire')->where('jmeno', $values['jmeno']);
+    }
+
+    public function allAnimals(){
+
+        return $this->database->table('zvire');
     }
 
     public function getTypVybehu()

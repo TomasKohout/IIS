@@ -224,8 +224,8 @@ INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jme
 INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('1', '3', 'Kobliha', 'Z', '23', '44', 'Belgie', 'Olda', 'Monika','2006.01.23');
 INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('2', '1', 'Milena', 'Z', '18', '14', 'Belgie', 'Jarda', 'Sisa','2006.09.08');
 INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('3', '4', 'Růža', 'Z', '3', '6', 'Belgie', 'Karel', 'Karolína','2008.01.01');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('4', '6', 'Alena', 'Z', '2', '1', 'Belgie', 'Pepa', 'Jarmila','2008.2.58');
-INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('4', '5', 'Lenka', 'Z', '11', '22', 'Belgie', 'Pepa', 'Lila','2006.2.36');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('4', '6', 'Alena', 'Z', '2', '1', 'Belgie', 'Pepa', 'Jarmila','2008.2.18');
+INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('4', '5', 'Lenka', 'Z', '11', '22', 'Belgie', 'Pepa', 'Lila','2006.2.16');
 INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('2', '2', 'Lea', 'Z', '17', '19', 'Belgie', 'Gugu', 'Risa','2007.01.05');
 INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('3', '4', 'Džena', 'Z', '5', '7', 'Belgie', 'Fufu', 'Sira','2007.02.21');
 INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('1', '1', 'Božena', 'Z', '7', '8', 'Belgie', 'Fufin', 'Pipi','2006.02.27');
