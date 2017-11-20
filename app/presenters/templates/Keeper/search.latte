@@ -1,0 +1,47 @@
+{block content}
+    <div class="container">
+        <div class="col-md-offset-4 col-md-4">
+            {control searchKeeper}
+        </div>
+        <div class="col-md-12 table-responsive">
+            {default $show = false}
+            {if $show}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Login</th>
+                        <th>Rodné číslo</th>
+                        <th>Jméno</th>
+                        <th>Příjmení</th>
+                        <th>Datum narození</th>
+                        <th>Titul</th>
+                        <th>Adresa</th>
+                        <th>Telefoní číslo</th>
+                        <th>Pohlaví</th>
+                        <th>Datum nástupu</th>
+                        <th>Datum odchodu</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $data as $data_row}
+                            <tr>
+                                <td>{$data_row->login}</td>
+                                <td>{$data_row->rodne_cislo}</td>
+                                <td>{$data_row->jmeno}</td>
+                                <td>{$data_row->prijmeni}</td>
+                                <td>{$data_row->datum_narozeni}</td>
+                                <td>{$data_row->titul}</td>
+                                <td>{$data_row->adresa}</td>
+                                <td>{$data_row->tel_cislo}</td>
+                                <td>{$data_row->pohlavi}</td>
+                                <td>{$data_row->datum_nastupu}</td>
+                                <td>{$data_row->datum_odchodu}</td>
+                            </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            {else}
+            {/if}
+        </div>
+    </div>
+{/block}
