@@ -28,9 +28,7 @@ services:
 	- App\Forms\SignInFormFactory
 	- App\Forms\SignUpFormFactory
 	router: App\RouterFactory::createRouter
-	formFactory: Instante\Bootstrap3Renderer\BootstrapFormFactory
 	authenticator: App\Model\UserManager
 
 extensions:
-    extendedFormmMacros: Instante\ExtendedFormMacros\DI\ExtendedFormMacrosExtension
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

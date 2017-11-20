@@ -34,7 +34,7 @@ class UpdateAnimalPresenter extends BasePresenter
         $form = $this->form();
         $model = new AnimalModel($this->database);
 
-        $form->addSelect('id_zvire', 'Vyber zvíře:', $model->getZvire())
+        $form->addSelect('id_zvire', 'Vyber zvíře:', $model->getAnimal())
             ->setPrompt('Zvol zvíře');
         $form->addText('datum_umrti', "Datum:")
             ->setRequired("Datum úmrtí je povinný údaj")
