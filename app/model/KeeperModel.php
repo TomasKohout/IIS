@@ -19,6 +19,20 @@ class KeeperModel
         $this->database = $database;
     }
 
+    public function getKeeperValues($rodne_cislo){
+        return $this->database->table('osetrovatel')->get($rodne_cislo);
+    }
+
+    public function getEmployeeKeeperValues($rodne_cislo){
+        return $this->database->table('zamestnanec')->get($rodne_cislo);
+    }
+
+    public function getVolunteerKeeperValues($rodne_cislo){
+        return $this->database->table('dobrovolnik')->get($rodne_cislo);
+    }
+
+
+
     public function allKeeper(){
 
         return $this->database->table('osetrovatel');
@@ -27,6 +41,12 @@ class KeeperModel
     public function searchKeeper($values){
         return $this->database->table('osetrovatel')->where(array_filter($values))->order('login');
     }
+
+    public function updateKeeper(array $values){
+        $this->database->table('osetrovatel')->where('login', $values['login'])
+            ->update($values);
+    }
+
 
     public function addKeeper(Nette\Utils\ArrayHash $values)
     {
