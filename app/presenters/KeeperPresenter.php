@@ -42,28 +42,28 @@ class KeeperPresenter extends BasePresenter
         $model = new KeeperModel($this->database);
         $form = $this->form();
         $form->addText('jmeno', 'Jméno: ')
-            ->setRequired();
+            ->setRequired("Jméno je povinný údaj.");
         $form->addText('prijmeni', 'Příjmení: ')
-            ->setRequired();
+            ->setRequired("Příjmení je povinný údaj.");
         $form->addText('rodne_cislo', 'Rodné číslo: ')
-            ->setRequired();
+            ->setRequired("Rodné číslo je povinný údaj.");
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
-            ->setRequired();
+            ->setRequired("Pohlaví je povinný údaj.");
         $form->addText('datum_narozeni', "Datum narození:")
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
-            ->setRequired();
+            ->setRequired("Telefoní číslo je povinný údaj.");
         $form->addText('adresa', 'Bydliště: ')
-            ->setRequired();
+            ->setRequired("Adresa je povinný údaj.");
         $form->addText('titul', 'Tituly: ');
         $form->addText('login', 'Uživatelské jméno:')
-            ->setRequired();
+            ->setRequired("Login je povinný údaj.");
         $form->addText('heslo', 'Heslo:')
-            ->setRequired();
+            ->setRequired("Heslo je povinný údaj.");
 
 
         $role = ['0' => 'Admin', '1' => 'Zaměstnanec', '2' => 'Dobrovolník'];
@@ -113,7 +113,7 @@ class KeeperPresenter extends BasePresenter
         }
 
         $this->flashMessage('Záznam přidán!' ,'success');
-        $this->redirect('Keeper:');
+        $this->redirect('Keeper:Add');
 
     }
 
@@ -126,60 +126,66 @@ class KeeperPresenter extends BasePresenter
         $values = $model->getKeeperValues($this->rodne_cislo);
 
         $form->addText('login', $values['login'])
-            ->setRequired()->setDefaultValue($values['login']);
+            ->setRequired("Login je povinný údaj.")->setDefaultValue($values['login']);
         $form->addText('jmeno', 'Jméno: ')
-            ->setRequired()->setDefaultValue($values['jmeno']);
+            ->setRequired("Jméno je povinný údaj.")->setDefaultValue($values['jmeno']);
         $form->addText('prijmeni', 'Příjmení: ')
-            ->setRequired()->setDefaultValue($values['prijmeni']);
+            ->setRequired("Příjmení je povinný údaj.")->setDefaultValue($values['prijmeni']);
         $form->addhidden('rodne_cislo', 'Rodné číslo: ')
-            ->setRequired()->setDefaultValue($values['rodne_cislo']);
+            ->setRequired("Rodné číslo je povinný údaj.")->setDefaultValue($values['rodne_cislo']);
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
-            ->setRequired()->setDefaultValue($values['pohlavi']);
+            ->setRequired("Pohlaví je povinný údaj.")->setDefaultValue($values['pohlavi']);
         $form->addText('datum_narozeni', "Datum narození:")
             ->setRequired("Datum narození je povinný údaj")
-            ->setDefaultValue($values['datum_narozeni'])
+            ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
-            ->setRequired()->setDefaultValue($values['tel_cislo']);
+            ->setRequired("Telefoní číslo je povinný údaj.")->setDefaultValue($values['tel_cislo']);
         $form->addText('adresa', 'Bydliště: ')
-            ->setRequired()->setDefaultValue($values['adresa']);
+            ->setRequired("Adresa je povinný údaj.")->setDefaultValue($values['adresa']);
         $form->addText('titul', 'Tituly: ')
             ->setDefaultValue($values['titul']);
 
+        $role = ['0' => 'Admin', '1' => 'Zaměstnanec', '2' => 'Dobrovolník'];
+        $form->addRadioList('role', 'Typ zařadění: ', $role)
+            ->setDisabled(true)
+            ->setDefaultValue($values['role'])
+            ->addCondition($form::EQUAL, '1')
+            ->toggle('mzda')
+            ->toggle('specializace')
+            ->toggle('pozice')
+            ->endCondition()
+            ->addCondition($form::EQUAL, '2')
+            ->toggle('organizace')
+            ->toggle('zodpovedna_osoba');
 
-//        $mzda = "";
-//        if(isset($values['mzda'])){
-//            $mzda = $values['mzda'];
-//        }
-//        $specializace = "";
-//        if(isset($values['specializace'])){
-//            $specializace = $values['specializace'];
-//        }
-//        $pozice = "";
-//        if(isset($values['pozice'])){
-//            $pozice = $values['pozice'];
-//        }
+        //Deleted in next function. Just for choose a function to call
+        $form->addHidden('roleToChoose')->setDefaultValue($values['role']);
 
         //Zaměstanec
-        if($values['role'] == 1) {
-            $employeeValues =  $model->getEmployeeKeeperValues($this->rodne_cislo);
-            $form->addText('mzda', 'Mzda: ')->setDefaultValue($employeeValues['mzda']);
-            $form->addText('specializace', 'Specializace: ')->setDefaultValue($employeeValues['specializace']);
-            $form->addText('pozice', 'Pozice: ')->setDefaultValue($employeeValues['pozice']);
-        }
+        $employeeValues =  $model->getEmployeeKeeperValues($this->rodne_cislo);
+        $form->addText('mzda', 'Mzda: ')->setDefaultValue($employeeValues['mzda'])
+            ->setOption('id', 'mzda');
+        $form->addText('specializace', 'Specializace: ')->setDefaultValue($employeeValues['specializace'])
+            ->setOption('id', 'specializace');
+        $form->addText('pozice', 'Pozice: ')->setDefaultValue($employeeValues['pozice'])
+            ->setOption('id', 'pozice');
+
 
         //Dobrovolnik
-        if($values['role'] == 2) {
-            $volunteerValues =  $model->getVolunteerKeeperValues($this->rodne_cislo);
-            $form->addText('organizace', 'Organizace: ')->setDefaultValue($volunteerValues['organizace']);
-            $form->addSelect('zodpovedna_osoba', 'Zodpovědná osoba: ', $model->getRodneCisloByLogin())
-                ->setDefaultValue($volunteerValues['zodpovedna_osoba']);
-        }
 
-        $form->addSubmit('submit', 'Přidat');
+        $volunteerValues =  $model->getVolunteerKeeperValues($this->rodne_cislo);
+        $form->addText('organizace', 'Organizace: ')->setDefaultValue($volunteerValues['organizace'])
+            ->setOption('id', 'organizace');
+        $form->addSelect('zodpovedna_osoba', 'Zodpovědná osoba: ', $model->getRodneCisloByLogin())
+            ->setDefaultValue($volunteerValues['zodpovedna_osoba'])
+            ->setOption('id', 'zodpovedna_osoba');
+
+
+        $form->addSubmit('submit', 'Upravit');
         $form->onSuccess[] = [$this, 'updateKeeperSucceed'];
         return $form;
 
@@ -188,11 +194,14 @@ class KeeperPresenter extends BasePresenter
     public function updateKeeperSucceed(Form $form, Nette\Utils\ArrayHash $values){
 
         $model = new KeeperModel($this->database);
-        if($values->role == 0){
+        if($values['roleToChoose'] == 0){
+            unset($values['roleToChoose']);
             $model->updateKeeper($values);
-        } else if($values->role == 1) {
+        } else if($values['roleToChoose'] == 1) {
+            unset($values['roleToChoose']);
             $model->updateKeeperEmployee($values);
         } else {
+            unset($values['roleToChoose']);
             $model->updateKeeperVolunteer($values);
         }
 
@@ -204,6 +213,9 @@ class KeeperPresenter extends BasePresenter
 
     public function createComponentSearchKeeper(){
         $form = $this->form();
+
+        $form->addText('login', 'Login: ');
+
         $form->addText('jmeno', 'Jméno ošetřovatele: ');
 
         $form->addText('prijmeni', 'Příjmení ošetřovatele: ');

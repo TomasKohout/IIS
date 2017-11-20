@@ -47,6 +47,8 @@ class CoopPresenter extends BasePresenter
         $values = $this->model->getCoopCalues($this->id_vybeh);
 
         $form = $this->form();
+        $form->addHidden('id_vybeh')
+            ->setDefaultValue($values['id_vybeh']);
         $form->addSelect('naTypVybehu','Velikost výběhu: ' , $this->model->getTypeOfCoop())
             ->setDefaultValue($values['naTypVybehu']);
         $form->addText('poloha', 'Poloha výběhu: ')
