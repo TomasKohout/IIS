@@ -15,18 +15,20 @@ use Nette;
 class KeeperPresenter extends BasePresenter
 {
     protected $database;
+    protected $model;
 
     public function __construct(Nette\Database\Context $database)
     {
         $this->database = $database;
-    }
-
-    public function renderDefault()
-    {
-
+        $this->model =  new KeeperModel($database);
     }
 
     public function renderAdd(){
+
+    }
+
+    public function renderSearch(){
+        $this->template->dataAll = $this->model->allKeeper();
 
     }
 
@@ -108,5 +110,23 @@ class KeeperPresenter extends BasePresenter
         $this->redirect('Keeper:');
 
     }
+
+    public function createComponentSearchKeeper(){
+        $form = $this->form();
+        $form->addText('jmeno', 'Jméno ošetřovatele: ');
+
+        $form->addText('prijmeni', 'Příjmení ošetřovatele: ');
+
+
+        $form->addSubmit('submit', 'Vyhledat ošetřovatele');
+        $form->onSuccess[] = [$this, 'renderSearchKeeperSucceed'];
+        return $form;
+    }
+
+    public function renderSearchKeeperSucceed(Nette\Application\UI\Form $form){
+        $this->template->data = $this->model->searchKeeper($form->getValues(true));
+        $this->template->show = true;
+    }
+
 
 }

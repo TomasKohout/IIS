@@ -38,7 +38,7 @@ class AnimalModel {
     }
 
     public function searchAnimal(array $values){
-        return $this->database->table('zvire')->where('jmeno', $values['jmeno']);
+        return $this->database->table('zvire')->where(array_filter($values));
     }
 
     public function allAnimals(){

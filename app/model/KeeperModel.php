@@ -19,6 +19,15 @@ class KeeperModel
         $this->database = $database;
     }
 
+    public function allKeeper(){
+
+        return $this->database->table('osetrovatel');
+    }
+
+    public function searchKeeper($values){
+        return $this->database->table('osetrovatel')->where(array_filter($values))->order('login');
+    }
+
     public function addKeeper(Nette\Utils\ArrayHash $values)
     {
         $this->database->table('osetrovatel')
