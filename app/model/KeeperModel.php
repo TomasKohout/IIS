@@ -19,6 +19,20 @@ class KeeperModel
         $this->database = $database;
     }
 
+    public function getKeeperValues($rodne_cislo){
+        return $this->database->table('osetrovatel')->get($rodne_cislo);
+    }
+
+    public function getEmployeeKeeperValues($rodne_cislo){
+        return $this->database->table('zamestnanec')->get($rodne_cislo);
+    }
+
+    public function getVolunteerKeeperValues($rodne_cislo){
+        return $this->database->table('dobrovolnik')->get($rodne_cislo);
+    }
+
+
+
     public function allKeeper(){
 
         return $this->database->table('osetrovatel');
@@ -27,6 +41,37 @@ class KeeperModel
     public function searchKeeper($values){
         return $this->database->table('osetrovatel')->where(array_filter($values))->order('login');
     }
+
+    public function updateKeeper( $values){
+        $this->database->table('osetrovatel')->where('rodne_cislo', $values['rodne_cislo'])
+            ->update(['jmeno' =>$values->jmeno,
+                        'prijmeni' =>$values->prijmeni,
+                        'login' =>$values->login,
+                        'rodne_cislo' =>$values->rodne_cislo,
+                        'datum_narozeni' =>$values->datum_narozeni,
+                        'titul' =>$values->titul,
+                        'adresa' =>$values->adresa,
+                        'tel_cislo' =>$values->tel_cislo,
+                        'pohlavi' =>$values->pohlavi]);
+    }
+
+    public function updateKeeperEmployee($values){
+        $this->updateKeeper($values);
+        $this->database->table('zamestnanec')->where('osetrovatel', $values['rodne_cislo'])
+            ->update([  'mzda' =>$values->mzda,
+                        'pozice' =>$values->pozice,
+                        'specializace' =>$values->specializace,
+                        'osetrovatel' =>$values->rodne_cislo]);
+    }
+
+    public function updateKeeperVolunteer($values){
+        $this->updateKeeper($values);
+        $this->database->table('dobrovolnik')->where('osetrovatel', $values['rodne_cislo'])
+            ->update([  'organizace' =>$values->organizace,
+                        'zodpovedna_osoba' =>$values->zodpovedna_osoba,
+                        'osetrovatel' =>$values->rodne_cislo]);
+    }
+
 
     public function addKeeper(Nette\Utils\ArrayHash $values)
     {

@@ -24,7 +24,7 @@ class CoopPresenter extends BasePresenter
         $this->model = new CoopModel($database);
     }
     public function renderSearch(){
-
+        $this->template->dataAll = $this->model->showCoop();
     }
 
     public function renderAdd(){
@@ -32,8 +32,7 @@ class CoopPresenter extends BasePresenter
     }
 
     public function renderShow(){
-        $model = new CoopModel($this->database);
-        $this->template->data = $model->showCoop();
+        $this->template->data = $this->model->showCoop();
     }
 
     public function renderDefault(){
@@ -48,6 +47,8 @@ class CoopPresenter extends BasePresenter
         $values = $this->model->getCoopCalues($this->id_vybeh);
 
         $form = $this->form();
+        $form->addHidden('id_vybeh')
+            ->setDefaultValue($values['id_vybeh']);
         $form->addSelect('naTypVybehu','Velikost výběhu: ' , $this->model->getTypeOfCoop())
             ->setDefaultValue($values['naTypVybehu']);
         $form->addText('poloha', 'Poloha výběhu: ')
@@ -79,7 +80,7 @@ class CoopPresenter extends BasePresenter
 
     public function createComponentSearchCoop(){
         $form = $this->form();
-        $form->addText('nazev', 'Název výběhu: ')
+        $form->addText('id_vybeh', 'ID výběhu: ')
             ->setRequired('Nazev');
 
         $form->addSubmit('submit', 'Vyhledat výběh');
@@ -89,6 +90,7 @@ class CoopPresenter extends BasePresenter
 
     public function SearchCoopSucceed(Form $form){
 
+        var_dump($form->getValues(true));
         $this->template->data = $this->model->searchCoop($form->getValues(true));
         $this->template->show = true;
     }

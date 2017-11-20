@@ -48,4 +48,9 @@ class CoopModel
         return $this->database->table('vybeh')->get($id_vybeh);
     }
 
+    public function searchCoop($values)
+    {
+        return $this->database->query('SELECT * FROM vybeh WHERE ', $values);
+    }
+
 }

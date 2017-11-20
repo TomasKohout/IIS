@@ -53,11 +53,30 @@ class AnimalPresenter extends BasePresenter
             ->setAttribute('placeholder', 'rrrr.mm.dd')
             ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
 
-        $form->addSubmit('submit', 'Upravit zvíře');
+        $form->addSubmit('submit', 'Upravit zvíře')
+            ->setAttribute('id', 'confirm');;
 
-        $form->onSuccess[] = [$this, 'updateAnimalSucceed'];
+        $form->onSuccess[] = [$this, 'deadAnimalSucceed'];
 
         return $form;
+    }
+
+    public function deadAnimalSucceed(Form $form, Nette\Utils\ArrayHash $arrayHash){
+        $values = $form->getValues(true);
+        $row = $this->model->getAnimalValues($values['id_zvire']);
+        $death = strtotime($values['datum_umrti']);
+        $birth = strtotime($row['datum_narozeni']);
+
+        if ($death > $birth)
+        {
+            $this->updateAnimalSucceed($form, $arrayHash);
+        }
+        else
+        {
+           $this->flashMessage('Zvíře nesmí zemřít dřív než se narodilo!', 'danger');
+           $this->redirect('Animal:umrti');
+        }
+
     }
 
     public function createComponentUpdateAnimal(){
