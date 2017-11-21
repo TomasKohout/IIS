@@ -41,17 +41,26 @@ class TrainingPresenter extends BasePresenter
     public function renderUpdate($id_skoleni){
         $this->id_skoleni = $id_skoleni;
     }
-    public function renderShow(){
-        $this->template->dataAll = $this->model->getAllTraining();
+
+
+    public function renderSearch(){
+        $this->template->dataAll = $this->model->getAllTrainings();
     }
 
-    public function createComponentShowTraining(){
+    public function createComponentSearchTraining(){
         $form = $this->form();
+        $form->addText("nazev", "Název:");
+
+        $form->addSubmit('submit', "Hledat");
+        $form->onSuccess[] = [$this, 'searchTrainingSucceed'];
+
         return $form;
     }
 
-    public function showTrainingSucceed(){
+    public function searchTrainingSucceed(Form $form){
 
+        $this->template->data = $this->model->searchTrainings($form->getValues(true));
+        $this->template->show = true;
     }
 
     public function createComponentAddSkoleni(){

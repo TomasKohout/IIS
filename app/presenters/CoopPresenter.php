@@ -42,9 +42,6 @@ class CoopPresenter extends BasePresenter
 
     }
 
-    public function renderShow(){
-        $this->template->data = $this->model->showCoop();
-    }
 
     public function renderUpdate($id_vybeh){
         $this->id_vybeh = $id_vybeh;
@@ -88,8 +85,8 @@ class CoopPresenter extends BasePresenter
 
     public function createComponentSearchCoop(){
         $form = $this->form();
-        $form->addText('id_vybeh', 'ID výběhu: ')
-            ->setRequired('Nazev');
+        $form->addText('id_vybeh', 'ID výběhu: ');
+        $form->addText('poloha', 'Poloha výběhu: ');
 
         $form->addSubmit('submit', 'Vyhledat výběh');
         $form->onSuccess[] = [$this, 'SearchCoopSucceed'];
@@ -97,8 +94,7 @@ class CoopPresenter extends BasePresenter
     }
 
     public function SearchCoopSucceed(Form $form){
-
-        var_dump($form->getValues(true));
+        //var_dump($form->getValues(true));
         $this->template->data = $this->model->searchCoop($form->getValues(true));
         $this->template->show = true;
     }

@@ -18,8 +18,12 @@ class TrainingModel
         $this->database = $database;
     }
 
-    public function getAllTraining(){
+    public function getAllTrainings(){
         return $this->database->table('skoleni')->fetchAll();
+    }
+
+    public function searchTrainings($values){
+        return $this->database->table('skoleni')->where(array_filter($values));
     }
 
     public function getTrainings()
