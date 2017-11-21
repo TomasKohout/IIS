@@ -60,7 +60,7 @@ class TrainingPresenter extends BasePresenter
         $form->addText('nazev', 'Název školení:')
             ->setDefaultValue('Název')
             ->addRule($form::MAX_LENGTH,'Název je příliš dlouhý. Maximální délka je %d.',30)
-            ->setRequired(true);
+            ->setRequired('Název je povinný údaj.');
 
         $form->addText('datum', "Datum:")
             ->setRequired("Datum je povinný údaj")
@@ -68,7 +68,8 @@ class TrainingPresenter extends BasePresenter
             ->setAttribute('placeholder', 'rrrr.mm.dd')
             ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
 
-        $form->addTextArea('popis','Popis školení:', 2,2);
+        $form->addTextArea('popis','Popis školení:', 2,2)
+            ->setRequired(false);
 
         $form->addSubmit('submit', 'Přidat školení');
 
@@ -96,7 +97,7 @@ class TrainingPresenter extends BasePresenter
         $form->addText('nazev', 'Název školení:')
             ->setDefaultValue($row['nazev'])
             ->addRule($form::MAX_LENGTH,'Název je příliš dlouhý. Maximální délka je %d.',30)
-            ->setRequired(true);
+            ->setRequired('Název je povinný údaj.');
 
         $form->addText('datum', "Datum:")
             ->setRequired("Datum je povinný údaj")
@@ -106,7 +107,8 @@ class TrainingPresenter extends BasePresenter
             ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
 
         $form->addTextArea('popis','Popis školení:', 2,2)
-            ->setDefaultValue($row['popis']);
+            ->setDefaultValue($row['popis'])
+            ->setRequired(false);
 
         $form->addSubmit('submit', 'Upravit školení');
 

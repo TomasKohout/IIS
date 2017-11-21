@@ -23,9 +23,9 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
     {
         $form = $this->form();
         $form->addText('user', 'Uživatelské jméno:')
-             ->setRequired('Zadejte uživatelské jméno:');
+             ->setRequired('Zadejte uživatelské jméno.');
         $form->addPassword('password', 'Uživatelské heslo:')
-             ->setRequired('Zadejte uživatelské heslo:');
+             ->setRequired('Zadejte uživatelské heslo.');
         $form->addSubmit('send', 'Přihlásit');
         $form->onSuccess[] = [$this, 'singInFormSucceeded'];
         return $form;
@@ -87,7 +87,7 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
 
     public function changePassSucceed(Form $form, Nette\Utils\ArrayHash $values){
         if (strcmp($values->heslo, $values->hesloControl) != 0) {
-            $this->flashMessage('Hesla se neshodujíí!', 'danger');
+            $this->flashMessage('Hesla se neshodují!', 'danger');
             $this->redirect('Homepage:changePass');
         }
 

@@ -126,4 +126,8 @@ class KeeperModel
 
         return $ret_array;
     }
+
+    public function checkRodneCislo()
+    {
+    }
 }

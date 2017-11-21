@@ -57,10 +57,11 @@ class CoopPresenter extends BasePresenter
         $form->addHidden('id_vybeh')
             ->setDefaultValue($values['id_vybeh']);
         $form->addSelect('naTypVybehu','Velikost výběhu: ' , $this->model->getTypeOfCoop())
-            ->setDefaultValue($values['naTypVybehu']);
+            ->setDefaultValue($values['naTypVybehu'])
+            ->setRequired('Velikost je povinný údaj.');
         $form->addText('poloha', 'Poloha výběhu: ')
             ->setDefaultValue($values['poloha'])
-            ->setRequired('Poloha');
+            ->setRequired('Poloha je povinný údaj.');
         $form->addText('rozloha', 'Rozloha: ')
             ->setDefaultValue($values['rozloha'])
             ->setHtmlType('number')
@@ -105,9 +106,10 @@ class CoopPresenter extends BasePresenter
     public function createComponentAddCoop(){
         $form = $this->form();
         $form->addSelect('naTypVybehu','Velikost výběhu: ' , $this->model->getTypeOfCoop())
-            ->setPrompt('Vyber velikost');
+            ->setPrompt('Vyber velikost')
+            ->setRequired('Velikost je povinný údaj.');
         $form->addText('poloha', 'Poloha výběhu: ')
-            ->setRequired('Poloha');
+            ->setRequired('Poloha je povinný údaj.');
         $form->addText('rozloha', 'Rozloha: ')
             ->setHtmlType('number')
             ->setRequired('Zadej rozlohu.');

@@ -39,7 +39,7 @@ class AuthorizationFactory
 
         $acl->allow('1' ,['animal'], 'add');
         $acl->allow('0', 'admin');
-        $acl->allow('0', ['coop','addKind'], 'add');
+        $acl->allow('0', ['coop','addKind', 'training'], 'add');
 
         return $acl;
 
