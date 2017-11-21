@@ -8,7 +8,9 @@
 
 namespace App\Presenters;
 
+use App\Forms\MyValidation;
 use App\Model\KeeperModel;
+use App\Model\RodneCisloException;
 use Nette\Application\UI\Form;
 use Nette;
 
@@ -56,6 +58,7 @@ class KeeperPresenter extends BasePresenter
         $form->addText('prijmeni', 'Příjmení: ')
             ->setRequired("Příjmení je povinný údaj.");
         $form->addText('rodne_cislo', 'Rodné číslo: ')
+            ->addRule(MyValidation::RODNECISLO, 'Zadejte rodné číslo.')
             ->setRequired("Rodné číslo je povinný údaj.");
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
@@ -113,15 +116,20 @@ class KeeperPresenter extends BasePresenter
 
     public function addKeeperSucceed(Form $form, Nette\Utils\ArrayHash $values)
     {
-        $model = new KeeperModel($this->database);
-        if($values->role == 0){
-            $model->addKeeper($values);
-        } else if($values->role == 1) {
-            $model->addKeeperEmployee($values);
-        } else {
-            $model->addKeeperVolunteer($values);
-        }
 
+        try {
+            $model = new KeeperModel($this->database);
+            if ($values->role == 0) {
+                $model->addKeeper($values);
+            } else if ($values->role == 1) {
+                $model->addKeeperEmployee($values);
+            } else {
+                $model->addKeeperVolunteer($values);
+            }
+        } catch (RodneCisloException $e)
+        {
+            $this->flashMessage('Neplatné rodné číslo');
+        }
         $this->flashMessage('Záznam přidán!' ,'success');
         $this->redirect('Keeper:Add');
 

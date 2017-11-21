@@ -6,7 +6,6 @@
  */
 
 namespace Nette\Application\UI;
-
 use Nette;
 
 
