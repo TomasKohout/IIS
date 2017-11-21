@@ -27,23 +27,32 @@ class CoopPresenter extends BasePresenter
     protected function startup(){
         parent::startup();
 
+
+    }
+    public function renderSearch(){
+        if (!$this->user->isAllowed('coop', 'view'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+        $this->template->dataAll = $this->model->showCoop();
+    }
+
+    public function renderAdd(){
         if (!$this->user->isAllowed('coop', 'add'))
         {
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
     }
-    public function renderSearch(){
-
-        $this->template->dataAll = $this->model->showCoop();
-    }
-
-    public function renderAdd(){
-
-    }
 
 
     public function renderUpdate($id_vybeh){
+        if (!$this->user->isAllowed('coop', 'add'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $this->id_vybeh = $id_vybeh;
     }
 

@@ -60,24 +60,24 @@
 				</li>
 			{/if}
 
-			{if $user->isAllowed('coop','add')}
+
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Výběh<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a n:href="Coop:search">Hledat výběh</a></li>
-						<li><a n:href="Coop:add">Přidat výběh</a></li>
+						{if $user->isAllowed('coop', 'view')}<li><a n:href="Coop:search">Hledat výběh</a></li>{/if}
+                        {if $user->isAllowed('coop','add')}	<li><a n:href="Coop:add">Přidat výběh</a></li>{/if}
 					</ul>
 				</li>
-			{/if}
-			{if $user->isAllowed('training','add')}
+
+
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Školení<span class="caret"></span> </a>
 					<ul class="dropdown-menu">
-						<li><a n:href="Training:add">Přidat školení</a></li>
-						<li><a n:href="Training:search">Vypsat školení</a></li>
+                        {if $user->isAllowed('training','add')}	<li><a n:href="Training:add">Přidat školení</a></li>{/if}
+						{if $user->isAllowed('training', 'view')}<li><a n:href="Training:search">Vypsat školení</a></li>{/if}
 					</ul>
 				</li>
-			{/if}
+
 			</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">

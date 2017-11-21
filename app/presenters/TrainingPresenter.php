@@ -20,6 +20,10 @@ class TrainingPresenter extends BasePresenter
 
     protected function startup(){
         parent::startup();
+
+    }
+
+    public function renderAdd(){
         if (!$this->user->isAllowed('admin'))
         {
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
@@ -27,11 +31,12 @@ class TrainingPresenter extends BasePresenter
         }
     }
 
-    public function renderAdd(){
-
-    }
-
     public function renderDelete($id_skoleni){
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $this->model->deleteTraining($id_skoleni);
         $this->flashMessage('Školení smazáno!', 'success');
         $this->redirect('Training:show');
@@ -39,11 +44,21 @@ class TrainingPresenter extends BasePresenter
     }
 
     public function renderUpdate($id_skoleni){
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $this->id_skoleni = $id_skoleni;
     }
 
 
     public function renderSearch(){
+        if (!$this->user->isAllowed('training', 'view'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $this->template->dataAll = $this->model->getAllTrainings();
     }
 
