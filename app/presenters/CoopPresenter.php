@@ -23,7 +23,18 @@ class CoopPresenter extends BasePresenter
         $this->database = $database;
         $this->model = new CoopModel($database);
     }
+
+    protected function startup(){
+        parent::startup();
+
+        if (!$this->user->isAllowed('coop', 'add'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+    }
     public function renderSearch(){
+
         $this->template->dataAll = $this->model->showCoop();
     }
 

@@ -27,6 +27,7 @@ services:
 	- App\Forms\FormFactory
 	- App\Forms\SignInFormFactory
 	- App\Forms\SignUpFormFactory
+	- App\Model\AuthorizationFactory::create
 	router: App\RouterFactory::createRouter
 	formFactory: Instante\Bootstrap3Renderer\BootstrapFormFactory
 	authenticator: App\Model\UserManager

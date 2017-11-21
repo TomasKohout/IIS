@@ -31,6 +31,15 @@ class UserManager implements Nette\Security\IAuthenticator
 	}
 
 
+	public function changeCredntials(array $credentials, $userId){
+	    $this->database->table('osetrovatel')->where(self::COLUMN_ID, $userId)->update($credentials);
+    }
+
+	public function changePass($password, $userId){
+	    $this->database->table('osetrovatel')->where('rodne_cislo', $userId)->update(['heslo'=> Nette\Security\Passwords::hash($password)]);
+    }
+
+
 	/**
 	 * Performs an authentication.
 	 * @return Nette\Security\Identity
@@ -50,9 +59,11 @@ class UserManager implements Nette\Security\IAuthenticator
 
 		}
 		if (!Nette\Security\Passwords::verify($password, $hash)) {
-			throw new Nette\Security\AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
+            if (!Nette\Security\Passwords::verify($password, $row[self::COLUMN_PASSWORD_HASH]))
+			    throw new Nette\Security\AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
 
 		}
+
 
 		$arr = $row->toArray();
 		unset($arr[self::COLUMN_PASSWORD_HASH]);
