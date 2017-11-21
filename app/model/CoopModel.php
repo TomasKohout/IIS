@@ -50,7 +50,7 @@ class CoopModel
 
     public function searchCoop($values)
     {
-        return $this->database->query('SELECT * FROM vybeh WHERE ', $values);
+        return $this->database->table('vybeh')->where(array_filter($values));
     }
 
 }

@@ -179,8 +179,11 @@ class AnimalPresenter extends BasePresenter
     }
 
     public function createComponentSearchAnimal(){
+        $model = new AnimalModel($this->database);
         $form = $this->form();
         $form->addText('jmeno', 'Jméno zvířete: ');
+        $form->addSelect('jeDruhu', 'Druh zvířete: ', $model->getDruh())
+            ->setPrompt('Zvol druh');;
 
         $form->addSubmit('submit', 'Vyhledat zvíře');
         $form->onSuccess[] = [$this, 'renderAnimalSucceed'];
