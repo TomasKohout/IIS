@@ -230,7 +230,7 @@ class User
 	public function isAllowed($resource = IAuthorizator::ALL, $privilege = IAuthorizator::ALL)
 	{
 		foreach ($this->getRoles() as $role) {
-			if ($this->getAuthorizator()->isAllowed($role, $resource, $privilege)) {
+			if ($this->getAuthorizator()->isAllowed((string)$role, $resource, $privilege)) {
 				return true;
 			}
 		}

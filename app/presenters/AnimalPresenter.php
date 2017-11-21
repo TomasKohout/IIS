@@ -24,9 +24,20 @@ class AnimalPresenter extends BasePresenter
         $this->model = new AnimalModel($database);
     }
 
+    protected function startup(){
+        parent::startup();
+
+        if (!$this->getUser()->isAllowed('animal', 'view')){
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+    }
     public function renderAdd()
     {
-
+        if (!$this->getUser()->isAllowed('animal', 'add')){
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
     }
 
     public function renderSearch()
@@ -35,10 +46,17 @@ class AnimalPresenter extends BasePresenter
         $this->template->druh = $this->model->getDruh();
     }
     public function renderUpdate($id_zvire){
+        if (!$this->getUser()->isAllowed('animal', 'add')){
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $this->id_zvire = $id_zvire;
     }
     public function renderUmrti($id_zvire){
-
+        if (!$this->getUser()->isAllowed('animal', 'add')){
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
     }
 
     public function createComponentDeadAnimal(){

@@ -20,8 +20,18 @@ class KeeperPresenter extends BasePresenter
 
     public function __construct(Nette\Database\Context $database)
     {
+
         $this->database = $database;
         $this->model =  new KeeperModel($database);
+    }
+
+    protected function startup(){
+        parent::startup();
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
     }
 
     public function renderAdd(){

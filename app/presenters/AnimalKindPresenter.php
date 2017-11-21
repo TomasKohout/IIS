@@ -23,6 +23,14 @@ class AnimalKindPresenter extends BasePresenter
         $this->model    = new TrainingModel($database);
     }
 
+    protected function startup(){
+        parent::startup();
+        if (!$this->user->isAllowed('addKind', 'add')){
+            $this->flashMessage('Pro přístup do této stránky nemáte oprávnění. Obraťte se na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+    }
+
     public function renderAdd()
     {
 

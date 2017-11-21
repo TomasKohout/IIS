@@ -39,16 +39,18 @@
 				<a class="navbar-brand" n:href="MainPage:default">ZooWis</a>
 			</div>
 			<ul class="nav navbar-nav">
+
 				<li class="active"><a n:href="MainPage:">Home</a></li>
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Zvíře<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a n:href="Animal:search">Hledat zvíře</a></li>
-						<li><a n:href="Animal:add">Přidat zvíře</a></li>
-						<li><a n:href="Animal:umrti">Úmrtí zvířete</a></li>
-						<li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>
+						{if $user->isAllowed('animal','add')}<li><a n:href="Animal:add">Přidat zvíře</a></li>
+						<li><a n:href="Animal:umrti">Úmrtí zvířete</a></li>{/if}
+						{if $user->isAllowed('addKind','add')}<li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>{/if}
 					</ul>
 				</li>
+			{if $user->isAllowed('admin')}
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Ošetřovatel<span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -56,6 +58,9 @@
 						<li><a n:href="Keeper:search">Hledat ošetřovatele</a></li>
 					</ul>
 				</li>
+			{/if}
+
+			{if $user->isAllowed('coop','add')}
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Výběh<span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -64,16 +69,34 @@
 						<li><a n:href="Coop:show">Vypsat výběhy</a></li>
 					</ul>
 				</li>
+			{/if}
+			{if $user->isAllowed('training','add')}
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Školení<span class="caret"></span> </a>
 					<ul class="dropdown-menu">
 						<li><a n:href="Training:add">Přidat školení</a></li>
 						<li><a n:href="Training:show">Vypsat školení</a></li>
 					</ul>
-
 				</li>
+			{/if}
 			</ul>
-		</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Uživatelský panel<span class="caret"></span> </a>
+						<ul class="dropdown-menu">
+							<li><a n:href="Homepage:changePass">Změnit heslo</a> </li>
+							<li><a n:href="Homepage:changeCredentials">Změnit osobní údaje</a> </li>
+							<li><a n:href="Homepage:logout">Odhlásit se</a> </li>
+						</ul>
+					</li>
+				</ul>
+
+
+
+
+			</div>
+
+
 	</nav>
 	{/if}
 
