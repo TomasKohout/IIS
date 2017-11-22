@@ -7,6 +7,7 @@
  */
 
 namespace App\Presenters;
+use App\Forms\MyValidation;
 use App\Model\AnimalModel;
 use App\Model\CoopModel;
 use Nette;
@@ -54,10 +55,14 @@ class AnimalPresenter extends BasePresenter
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
-        if($this->animalModel->isDead($id_zvire)){
-            $this->flashMessage('Není možné upravovat mrtvá zvířata.', 'warning');
+
+
+        if ($this->animalModel->isDead($id_zvire)) {
+            $this->flashMessage('Nelze upravovat zvířata, která jsou vedena jako mrtvá.', 'warning');
             $this->redirect('Animal:search');
         }
+
+
         $this->id_zvire = $id_zvire;
     }
     public function renderUmrti($id_zvire){
@@ -65,14 +70,10 @@ class AnimalPresenter extends BasePresenter
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
-
-        if($this->animalModel->isDead($id_zvire)){
-            $this->flashMessage('Není možné upravovat mrtvá zvířata.', 'warning');
-            $this->redirect('Animal:search');
-        }
-
-        $this->id_zvire = $id_zvire;
-
+        if ($this->animalModel->isDead($id_zvire)) {                                                                  
+            $this->flashMessage('Nelze upravovat zvířata, která jsou vedena jako mrtvá.', 'warning');                 
+            $this->redirect('Animal:search');                                                                         $this->id_zvire = $id_zvire;
+        }                                                                                                             
     }
 
     public function createComponentDeadAnimal(){
@@ -86,7 +87,7 @@ class AnimalPresenter extends BasePresenter
             ->setRequired("Datum úmrtí je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addSubmit('submit', 'Upravit zvíře');
 
@@ -154,7 +155,7 @@ class AnimalPresenter extends BasePresenter
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])");
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addSubmit('submit', 'Upravit zvíře');
 
@@ -203,7 +204,7 @@ class AnimalPresenter extends BasePresenter
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addSubmit('submit', 'Přidat');
         $form->onSuccess[] = [$this, 'addAnimalSucceed'];

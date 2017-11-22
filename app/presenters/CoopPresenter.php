@@ -53,6 +53,7 @@ class CoopPresenter extends BasePresenter
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
+        $this->model->isValidID($id_vybeh);
         $this->id_vybeh = $id_vybeh;
     }
 

@@ -12,6 +12,7 @@ use Nette;
 
 
 class FeedModel {
+
     protected $database;
 
     public function __construct(Nette\Database\Context $database)
@@ -44,7 +45,8 @@ class FeedModel {
                 $login = "";
                 foreach($krmeni->related('provadi_krmeni') as $provadi){
                     $osetrovatel = $provadi->rd_osetrovatel;
-                    $login = $login.' '.($this->database->table('osetrovatel')->get($osetrovatel))->login;
+                    $tmp = $this->database->table('osetrovatel')->get($osetrovatel);
+                    $login = $login.' '.$tmp->login;
                 }
 
                 $ret_array[$i][$k]['login'] = $login;
@@ -102,10 +104,6 @@ class FeedModel {
 
         $zvire = $this->database->table('zvire')->get($id_zvire);
 
-        if(!$zvire){
-            return null;
-        }
-
         $zvireAndSkoleni = array();
         foreach($zvire->related('druh_zvirete', 'id_druh_zvirete') as $druh){
             $zvireAndSkoleni['id_zvire'] = $zvire->id_zvire;
@@ -123,8 +121,7 @@ class FeedModel {
                     $ret_array[$osetrovatel->rodne_cislo] = array();
                     $ret_array[$osetrovatel->rodne_cislo] = $osetrovatel->login;
                 }
-//                print_r($osetrovatelAndSkoleni);
-//                printf("</br></br>");
+
             }
         }
         return $ret_array;

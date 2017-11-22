@@ -46,6 +46,7 @@ class KeeperPresenter extends BasePresenter
     }
 
     public function renderUpdate($rodne_cislo){
+        $this->model->isValidRodneCislo($rodne_cislo);
         $this->rodne_cislo = $rodne_cislo;
     }
 
@@ -67,7 +68,7 @@ class KeeperPresenter extends BasePresenter
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
             ->setRequired("Telefoní číslo je povinný údaj.");
         $form->addText('adresa', 'Bydliště: ')
@@ -165,7 +166,7 @@ class KeeperPresenter extends BasePresenter
             ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
             ->setRequired("Telefoní číslo je povinný údaj.")->setDefaultValue($values['tel_cislo']);
         $form->addText('adresa', 'Bydliště: ')

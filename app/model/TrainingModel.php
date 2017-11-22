@@ -57,4 +57,10 @@ class TrainingModel
         $this->database->table('skoleni')->where('id_skoleni', $values['id_skoleni'])->update($values);
     }
 
+    public function isValidID($id_skoleni){
+        $isItFalse = $this->database->table('skoleni')->get($id_skoleni);
+        if (!$isItFalse)
+            throw new Nette\Application\BadRequestException("Bad Request", 404);
+    }
+
 }

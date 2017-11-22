@@ -9,6 +9,7 @@ application:
 	errorPresenter: Error
 	mapping:
 		*: App\*Module\Presenters\*Presenter
+	catchExceptions: true
 
 
 session:

@@ -134,6 +134,12 @@ class KeeperModel
         return $this->database->table('osetrovatel')->where('login', $login);
     }
 
+    public function isValidRodneCislo($rodne_cislo){
+        $testIfIsFalse = $this->database->table('osetrovatel')->get($rodne_cislo);
+        if (!$testIfIsFalse)
+            throw new Nette\Application\BadRequestException("Bad Request", 404);
+    }
+
 
 }
 

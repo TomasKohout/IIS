@@ -8,6 +8,7 @@
 
 namespace App\Model;
 
+use Nette\Application\BadRequestException;
 use Nette;
 
 class AnimalModel {
@@ -19,12 +20,14 @@ class AnimalModel {
     }
 
 
-    /**
-     * @param $id_zvire
-     * @return Nette\Database\Table\ActiveRow
-     */
     public function getAnimalValues($id_zvire){
         return $this->database->table('zvire')->get($id_zvire);
+    }
+
+    public function isValidId($id_zvire){
+        $testIfIsFalse = $this->database->table('zvire')->get($id_zvire);
+        if (!$testIfIsFalse)
+            throw new BadRequestException("Bad Request", 404);
     }
 
     public function addAnimal(array $values)
@@ -48,11 +51,16 @@ class AnimalModel {
     }
 
 
+    /**
+     * @param $id_zvire
+     * @return bool
+     */
     public function isDead($id_zvire){
-        if("" == ($this->database->table('zvire')->get($id_zvire))->datum_umrti){
-            return false;
-        }
-        return true;
+        $tmp = $this->database->table('zvire')->get($id_zvire);
+        if (!$tmp)
+            throw new BadRequestException("", 404);
+        return "" != $tmp->datum_umrti;
+
     }
 
     public function allAnimals(){

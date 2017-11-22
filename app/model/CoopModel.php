@@ -57,6 +57,12 @@ class CoopModel
         return $ret_array;
     }
 
+    public function isValidID($id_vybeh){
+        $testIfIsFalse = $this->database->table('vybeh')->get($id_vybeh);
+        if (!$testIfIsFalse)
+            throw new Nette\Application\BadRequestException("Bad Request", "404");
+    }
+
     public function getCoopValues($id_vybeh){
         return $this->database->table('vybeh')->get($id_vybeh);
     }

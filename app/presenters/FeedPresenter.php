@@ -7,6 +7,7 @@
  */
 
 namespace App\Presenters;
+use App\Forms\MyValidation;
 use App\Model\KeeperModel;
 use Nette;
 use App\Model\AnimalModel;
@@ -21,7 +22,11 @@ class FeedPresenter extends BasePresenter
     protected $feedModel;
     protected $animalModel;
     protected $keeperModel;
-    private $id_zvire;
+    /**
+     * @persistent
+     * @var int
+     */
+    public $id_zvire;
 
     public function __construct(Nette\Database\Context $database)
     {
@@ -48,10 +53,7 @@ class FeedPresenter extends BasePresenter
     }
 
     public function renderAdd($id_zvire){
-        if($this->animalModel->isDead($id_zvire)){
-            $this->flashMessage('Není možné krmit mrtvá zvířata.', 'warning');
-            $this->redirect('Animal:search');
-        }
+        $this->animalModel->isValidId($id_zvire);
         $this->id_zvire = $id_zvire;
     }
 
@@ -64,11 +66,11 @@ class FeedPresenter extends BasePresenter
 
 
         $form->addSubmit('submit', 'Vyhledat krmení');
-        $form->onSuccess[] = [$this, 'renderSearchFeedSucceed'];
+        $form->onSuccess[] = [$this, 'searchFeedSucceed'];
         return $form;
     }
 
-    public function renderSearchFeedSucceed(Nette\Application\UI\Form $form){
+    public function searchFeedSucceed(Nette\Application\UI\Form $form){
         $this->template->data = $this->feedModel->searchFeed($form->getValues(true));
         if(!empty($this->template->data)){
             $this->template->show = true;
@@ -87,7 +89,7 @@ class FeedPresenter extends BasePresenter
             ->setRequired("Datum a čas krmení je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
         $form->addText('druh', 'Krmivo:')
             ->setRequired('Krmivo je povinný údaj.');
         $form->addText('mnozstvi', 'Množství:');

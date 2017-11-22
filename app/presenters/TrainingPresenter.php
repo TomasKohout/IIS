@@ -1,5 +1,6 @@
 <?php
 namespace App\Presenters;
+use App\Forms\MyValidation;
 use App\Model\AnimalModel;
 use App\Model\TrainingModel;
 use Nette\Application\UI\Form;
@@ -49,6 +50,7 @@ class TrainingPresenter extends BasePresenter
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
+        $this->model->isValidID($id_skoleni);
         $this->id_skoleni = $id_skoleni;
     }
 
@@ -90,7 +92,7 @@ class TrainingPresenter extends BasePresenter
             ->setRequired("Datum je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addTextArea('popis','Popis školení:', 2,2)
             ->setRequired(false);
@@ -128,7 +130,7 @@ class TrainingPresenter extends BasePresenter
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setDefaultValue(substr($row['datum'],0,10))
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addTextArea('popis','Popis školení:', 2,2)
             ->setDefaultValue($row['popis'])
