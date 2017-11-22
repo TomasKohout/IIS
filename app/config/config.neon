@@ -31,6 +31,7 @@ services:
 	router: App\RouterFactory::createRouter
 	formFactory: Instante\Bootstrap3Renderer\BootstrapFormFactory
 	authenticator: App\Model\UserManager
+	validator: App\Forms\MyValidation
 
 extensions:
     extendedFormmMacros: Instante\ExtendedFormMacros\DI\ExtendedFormMacrosExtension

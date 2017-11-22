@@ -23,6 +23,7 @@
                             <td>{$data_row->poloha}</td>
                             <td>{$data_row->rozloha}</td>
                             <td>{$data_row->popis}</td>
+                            {if $user->isAllowed('coop','add')}<td><a n:href="Coop:update $data_row->id_vybeh" class="btn btn-default">Upravit</a></td>{/if}
                         </tr>
                     {/foreach}
                     </tbody>
@@ -44,6 +45,7 @@
                             <td>{$data_row->poloha}</td>
                             <td>{$data_row->rozloha}</td>
                             <td>{$data_row->popis}</td>
+                            {if $user->isAllowed('coop','add')}<td><a n:href="Coop:update $data_row->id_vybeh" class="btn btn-default">Upravit</a></td>{/if}
                         </tr>
                     {/foreach}
                 </tbody>

@@ -34,7 +34,7 @@ class AuthorizationFactory
         $acl->addResource('admin');
         $acl->addResource('addKind');
 
-        $acl->allow('2', ['animal'], 'view');
+        $acl->allow('2', ['animal', 'training', 'coop'], 'view');
         $acl->allow('2', ['clean', 'feed'], 'add');
 
         $acl->allow('1' ,['animal'], 'add');
