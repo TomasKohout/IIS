@@ -8,7 +8,9 @@
 
 namespace App\Presenters;
 
+use App\Forms\MyValidation;
 use App\Model\KeeperModel;
+use App\Model\RodneCisloException;
 use Nette\Application\UI\Form;
 use Nette;
 
@@ -20,8 +22,18 @@ class KeeperPresenter extends BasePresenter
 
     public function __construct(Nette\Database\Context $database)
     {
+
         $this->database = $database;
         $this->model =  new KeeperModel($database);
+    }
+
+    protected function startup(){
+        parent::startup();
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
     }
 
     public function renderAdd(){
@@ -46,6 +58,7 @@ class KeeperPresenter extends BasePresenter
         $form->addText('prijmeni', 'Příjmení: ')
             ->setRequired("Příjmení je povinný údaj.");
         $form->addText('rodne_cislo', 'Rodné číslo: ')
+            ->addRule(MyValidation::RODNECISLO, 'Zadejte rodné číslo.')
             ->setRequired("Rodné číslo je povinný údaj.");
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
@@ -54,7 +67,7 @@ class KeeperPresenter extends BasePresenter
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
             ->setRequired("Telefoní číslo je povinný údaj.");
         $form->addText('adresa', 'Bydliště: ')
@@ -103,15 +116,20 @@ class KeeperPresenter extends BasePresenter
 
     public function addKeeperSucceed(Form $form, Nette\Utils\ArrayHash $values)
     {
-        $model = new KeeperModel($this->database);
-        if($values->role == 0){
-            $model->addKeeper($values);
-        } else if($values->role == 1) {
-            $model->addKeeperEmployee($values);
-        } else {
-            $model->addKeeperVolunteer($values);
-        }
 
+        try {
+            $model = new KeeperModel($this->database);
+            if ($values->role == 0) {
+                $model->addKeeper($values);
+            } else if ($values->role == 1) {
+                $model->addKeeperEmployee($values);
+            } else {
+                $model->addKeeperVolunteer($values);
+            }
+        } catch (RodneCisloException $e)
+        {
+            $this->flashMessage('Neplatné rodné číslo');
+        }
         $this->flashMessage('Záznam přidán!' ,'success');
         $this->redirect('Keeper:Add');
 
@@ -141,7 +159,7 @@ class KeeperPresenter extends BasePresenter
             ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
             ->setRequired("Telefoní číslo je povinný údaj.")->setDefaultValue($values['tel_cislo']);
         $form->addText('adresa', 'Bydliště: ')

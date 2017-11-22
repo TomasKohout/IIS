@@ -1,8 +1,5 @@
-Uprava zvířete - Předvyplněný formulář
-Uživatelské možnosti (změna hesla)
-User managment
 Čištění
 Krmení
-Chybové hlášky u requierd polí
 kontrola rodného čísla
-
+SQL skript pridat čas u krmení a čistění
+Kontrola shodnosti datumu narození a rodného čísla.

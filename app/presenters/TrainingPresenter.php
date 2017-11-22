@@ -18,11 +18,25 @@ class TrainingPresenter extends BasePresenter
         $this->model    = new TrainingModel($database);
     }
 
-    public function renderAdd(){
+    protected function startup(){
+        parent::startup();
 
     }
 
+    public function renderAdd(){
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+    }
+
     public function renderDelete($id_skoleni){
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $this->model->deleteTraining($id_skoleni);
         $this->flashMessage('Školení smazáno!', 'success');
         $this->redirect('Training:show');
@@ -30,19 +44,38 @@ class TrainingPresenter extends BasePresenter
     }
 
     public function renderUpdate($id_skoleni){
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $this->id_skoleni = $id_skoleni;
     }
-    public function renderShow(){
-        $this->template->dataAll = $this->model->getAllTraining();
+
+
+    public function renderSearch(){
+        if (!$this->user->isAllowed('training', 'view'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+        $this->template->dataAll = $this->model->getAllTrainings();
     }
 
-    public function createComponentShowTraining(){
+    public function createComponentSearchTraining(){
         $form = $this->form();
+        $form->addText("nazev", "Název:");
+
+        $form->addSubmit('submit', "Hledat");
+        $form->onSuccess[] = [$this, 'searchTrainingSucceed'];
+
         return $form;
     }
 
-    public function showTrainingSucceed(){
+    public function searchTrainingSucceed(Form $form){
 
+        $this->template->data = $this->model->searchTrainings($form->getValues(true));
+        $this->template->show = true;
     }
 
     public function createComponentAddSkoleni(){
@@ -51,7 +84,7 @@ class TrainingPresenter extends BasePresenter
         $form->addText('nazev', 'Název školení:')
             ->setDefaultValue('Název')
             ->addRule($form::MAX_LENGTH,'Název je příliš dlouhý. Maximální délka je %d.',30)
-            ->setRequired(true);
+            ->setRequired('Název je povinný údaj.');
 
         $form->addText('datum', "Datum:")
             ->setRequired("Datum je povinný údaj")
@@ -59,7 +92,8 @@ class TrainingPresenter extends BasePresenter
             ->setAttribute('placeholder', 'rrrr.mm.dd')
             ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
 
-        $form->addTextArea('popis','Popis školení:', 2,2);
+        $form->addTextArea('popis','Popis školení:', 2,2)
+            ->setRequired(false);
 
         $form->addSubmit('submit', 'Přidat školení');
 
@@ -87,7 +121,7 @@ class TrainingPresenter extends BasePresenter
         $form->addText('nazev', 'Název školení:')
             ->setDefaultValue($row['nazev'])
             ->addRule($form::MAX_LENGTH,'Název je příliš dlouhý. Maximální délka je %d.',30)
-            ->setRequired(true);
+            ->setRequired('Název je povinný údaj.');
 
         $form->addText('datum', "Datum:")
             ->setRequired("Datum je povinný údaj")
@@ -97,7 +131,8 @@ class TrainingPresenter extends BasePresenter
             ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
 
         $form->addTextArea('popis','Popis školení:', 2,2)
-            ->setDefaultValue($row['popis']);
+            ->setDefaultValue($row['popis'])
+            ->setRequired(false);
 
         $form->addSubmit('submit', 'Upravit školení');
 

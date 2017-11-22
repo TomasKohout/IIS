@@ -11,6 +11,23 @@ use Nette;
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
 
+    protected function startup(){
+        parent::startup();
+        $this->user->setExpiration('30 minutes');
+        if (!$this->user->isLoggedIn())
+        {
+            $this->redirect("Homepage:default");
+        }
+
+
+        $this->template->user = $this->getUser();
+
+
+    }
+
+    public function checkRequirements($element){
+
+    }
 
     protected function form(){
         $form = new \Nette\Application\UI\Form;

@@ -23,23 +23,36 @@ class CoopPresenter extends BasePresenter
         $this->database = $database;
         $this->model = new CoopModel($database);
     }
+
+    protected function startup(){
+        parent::startup();
+
+
+    }
     public function renderSearch(){
+        if (!$this->user->isAllowed('coop', 'view'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $this->template->dataAll = $this->model->showCoop();
     }
 
     public function renderAdd(){
-
+        if (!$this->user->isAllowed('coop', 'add'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
     }
 
-    public function renderShow(){
-        $this->template->data = $this->model->showCoop();
-    }
-
-    public function renderDefault(){
-
-    }
 
     public function renderUpdate($id_vybeh){
+        if (!$this->user->isAllowed('coop', 'add'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $this->id_vybeh = $id_vybeh;
     }
 
@@ -50,10 +63,11 @@ class CoopPresenter extends BasePresenter
         $form->addHidden('id_vybeh')
             ->setDefaultValue($values['id_vybeh']);
         $form->addSelect('naTypVybehu','Velikost výběhu: ' , $this->model->getTypeOfCoop())
-            ->setDefaultValue($values['naTypVybehu']);
+            ->setDefaultValue($values['naTypVybehu'])
+            ->setRequired('Velikost je povinný údaj.');
         $form->addText('poloha', 'Poloha výběhu: ')
             ->setDefaultValue($values['poloha'])
-            ->setRequired('Poloha');
+            ->setRequired('Poloha je povinný údaj.');
         $form->addText('rozloha', 'Rozloha: ')
             ->setDefaultValue($values['rozloha'])
             ->setHtmlType('number')
@@ -80,8 +94,8 @@ class CoopPresenter extends BasePresenter
 
     public function createComponentSearchCoop(){
         $form = $this->form();
-        $form->addText('id_vybeh', 'ID výběhu: ')
-            ->setRequired('Nazev');
+        $form->addText('id_vybeh', 'ID výběhu: ');
+        $form->addText('poloha', 'Poloha výběhu: ');
 
         $form->addSubmit('submit', 'Vyhledat výběh');
         $form->onSuccess[] = [$this, 'SearchCoopSucceed'];
@@ -89,8 +103,7 @@ class CoopPresenter extends BasePresenter
     }
 
     public function SearchCoopSucceed(Form $form){
-
-        var_dump($form->getValues(true));
+        //var_dump($form->getValues(true));
         $this->template->data = $this->model->searchCoop($form->getValues(true));
         $this->template->show = true;
     }
@@ -98,9 +111,10 @@ class CoopPresenter extends BasePresenter
     public function createComponentAddCoop(){
         $form = $this->form();
         $form->addSelect('naTypVybehu','Velikost výběhu: ' , $this->model->getTypeOfCoop())
-            ->setPrompt('Vyber velikost');
+            ->setPrompt('Vyber velikost')
+            ->setRequired('Velikost je povinný údaj.');
         $form->addText('poloha', 'Poloha výběhu: ')
-            ->setRequired('Poloha');
+            ->setRequired('Poloha je povinný údaj.');
         $form->addText('rozloha', 'Rozloha: ')
             ->setHtmlType('number')
             ->setRequired('Zadej rozlohu.');

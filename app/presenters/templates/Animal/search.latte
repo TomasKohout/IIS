@@ -39,7 +39,7 @@
                             <td>{substr($data_row->datum_umrti,0,10)}</td>
                             <td>{$data_row->jmeno_matky}</td>
                             <td>{$data_row->jmeno_otce}</td>
-                            <td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>
+                            {if $user->isAllowed('animal','add')}<td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>{/if}
                             </tr>
                         {/foreach}
                     </tbody>
@@ -78,7 +78,7 @@
                             <td>{substr($data_row->datum_umrti,0,10)}</td>
                             <td>{$data_row->jmeno_matky}</td>
                             <td>{$data_row->jmeno_otce}</td>
-                            <td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>
+                            {if $user->isAllowed('animal','add')}<td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>{/if}
                         </tr>
                     {/foreach}
                     </tbody>
