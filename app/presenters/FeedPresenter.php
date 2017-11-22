@@ -7,6 +7,7 @@
  */
 
 namespace App\Presenters;
+use App\Model\KeeperModel;
 use Nette;
 use App\Model\AnimalModel;
 use App\Model\FeedModel;
@@ -17,14 +18,17 @@ class FeedPresenter extends BasePresenter
 {
 
     protected $database;
-    protected $model;
+    protected $feedModel;
     protected $animalModel;
+    protected $keeperModel;
+    private $id_zvire;
 
     public function __construct(Nette\Database\Context $database)
     {
         $this->database = $database;
-        $this->model = new FeedModel($this->database);
+        $this->feedModel = new FeedModel($this->database);
         $this->animalModel = new AnimalModel($this->database);
+        $this->keeperModel = new KeeperModel($this->database);
     }
 
     protected function startup(){
@@ -39,45 +43,58 @@ class FeedPresenter extends BasePresenter
 
 
     public function renderSearch(){
-        $this->template->dataAll = $this->model->allFeed();
+        $this->template->dataAll = $this->feedModel->allFeed();
         $this->template->druh = $this->animalModel->getZvire();
     }
 
-    public function renderAdd(){
-
+    public function renderAdd($id_zvire){
+        if($this->animalModel->isDead($id_zvire)){
+            $this->flashMessage('Není možné krmit mrtvá zvířata.', 'warning');
+            $this->redirect('Animal:search');
+        }
+        $this->id_zvire = $id_zvire;
     }
 
-    public function createComponentSearchFeed(){
 
+    public function createComponentSearchFeed(){
         $form = $this->form();
         $form->addText('id_zvire', 'ID zvířete: ');
         $form->addText('jmeno', 'Jméno zvířete: ');
+        $form->addText('datum', 'Datum: ');
+
 
         $form->addSubmit('submit', 'Vyhledat krmení');
-        $form->onSuccess[] = [$this, 'renderSearchFeedlSucceed'];
+        $form->onSuccess[] = [$this, 'renderSearchFeedSucceed'];
         return $form;
     }
 
-    public function renderSearchFeedlSucceed(Nette\Application\UI\Form $form){
-        $this->template->data = $this->model->searchFeed($form->getValues(true));
-        $this->template->show = true;
+    public function renderSearchFeedSucceed(Nette\Application\UI\Form $form){
+        $this->template->data = $this->feedModel->searchFeed($form->getValues(true));
+        if(!empty($this->template->data)){
+            $this->template->show = true;
+        }
     }
+
+
 
     public function createComponentAddFeed()
     {
-
         $form = $this->form();
-        $form->addText('jeKrmeno', 'ID zvířete: ')
-            ->setRequired('Jméno je povinný údaj.');
-        $form->addHidden('cas', "Datum:")
-            ->setDefaultValue(StrFTime("%Y.%m.%d", Time()))
+        $form->addHidden('jeKrmeno', 'ID zvířete: ')
+            ->setDefaultValue($this->id_zvire);
+        $form->addText('datum', "Datum:")
+            ->setDefaultValue(StrFTime("%Y-%m-%d", Time()))
             ->setRequired("Datum a čas krmení je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
         $form->addText('druh', 'Krmivo:')
             ->setRequired('Krmivo je povinný údaj.');
         $form->addText('mnozstvi', 'Množství:');
+        $form->addSelect('rd_osetrovatel', 'Ošetřovatel:', $this->feedModel->getRodneCisloByLoginWithTraining($this->id_zvire))
+            ->setPrompt("Zvolte ošetřovatele")
+            ->setRequired("Ošetřovatel je povinný údaj.");
+
 
         $form->addSubmit('submit', 'Přidat');
         $form->onSuccess[] = [$this, 'addFeedSucceed'];
@@ -87,9 +104,9 @@ class FeedPresenter extends BasePresenter
 
     public function addFeedSucceed(Form $form, Nette\Utils\ArrayHash $values)
     {
-        $this->model->addFeed($form->getValues(true));
+        $this->feedModel->addFeed($form->getValues(true));
         $this->flashMessage('Krmení přidáno!' ,'success');
-        $this->redirect('Feed:add');
+        $this->redirect('Animal:search');
 
     }
 

@@ -8,6 +8,7 @@
 
 namespace App\Presenters;
 use App\Model\AnimalModel;
+use App\Model\CoopModel;
 use Nette;
 use Nette\Application\UI\Form;
 use Nextras;
@@ -16,12 +17,14 @@ class AnimalPresenter extends BasePresenter
 {
     protected $database;
     protected $id_zvire;
-    protected $model;
+    protected $animalModel;
+    protected $coopModel;
 
     public function __construct(Nette\Database\Context $database)
     {
         $this->database = $database;
-        $this->model = new AnimalModel($database);
+        $this->animalModel = new AnimalModel($database);
+        $this->coopModel = new CoopModel($database);
     }
 
     protected function startup(){
@@ -42,13 +45,18 @@ class AnimalPresenter extends BasePresenter
 
     public function renderSearch()
     {
-        $this->template->dataAll = $this->model->allAnimals();
-        $this->template->druh = $this->model->getDruh();
+        $this->template->dataAll = $this->animalModel->allAnimals();
+        $this->template->druh = $this->animalModel->getDruh();
     }
+
     public function renderUpdate($id_zvire){
         if (!$this->getUser()->isAllowed('animal', 'add')){
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
+        }
+        if($this->animalModel->isDead($id_zvire)){
+            $this->flashMessage('Není možné upravovat mrtvá zvířata.', 'warning');
+            $this->redirect('Animal:search');
         }
         $this->id_zvire = $id_zvire;
     }
@@ -57,23 +65,30 @@ class AnimalPresenter extends BasePresenter
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
+
+        if($this->animalModel->isDead($id_zvire)){
+            $this->flashMessage('Není možné upravovat mrtvá zvířata.', 'warning');
+            $this->redirect('Animal:search');
+        }
+
+        $this->id_zvire = $id_zvire;
+
     }
 
     public function createComponentDeadAnimal(){
         $form = $this->form();
-        $model = new AnimalModel($this->database);
 
-        $form->addSelect('id_zvire', 'Vyber zvíře:', $model->getZvire())
-            ->setPrompt('Zvol zvíře')
-            ->setRequired('Zvol zvíře!');
+        $form->addHidden('id_zvire')->setDefaultValue($this->id_zvire);
+        $form->addHidden('obyva')->setDefaultValue(NULL);
+
         $form->addText('datum_umrti', "Datum:")
+            ->setDefaultValue(StrFTime("%Y-%m-%d", Time()))
             ->setRequired("Datum úmrtí je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr-m-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
 
-        $form->addSubmit('submit', 'Upravit zvíře')
-            ->setAttribute('id', 'confirm');
+        $form->addSubmit('submit', 'Upravit zvíře');
 
         $form->onSuccess[] = [$this, 'deadAnimalSucceed'];
 
@@ -82,13 +97,15 @@ class AnimalPresenter extends BasePresenter
 
     public function deadAnimalSucceed(Form $form, Nette\Utils\ArrayHash $arrayHash){
         $values = $form->getValues(true);
-        $row = $this->model->getAnimalValues($values['id_zvire']);
+        $row = $this->animalModel->getAnimalValues($values['id_zvire']);
         $death = strtotime($values['datum_umrti']);
         $birth = strtotime($row['datum_narozeni']);
 
         if ($death > $birth)
         {
-            $this->updateAnimalSucceed($form, $arrayHash);
+            $this->animalModel->killAnimal($values);
+            $this->flashMessage('Zvíře umrtveno!', 'success');
+            $this->redirect('Animal:search');
         }
         else
         {
@@ -132,12 +149,12 @@ class AnimalPresenter extends BasePresenter
         $form->addSelect('zeme_puvodu', 'Země původu:', $this->getCountries())
             ->setDefaultValue($values['zeme_puvodu'])
             ->setRequired('Země původu je povinný údaj.');
-        $form->addText('datum_narozeni', "Datum:")
+        $form->addText('datum_narozeni', "Datum narození:")
             ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])");
 
         $form->addSubmit('submit', 'Upravit zvíře');
 
@@ -186,7 +203,7 @@ class AnimalPresenter extends BasePresenter
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
 
         $form->addSubmit('submit', 'Přidat');
         $form->onSuccess[] = [$this, 'addAnimalSucceed'];
@@ -216,7 +233,7 @@ class AnimalPresenter extends BasePresenter
     }
 
     public function renderSearchAnimalSucceed(Nette\Application\UI\Form $form){
-        $this->template->data = $this->model->searchAnimal($form->getValues(true));
+        $this->template->data = $this->animalModel->searchAnimal($form->getValues(true));
         //$this->template->druh = $this->model->getDruh();
         $this->template->showAnimals = true;
     }

@@ -20,6 +20,6 @@ class MainPagePresenter extends BasePresenter
     }
 
     public function renderDefault(){
-        $this->template->data = $this->database->query('SELECT zvire.id_zvire,zvire.jmeno, krmeni.cas FROM zvire LEFT JOIN krmeni ON zvire.id_zvire = krmeni.jekrmeno ORDER BY zvire.id_zvire DESC');
+        $this->template->data = $this->database->query('SELECT zvire.id_zvire,zvire.jmeno, krmeni.datum FROM zvire LEFT JOIN krmeni ON zvire.id_zvire = krmeni.jekrmeno ORDER BY zvire.id_zvire DESC');
     }
 }

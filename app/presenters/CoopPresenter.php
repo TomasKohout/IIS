@@ -57,7 +57,7 @@ class CoopPresenter extends BasePresenter
     }
 
     public function createComponentUpdateCoop(){
-        $values = $this->model->getCoopCalues($this->id_vybeh);
+        $values = $this->model->getCoopValues($this->id_vybeh);
 
         $form = $this->form();
         $form->addHidden('id_vybeh')

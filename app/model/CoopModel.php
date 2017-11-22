@@ -44,7 +44,20 @@ class CoopModel
         return $ret_array;
     }
 
-    public function getCoopCalues($id_vybeh){
+    public function getCoops(){
+        $coops = $this->database->table('vybeh')->select('id_vybeh');
+
+        $ret_array = array();
+
+        foreach ($coops as $row){
+            $ret_array[$row->id_vybeh] = array();
+            $ret_array[$row->id_vybeh] = $row->id_vybeh;
+        }
+
+        return $ret_array;
+    }
+
+    public function getCoopValues($id_vybeh){
         return $this->database->table('vybeh')->get($id_vybeh);
     }
 

@@ -89,8 +89,8 @@ class TrainingPresenter extends BasePresenter
         $form->addText('datum', "Datum:")
             ->setRequired("Datum je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
 
         $form->addTextArea('popis','Popis školení:', 2,2)
             ->setRequired(false);
@@ -127,8 +127,8 @@ class TrainingPresenter extends BasePresenter
             ->setRequired("Datum je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setDefaultValue(substr($row['datum'],0,10))
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
 
         $form->addTextArea('popis','Popis školení:', 2,2)
             ->setDefaultValue($row['popis'])

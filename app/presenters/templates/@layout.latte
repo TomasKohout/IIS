@@ -48,7 +48,6 @@
 
                     {if $user->isAllowed('animal','add')}
 						<li><a n:href="Animal:add">Přidat zvíře</a></li>
-                    	<li><a n:href="Animal:umrti">Úmrtí zvířete</a></li>
 					{/if}
 
                     {if $user->isAllowed('addKind','add')}
@@ -89,7 +88,6 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Krmení<span class="caret"></span> </a>
                 <ul class="dropdown-menu">
                     {if $user->isAllowed('feed','view')}<li><a n:href="Feed:search">Hledat krmení</a></li>{/if}
-                    {if $user->isAllowed('feed', 'add')}<li><a n:href="Feed:add">Přidat krmení</a></li>{/if}
                 </ul>
             </li>
 
@@ -97,7 +95,7 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Čištění<span class="caret"></span> </a>
                 <ul class="dropdown-menu">
                     {if $user->isAllowed('clean','view')}<li><a n:href="Clean:search">Hledat čištění</a></li>{/if}
-                    {if $user->isAllowed('clean', 'add')}<li><a n:href="Clean:add">Přidat čištění</a></li>{/if}
+                    {if $user->isAllowed('clean', 'add')}<li><a n:href="Clean:add">Naplánovat čištění</a></li>{/if}
                 </ul>
             </li>
 

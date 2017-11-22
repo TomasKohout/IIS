@@ -12,6 +12,7 @@
                         <th>ID</th>
                         <th>Zvíře</th>
                         <th>ID zvířete</th>
+                        <th>Ošetřovatel</th>
                         <th>Datum</th>
                         <th>Krmivo</th>
                         <th>Množství(gramů)</th>
@@ -24,7 +25,8 @@
                                 <td>{$krm['id_krmeni']}</td>
                                 <td>{$krm['jmeno']}</td>
                                 <td>{$krm['jeKrmeno']}</td>
-                                <td>{$krm['cas']}</td>
+                                <td>{$krm['login']}</td>
+                                <td>{$krm['datum']}</td>
                                 <td>{$krm['druh']}</td>
                                 <td>{$krm['mnozstvi']}</td>
                             </tr>
@@ -50,7 +52,7 @@
                             <td>{$data_row->id_krmeni}</td>
                             <td>{$druh[$data_row->jeKrmeno]}</td>
                             <td>{$data_row->jeKrmeno}</td>
-                            <td>{substr($data_row->cas,0,10)}</td>
+                            <td>{substr($data_row->datum,0,10)}</td>
                             <td>{$data_row->druh}</td>
                             <td>{$data_row->mnozstvi}</td>
                         </tr>

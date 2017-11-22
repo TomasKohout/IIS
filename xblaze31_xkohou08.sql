@@ -54,7 +54,7 @@ CREATE TABLE vybeh (
 
 CREATE TABLE zvire (
   id_zvire int NOT NULL AUTO_INCREMENT,
-  obyva int NOT NULL,
+  obyva int NULL,
   jeDruhu int NOT NULL,
   jmeno varchar(30) NOT NULL,
   pohlavi varchar(1) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE zvire (
 CREATE TABLE krmeni (
   id_krmeni int NOT NULL AUTO_INCREMENT,
   jeKrmeno int NOT NULL,
-  cas date NOT NULL,
+  datum date NOT NULL,
   druh varchar(30) NOT NULL,
   mnozstvi int NOT NULL,
   PRIMARY KEY (id_krmeni),
@@ -83,7 +83,7 @@ CREATE TABLE krmeni (
 CREATE TABLE cisteni (
   id_cisteni int NOT NULL AUTO_INCREMENT,
   jeCisten int NOT NULL,
-  cas date NOT NULL,
+  datum date NOT NULL,
   PRIMARY KEY(id_cisteni),
   CONSTRAINT FK_JeCistenCisteni FOREIGN KEY (jeCisten) REFERENCES vybeh(id_vybeh)
 )ENGINE=InnoDB, CHARSET=utf8;
@@ -197,11 +197,11 @@ INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('2','Pavilon-B','6',
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('3','Pavilon-C','20','');
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('3','Pavilon-C','40','');
 
-INSERT INTO cisteni(jeCisten,cas) VALUES('1','2014.3.12');
-INSERT INTO cisteni(jeCisten,cas) VALUES('2','2014.3.1');
-INSERT INTO cisteni(jeCisten,cas) VALUES('3','2014.5.22');
-INSERT INTO cisteni(jeCisten,cas) VALUES('1','2014.3.18');
-INSERT INTO cisteni(jeCisten,cas) VALUES('2','2014.7.13');
+INSERT INTO cisteni(jeCisten,datum) VALUES('1','2014.3.12');
+INSERT INTO cisteni(jeCisten,datum) VALUES('2','2014.3.1');
+INSERT INTO cisteni(jeCisten,datum) VALUES('3','2014.5.22');
+INSERT INTO cisteni(jeCisten,datum) VALUES('1','2014.3.18');
+INSERT INTO cisteni(jeCisten,datum) VALUES('2','2014.7.13');
 
 
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9508041235', '1');
@@ -232,19 +232,19 @@ INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jme
 INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('1', '1', 'Božena', 'Z', '7', '8', 'Belgie', 'Fufin', 'Pipi','2006.02.27');
 
 
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('1', '2008.12.20', 'zrní', '50');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('2', '2008.12.21', 'zrní', '20');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('3', '2008.12.22', 'tráva', '20');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('4', '2008.12.21', 'seno', '2000');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('5', '2008.12.24', 'seno', '6000');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('6', '2008.12.26', 'brouci', '40');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('7', '2008.12.01', 'salát', '200');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('8', '2008.12.20', 'zrní', '50');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('9', '2008.12.21', 'zrní', '20');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('10', '2008.12.21', 'tráva', '20');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('11', '2008.12.21', 'seno', '2000');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('12', '2008.12.21', 'seno', '6000');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('13', '2008.12.11', 'salát', '150');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('1', '2008.12.20', 'zrní', '50');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('2', '2008.12.21', 'zrní', '20');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('3', '2008.12.22', 'tráva', '20');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('4', '2008.12.21', 'seno', '2000');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('5', '2008.12.24', 'seno', '6000');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('6', '2008.12.26', 'brouci', '40');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('7', '2008.12.01', 'salát', '200');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('8', '2008.12.20', 'zrní', '50');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('9', '2008.12.21', 'zrní', '20');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('10', '2008.12.21', 'tráva', '20');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('11', '2008.12.21', 'seno', '2000');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('12', '2008.12.21', 'seno', '6000');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('13', '2008.12.11', 'salát', '150');
 
 
 INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('7002021224', '1');

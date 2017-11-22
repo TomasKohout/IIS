@@ -37,8 +37,22 @@ class AnimalModel {
             ->update($values);
     }
 
+    public function killAnimal(array $values){
+        $this->database->table('zvire')->where('id_zvire', $values['id_zvire'])
+            ->update([  'datum_umrti' =>$values['datum_umrti'],
+                        'obyva' => null]);
+    }
+
     public function searchAnimal(array $values){
         return $this->database->table('zvire')->where(array_filter($values));
+    }
+
+
+    public function isDead($id_zvire){
+        if("" == ($this->database->table('zvire')->get($id_zvire))->datum_umrti){
+            return false;
+        }
+        return true;
     }
 
     public function allAnimals(){

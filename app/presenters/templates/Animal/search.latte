@@ -12,34 +12,45 @@
                         <th>ID</th>
                         <th>Jmeno</th>
                         <th>Druh</th>
-                        <th>Datum narození</th>
                         <th>Pohlaví</th>
                         <th>Obývá</th>
                         <th>Země původu</th>
                         <th>Váha</th>
                         <th>Výška</th>
+                        <th>Datum narození</th>
                         <th>Datum úmrtí</th>
                         <th>Jméno matky</th>
                         <th>Jméno otce</th>
+                        <th></th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                         {foreach $data as $data_row}
                             <tr>
-                            <td>{$data_row->id_zvire}</td>
-                            <td>{$data_row->jmeno}</td>
-                            <td>{$druh[$data_row->jeDruhu]}</td>
-                            <td>{substr($data_row->datum_narozeni,0,10)}</td>
-                            <td>{$data_row->pohlavi}</td>
-                            <td>{$data_row->obyva}</td>
-                            <td>{$data_row->zeme_puvodu}</td>
-                            <td>{$data_row->vaha}</td>
-                            <td>{$data_row->vyska}</td>
-                            <td>{substr($data_row->datum_umrti,0,10)}</td>
-                            <td>{$data_row->jmeno_matky}</td>
-                            <td>{$data_row->jmeno_otce}</td>
-                            {if $user->isAllowed('animal','add')}<td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>{/if}
+                                <td>{$data_row->id_zvire}</td>
+                                <td>{$data_row->jmeno}</td>
+                                <td>{$druh[$data_row->jeDruhu]}</td>
+                                <td>{$data_row->pohlavi}</td>
+                                <td>{$data_row->obyva}</td>
+                                <td>{$data_row->zeme_puvodu}</td>
+                                <td>{$data_row->vaha}</td>
+                                <td>{$data_row->vyska}</td>
+                                <td>{substr($data_row->datum_narozeni,0,10)}</td>
+                                <td>{substr($data_row->datum_umrti,0,10)}</td>
+                                <td>{$data_row->jmeno_matky}</td>
+                                <td>{$data_row->jmeno_otce}</td>
+                                {if $data_row->obyva}
+                                    {if $user->isAllowed('animal','add')}
+                                        <td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>
+                                    {/if}
+                                    {if $user->isAllowed('animal','add')}
+                                        <td><a n:href="Animal:umrti $data_row->id_zvire" class="btn btn-default">Úmrtí</a></td>
+                                    {/if}
+                                    {if $user->isAllowed('feed','add')}
+                                        <td><a n:href="Feed:add $data_row->id_zvire" class="btn btn-default">Naplánovat krmení</a></td>
+                                    {/if}
+                                {/if}
                             </tr>
                         {/foreach}
                     </tbody>
@@ -51,12 +62,12 @@
                         <th>ID</th>
                         <th>Jmeno</th>
                         <th>Druh</th>
-                        <th>Datum narození</th>
                         <th>Pohlaví</th>
                         <th>Obývá</th>
                         <th>Země původu</th>
                         <th>Váha</th>
                         <th>Výška</th>
+                        <th>Datum narození</th>
                         <th>Datum úmrtí</th>
                         <th>Jméno matky</th>
                         <th>Jméno otce</th>
@@ -69,16 +80,26 @@
                             <td>{$data_row->id_zvire}</td>
                             <td>{$data_row->jmeno}</td>
                             <td>{$druh[$data_row->jeDruhu]}</td>
-                            <td>{substr($data_row->datum_narozeni,0,10)}</td>
                             <td>{$data_row->pohlavi}</td>
                             <td>{$data_row->obyva}</td>
                             <td>{$data_row->zeme_puvodu}</td>
                             <td>{$data_row->vaha}</td>
                             <td>{$data_row->vyska}</td>
+                            <td>{substr($data_row->datum_narozeni,0,10)}</td>
                             <td>{substr($data_row->datum_umrti,0,10)}</td>
                             <td>{$data_row->jmeno_matky}</td>
                             <td>{$data_row->jmeno_otce}</td>
-                            {if $user->isAllowed('animal','add')}<td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>{/if}
+                            {if $data_row->obyva}
+                                {if $user->isAllowed('animal','add')}
+                                    <td><a n:href="Animal:update $data_row->id_zvire" class="btn btn-default">Upravit</a></td>
+                                {/if}
+                                {if $user->isAllowed('animal','add')}
+                                    <td><a n:href="Animal:umrti $data_row->id_zvire" class="btn btn-default">Úmrtí</a></td>
+                                {/if}
+                                {if $user->isAllowed('feed','add')}
+                                    <td><a n:href="Feed:add $data_row->id_zvire" class="btn btn-default">Naplánovat krmení</a></td>
+                                {/if}
+                            {/if}
                         </tr>
                     {/foreach}
                     </tbody>
