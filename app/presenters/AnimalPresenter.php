@@ -138,7 +138,7 @@ class AnimalPresenter extends BasePresenter
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
 
         $form->addSubmit('submit', 'Upravit zvíře');
 
@@ -186,7 +186,7 @@ class AnimalPresenter extends BasePresenter
         $form->addText('datum_narozeni', "Datum:")
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
             ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
 
         $form->addSubmit('submit', 'Přidat');
@@ -212,11 +212,11 @@ class AnimalPresenter extends BasePresenter
             ->setPrompt('Zvol druh');;
 
         $form->addSubmit('submit', 'Vyhledat zvíře');
-        $form->onSuccess[] = [$this, 'renderAnimalSucceed'];
+        $form->onSuccess[] = [$this, 'renderSearchAnimalSucceed'];
         return $form;
     }
 
-    public function renderAnimalSucceed(Nette\Application\UI\Form $form){
+    public function renderSearchAnimalSucceed(Nette\Application\UI\Form $form){
         $this->template->data = $this->model->searchAnimal($form->getValues(true));
         //$this->template->druh = $this->model->getDruh();
         $this->template->showAnimals = true;

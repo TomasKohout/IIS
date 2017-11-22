@@ -1,0 +1,49 @@
+{block content}
+    <div class="container">
+        <div class="col-md-offset-4 col-md-4">
+            {control searchClean}
+        </div>
+        <div class="col-md-12 table-responsive">
+            {default $show = false}
+            {if $show}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Výběh</th>
+                        <th>Datum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $data as $data_row}
+                        <tr>
+                            <td>{$data_row->id_cisteni}</td>
+                            <td>{$data_row->jeCisten}</td>
+                            <td>{substr($data_row->cas,0,10)}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {else}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Výběh</th>
+                        <th>Datum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $dataAll as $data_row}
+                        <tr>
+                            <td>{$data_row->id_cisteni}</td>
+                            <td>{$data_row->jeCisten}</td>
+                            <td>{substr($data_row->cas,0,10)}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {/if}
+        </div>
+    </div>
+{/block}

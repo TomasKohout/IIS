@@ -73,11 +73,29 @@
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Školení<span class="caret"></span> </a>
 					<ul class="dropdown-menu">
-						<li><a n:href="Training:add">Přidat školení</a></li>
-						<li><a n:href="Training:search">Vypsat školení</a></li>
+                        <li><a n:href="Training:search">Vypsat školení</a></li>
+                        <li><a n:href="Training:add">Přidat školení</a></li>
 					</ul>
 				</li>
 			{/if}
+			{if $user->isAllowed('feed','add')}
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Krmení<span class="caret"></span> </a>
+					<ul class="dropdown-menu">
+                        <li><a n:href="Feed:search">Hledat krmení</a></li>
+                        <li><a n:href="Feed:add">Přidat krmení</a></li>
+					</ul>
+				</li>
+			{/if}
+            {if $user->isAllowed('clean','add')}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Čištění<span class="caret"></span> </a>
+                    <ul class="dropdown-menu">
+                        <li><a n:href="Clean:search">Hledat čištění</a></li>
+                        <li><a n:href="Clean:add">Přidat čištění</a></li>
+                    </ul>
+                </li>
+            {/if}
 			</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
@@ -89,13 +107,7 @@
 						</ul>
 					</li>
 				</ul>
-
-
-
-
 			</div>
-
-
 	</nav>
 	{/if}
 
