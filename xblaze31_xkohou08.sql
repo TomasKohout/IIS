@@ -90,7 +90,7 @@ CREATE TABLE cisteni (
 
 CREATE TABLE osetrovatel (
   role INT(1) NOT NULL,
-  login VARCHAR(255) NOT NULL,
+  login VARCHAR(255) NOT NULL UNIQUE,
   heslo VARCHAR(255) NOT NULL,
   rodne_cislo bigint(10) NOT NULL,
   jmeno varchar(20) NOT NULL,
@@ -118,6 +118,7 @@ CREATE TABLE provadi_krmeni (
   id int NOT NULL AUTO_INCREMENT,
   rd_osetrovatel bigint(10) NOT NULL,
   id_krmeni int NOT NULL,
+  provedl TINYINT(1) DEFAULT '0',
   PRIMARY KEY(id),
   CONSTRAINT FK_RdOsetrovatelProvadiKrmeni FOREIGN KEY (rd_osetrovatel) REFERENCES osetrovatel(rodne_cislo),
   CONSTRAINT FK_IdKrmeniProvadiKrmeni FOREIGN KEY (id_krmeni) REFERENCES krmeni(id_krmeni)
@@ -127,6 +128,7 @@ CREATE TABLE provadi_cisteni (
   id int NOT NULL AUTO_INCREMENT,
   rd_osetrovatel bigint(10) NOT NULL,
   id_cisteni int NOT NULL,
+  provedl TINYINT(1) DEFAULT '0',
   PRIMARY KEY(id),
   CONSTRAINT FK_RdOsetrovatelProvadiCisteni FOREIGN KEY (rd_osetrovatel) REFERENCES osetrovatel(rodne_cislo),
   CONSTRAINT FK_IdCisteniProvadiCisteni FOREIGN KEY (id_cisteni) REFERENCES cisteni(id_cisteni)

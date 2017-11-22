@@ -45,9 +45,15 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Zvíře<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a n:href="Animal:search">Hledat zvíře</a></li>
-                    {if $user->isAllowed('animal','add')}<li><a n:href="Animal:add">Přidat zvíře</a></li>
-                    <li><a n:href="Animal:umrti">Úmrtí zvířete</a></li>{/if}
-                    {if $user->isAllowed('addKind','add')}<li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>{/if}
+
+                    {if $user->isAllowed('animal','add')}
+						<li><a n:href="Animal:add">Přidat zvíře</a></li>
+                    	<li><a n:href="Animal:umrti">Úmrtí zvířete</a></li>
+					{/if}
+
+                    {if $user->isAllowed('addKind','add')}
+						<li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>
+					{/if}
                 </ul>
             </li>
 

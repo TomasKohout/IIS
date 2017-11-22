@@ -66,8 +66,8 @@ class KeeperPresenter extends BasePresenter
         $form->addText('datum_narozeni', "Datum narození:")
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
             ->setRequired("Telefoní číslo je povinný údaj.");
         $form->addText('adresa', 'Bydliště: ')
@@ -75,8 +75,6 @@ class KeeperPresenter extends BasePresenter
         $form->addText('titul', 'Tituly: ');
         $form->addText('login', 'Uživatelské jméno:')
             ->setRequired("Login je povinný údaj.");
-        $form->addText('heslo', 'Heslo:')
-            ->setRequired("Heslo je povinný údaj.");
 
 
         $role = ['0' => 'Admin', '1' => 'Zaměstnanec', '2' => 'Dobrovolník'];
@@ -126,12 +124,20 @@ class KeeperPresenter extends BasePresenter
             } else {
                 $model->addKeeperVolunteer($values);
             }
-        } catch (RodneCisloException $e)
-        {
-            $this->flashMessage('Neplatné rodné číslo');
+            $this->flashMessage('Záznam přidán!' ,'success');
+            $this->redirect('Keeper:Add');
         }
-        $this->flashMessage('Záznam přidán!' ,'success');
-        $this->redirect('Keeper:Add');
+        catch (Nette\Database\UniqueConstraintViolationException $e)
+        {
+
+            if (strpos($values->login, $e->getMessage()) === false)
+                $form['login']->addError('Tento login je již přidělen');
+
+            if (strpos($values->rodne_cislo, $e->getMessage()) === false)
+                $form['rodne_cislo']->addError('Toto rodne čislo je již jednou vložené.');
+
+        }
+
 
     }
 
@@ -158,8 +164,8 @@ class KeeperPresenter extends BasePresenter
             ->setRequired("Datum narození je povinný údaj")
             ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
             ->setRequired("Telefoní číslo je povinný údaj.")->setDefaultValue($values['tel_cislo']);
         $form->addText('adresa', 'Bydliště: ')
@@ -211,20 +217,34 @@ class KeeperPresenter extends BasePresenter
 
     public function updateKeeperSucceed(Form $form, Nette\Utils\ArrayHash $values){
 
-        $model = new KeeperModel($this->database);
-        if($values['roleToChoose'] == 0){
-            unset($values['roleToChoose']);
-            $model->updateKeeper($values);
-        } else if($values['roleToChoose'] == 1) {
-            unset($values['roleToChoose']);
-            $model->updateKeeperEmployee($values);
-        } else {
-            unset($values['roleToChoose']);
-            $model->updateKeeperVolunteer($values);
+        try{
+            $model = new KeeperModel($this->database);
+            if($values['roleToChoose'] == 0){
+                unset($values['roleToChoose']);
+                $model->updateKeeper($values);
+            } else if($values['roleToChoose'] == 1) {
+                unset($values['roleToChoose']);
+                $model->updateKeeperEmployee($values);
+            } else {
+                unset($values['roleToChoose']);
+                $model->updateKeeperVolunteer($values);
+            }
+
+            $this->flashMessage('Ošetřovatel upraven!', 'success');
+            $this->redirect('Keeper:search');
+
+        }
+        catch (Nette\Database\UniqueConstraintViolationException $e)
+        {
+
+            if (strpos($values->login, $e->getMessage()) === false)
+                $form['login']->addError('Tento login je již přidělen');
+
+            if (strpos($values->rodne_cislo, $e->getMessage()) === false)
+                $form['rodne_cislo']->addError('Toto rodne čislo je již jednou vložené.');
+
         }
 
-        $this->flashMessage('Ošetřovatel upraven!', 'success');
-        $this->redirect('Keeper:search');
     }
 
 

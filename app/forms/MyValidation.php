@@ -8,8 +8,9 @@
 
 namespace App\Forms;
 
+use App\Model\KeeperModel;
 use Nette,
-    Nette\Application\UI\Form,
+    Nette\Database\Context,
     Nette\Forms\IControl;
 
 
@@ -58,5 +59,6 @@ class MyValidation
         return true;
 
     }
+
 
 }

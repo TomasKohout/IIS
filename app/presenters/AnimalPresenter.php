@@ -69,8 +69,8 @@ class AnimalPresenter extends BasePresenter
         $form->addText('datum_umrti', "Datum:")
             ->setRequired("Datum úmrtí je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-m-dd')
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
 
         $form->addSubmit('submit', 'Upravit zvíře')
             ->setAttribute('id', 'confirm');
@@ -92,8 +92,7 @@ class AnimalPresenter extends BasePresenter
         }
         else
         {
-           $this->flashMessage('Zvíře nesmí zemřít dřív než se narodilo!', 'danger');
-           $this->redirect('Animal:umrti');
+           $form['datum_umrti']->addError('Zvíře nemůže zemřít dříve než se narodilo.');
         }
 
     }
@@ -137,8 +136,8 @@ class AnimalPresenter extends BasePresenter
             ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
 
         $form->addSubmit('submit', 'Upravit zvíře');
 

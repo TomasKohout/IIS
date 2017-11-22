@@ -79,13 +79,13 @@ class KeeperModel
             ->insert(['jmeno' =>$values->jmeno,
                       'prijmeni' =>$values->prijmeni,
                       'login' =>$values->login,
-                      'rodne_cislo' =>$values->rodne_cislo,
+                      'rodne_cislo' => str_replace("/", "", $values->rodne_cislo),
                       'datum_narozeni' =>$values->datum_narozeni,
                       'titul' =>$values->titul,
                       'adresa' =>$values->adresa,
                       'tel_cislo' =>$values->tel_cislo,
                       'pohlavi' =>$values->pohlavi,
-                      'heslo' =>$values->heslo,
+                      'heslo' => "1234567",
                       'role' => $values->role]);
     }
 
@@ -120,6 +120,9 @@ class KeeperModel
 
         foreach ($osetrovatel as $one){
 
+            if (strcmp($one->login, "admin") == 0)
+                continue;
+
             $ret_array[$one->rodne_cislo] = array();
             $ret_array[$one->rodne_cislo] = $one->login;
         }
@@ -127,19 +130,10 @@ class KeeperModel
         return $ret_array;
     }
 
+    public function getLogin($login){
+        return $this->database->table('osetrovatel')->where('login', $login);
+    }
+
 
 }
 
-
-
-class RodneCisloException extends \Exception{
-    public function __construct($message = "", $code = 0, Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
-
-    public function __toString()
-    {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
-    }
-}
