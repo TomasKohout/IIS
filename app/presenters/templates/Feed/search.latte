@@ -19,14 +19,16 @@
                     </thead>
                     <tbody>
                     {foreach $data as $data_row}
-                        <tr>
-                            <td>{$data_row->id_krmeni}</td>
-                            <td>{$druh[$data_row->jeKrmeno]}</td>
-                            <td>{$data_row->jeKrmeno}</td>
-                            <td>{substr($data_row->cas,0,10)}</td>
-                            <td>{$data_row->druh}</td>
-                            <td>{$data_row->mnozstvi}</td>
-                        </tr>
+                        {foreach $data_row as $krm}
+                            <tr>
+                                <td>{$krm['id_krmeni']}</td>
+                                <td>{$krm['jmeno']}</td>
+                                <td>{$krm['jeKrmeno']}</td>
+                                <td>{$krm['cas']}</td>
+                                <td>{$krm['druh']}</td>
+                                <td>{$krm['mnozstvi']}</td>
+                            </tr>
+                        {/foreach}
                     {/foreach}
                     </tbody>
                 </table>

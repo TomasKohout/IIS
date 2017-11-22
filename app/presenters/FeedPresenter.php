@@ -50,7 +50,8 @@ class FeedPresenter extends BasePresenter
     public function createComponentSearchFeed(){
 
         $form = $this->form();
-        $form->addText('jeKrmeno', 'ID zvířete: ');
+        $form->addText('id_zvire', 'ID zvířete: ');
+        $form->addText('jmeno', 'Jméno zvířete: ');
 
         $form->addSubmit('submit', 'Vyhledat krmení');
         $form->onSuccess[] = [$this, 'renderSearchFeedlSucceed'];
