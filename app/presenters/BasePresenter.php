@@ -51,4 +51,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
          return $ret;
 
     }
+
+    public function arrayHasDupes($array){
+        return count(array_map("serialize",$array)) != count(array_unique(array_map("serialize",$array)));
+    }
 }

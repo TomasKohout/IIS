@@ -103,20 +103,14 @@ class FeedModel {
 
 
         $zvire = $this->database->table('zvire')->get($id_zvire);
-
-        $zvireAndSkoleni = array();
-        $zvireAndSkoleni['id_zvire'] = "";
-        $zvireAndSkoleni['id_skoleni'] = "";
-        foreach($zvire->related('druh_zvirete', 'id_druh_zvirete') as $druh){
-            $zvireAndSkoleni['id_zvire'] = $zvire->id_zvire;
-            $zvireAndSkoleni['id_skoleni'] = $druh->skoleni->id_skoleni;
-        }
+        $druh_zvirete = $this->database->table('druh_zvirete')->get($zvire->jeDruhu);
+        $skoleni = $this->database->table('skoleni')->get($druh_zvirete->naSkoleni)->id_skoleni;
 
 
         $ret_array = array();
         foreach($osetrovatele as $osetrovatel) {
             foreach($osetrovatel->related('ma_skoleni', 'rd_osetrovatel') as $maSkoleni) {
-                if (!strcmp($maSkoleni->skoleni->id_skoleni, $zvireAndSkoleni['id_skoleni'])) {
+                if (!strcmp($maSkoleni->skoleni->id_skoleni, $skoleni)) {
                     if (strcmp($osetrovatel->login, "admin") == 0)
                         continue;
 
