@@ -65,7 +65,7 @@ class CleanPresenter extends BasePresenter
     public function createComponentSearchClean(){
 
         $form = $this->form();
-        $form->addText('jeCisten', 'ID výběhu: ');
+        $form->addText('id_vybeh', 'ID výběhu: ');
 
         $form->addSubmit('submit', 'Vyhledat krmení');
         $form->onSuccess[] = [$this, 'searchCleanSucceed'];
