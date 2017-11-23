@@ -87,7 +87,7 @@ class AnimalPresenter extends BasePresenter
             ->setDefaultValue(StrFTime("%Y-%m-%d", Time()))
             ->setRequired("Datum úmrtí je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'YYYY-MM-DD')
+            ->setAttribute('placeholder', 'YYYY-MM-DD, povinný údaj')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addSubmit('submit', 'Upravit zvíře');
@@ -124,38 +124,43 @@ class AnimalPresenter extends BasePresenter
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form->addHidden('id_zvire',$values['id_zvire']);
         $form->addText('jmeno', 'Jméno:')
+            ->setAttribute('placeholder', 'Povinný údaj')
             ->setDefaultValue($values['jmeno'])
             ->setRequired('Jméno je povinný údaj.');
         $form->addSelect('jeDruhu', 'Druh:', $model->getDruh())
             ->setDefaultValue($values['jeDruhu'])
+            ->setAttribute('placeholder', 'Povinný údaj')
             ->setRequired('Druh je povinný údaj.');
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
             ->setDefaultValue($values['pohlavi'])
             ->setRequired('Pohlaví je povinný údaj.');
         $form->addText('vaha', 'Váha:')
+            ->setHtmlType('number')
             ->setDefaultValue($values['vaha'])
-            ->setRequired('Váha je povinný údaj.');
+            ->setRequired(false);
         $form->addText('vyska', 'Výška:')
+            ->setHtmlType('number')
             ->setDefaultValue($values['vyska'])
-            ->setRequired('Výška je povinný údaj.');
+            ->setRequired(false);
         $form->addText('jmeno_matky', 'Jméno matky:')
             ->setDefaultValue($values['jmeno_matky'])
-            ->setRequired('Jméno matky je povinný údaj.');
+            ->setRequired(false);
         $form->addText('jmeno_otce', 'Jméno otce:')
             ->setDefaultValue($values['jmeno_otce'])
-            ->setRequired('Jméno otce je povinný údaj.');
+            ->setRequired(false);
         $form->addSelect('obyva', 'Výběh číslo:', $model->getTypVybehu())
             ->setDefaultValue($values['obyva'])
             ->setPrompt('Vybeh')
+            ->setAttribute('placeholder', 'Povinný údaj')
             ->setRequired('Výběh je povinný údaj.');
         $form->addSelect('zeme_puvodu', 'Země původu:', $this->getCountries())
             ->setDefaultValue($values['zeme_puvodu'])
-            ->setRequired('Země původu je povinný údaj.');
+            ->setRequired(false);
         $form->addText('datum_narozeni', "Datum narození:")
             ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'YYYY-MM-DD')
+            ->setAttribute('placeholder', 'YYYY-MM-DD, povinný údaj')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addSubmit('submit', 'Upravit zvíře');
@@ -179,32 +184,34 @@ class AnimalPresenter extends BasePresenter
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form = $this->form();
         $form->addText('jmeno', 'Jméno zvířete: ')
+            ->setAttribute('placeholder', 'Povinný údaj')
             ->setRequired('Jméno je povinný údaj.');
         $form->addSelect('jeDruhu', 'Druh:', $model->getDruh())
             ->setPrompt('Zvol druh')
+            ->setAttribute('placeholder', 'Povinný údaj')
             ->setRequired('Druh je povinný údaj.');
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
             ->setRequired('Pohlaví je povinný údaj.');
         $form->addText('vaha', 'Váha:')
             ->setHtmlType('number')
-            ->setRequired('Váha je povinný údaj.');
+            ->setRequired(false);
         $form->addText('vyska', 'Výška:')
             ->setHtmlType('number')
-            ->setRequired('Výška je povinný údaj.');
+            ->setRequired(false);
         $form->addText('jmeno_matky', 'Jméno matky:')
-            ->setRequired('Jméno matky je povinný údaj.');
+            ->setRequired(false);
         $form->addText('jmeno_otce', 'Jméno otce:')
-            ->setRequired('Jméno otce je povinný údaj.');
+            ->setRequired(false);
         $form->addSelect('obyva', 'Výběh číslo:', $model->getTypVybehu())
-            ->setPrompt('Vybeh')
+            ->setPrompt('Povinný údaj')
             ->setRequired('Výběh je povinný údaj.');
         $form->addSelect('zeme_puvodu', 'Země původu:',$this->getCountries())
             ->setPrompt('Zvol zemi')
-            ->setRequired('Země původu je povinný údaj.');
-        $form->addText('datum_narozeni', "Datum:")
+            ->setRequired(false);
+        $form->addText('datum_narozeni', "Datum narození:")
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'YYYY-MM-DD')
+            ->setAttribute('placeholder', 'YYYY-MM-DD, povinný údaj')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addSubmit('submit', 'Přidat');
@@ -230,11 +237,11 @@ class AnimalPresenter extends BasePresenter
             ->setPrompt('Zvol druh');;
 
         $form->addSubmit('submit', 'Vyhledat zvíře');
-        $form->onSuccess[] = [$this, 'renderSearchAnimalSucceed'];
+        $form->onSuccess[] = [$this, 'searchAnimalSucceed'];
         return $form;
     }
 
-    public function renderSearchAnimalSucceed(Nette\Application\UI\Form $form){
+    public function searchAnimalSucceed(Nette\Application\UI\Form $form){
         $this->template->data = $this->animalModel->searchAnimal($form->getValues(true));
         //$this->template->druh = $this->model->getDruh();
         $this->template->showAnimals = true;

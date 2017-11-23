@@ -7,20 +7,26 @@
  */
 
 namespace App\Presenters;
+use App\Model\AnimalKindModel;
 use App\Model\TrainingModel;
 use Nette;
 use App\Model\AnimalModel;
+use Nette\Application\UI\Form;
 
 class AnimalKindPresenter extends BasePresenter
 {
 
     protected $database;
     protected $model;
+    protected $kindModel;
+
 
     public function __construct(Nette\Database\Context $database)
     {
+        $this->kindModel = new AnimalKindModel($database);
         $this->database = $database;
         $this->model    = new TrainingModel($database);
+
     }
 
     protected function startup(){
@@ -29,10 +35,43 @@ class AnimalKindPresenter extends BasePresenter
             $this->flashMessage('Pro přístup do této stránky nemáte oprávnění. Obraťte se na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
+        $this->template->user = $this->getUser();
     }
 
     public function renderAdd()
     {
+
+    }
+
+    public function renderSearch(){
+        $this->template->dataAll = $this->kindModel->searchKind([]);
+    }
+
+    public function createComponentSearch(){
+        $form = $this->form();
+        $form->addText('id_druh_zvirete', 'ID druhu:')
+            ->setRequired(false)
+            ->setHtmlType('number');
+        $form->addText('nazev', 'Název druhu:')
+            ->setRequired(false)
+            ->addRule(Nette\Forms\Form::MAX_LENGTH, 'Maximální délka je 30 znaků.', 30);
+
+        $form->addSubmit('submit', 'Hledat');
+
+        $form->onSuccess[] = [$this, 'searchSucceed'];
+        return $form;
+    }
+
+    public function searchSucceed(Form $form){
+        $this->template->data = $this->kindModel->searchKind($form->getValues(true));
+
+    }
+
+    public function renderUpdate(){
+
+    }
+
+    public function renderDelete(){
 
     }
 

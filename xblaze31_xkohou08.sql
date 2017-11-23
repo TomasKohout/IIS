@@ -145,7 +145,7 @@ CREATE TABLE dobrovolnik (
 
 CREATE TABLE zamestnanec (
   osetrovatel VARCHAR(10),
-  mzda int NOT NULL,
+  mzda int,
   pozice VARCHAR(25),
   specializace VARCHAR(25),
   PRIMARY KEY(osetrovatel),

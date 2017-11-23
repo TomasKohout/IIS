@@ -1,0 +1,53 @@
+{block content}
+    <div class="container-fluid">
+        <div class="col-md-offset-6 col-md-4">
+            <div class="h3">Vyhledat druh zvířete</div>
+        </div>
+        <div class="col-md-offset-4 col-md-4">
+            {control search}
+        </div>
+        <div class="col-md-12 table-responsive">
+            {ifset $data}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Název</th>
+                        <th>Výskyt</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $data as $data_row}
+                        <tr>
+                            <td>{$data_row['id_druh_zvirete']}</td>
+                            <td>{$data_row['nazev']}</td>
+                            <td>{$data_row['vyskyt']}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {else}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Název</th>
+                        <th>Výskyt</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $dataAll as $data_row}
+                        <tr>
+                            <td>{$data_row['id_druh_zvirete']}</td>
+                            <td>{$data_row['nazev']}</td>
+                            <td>{$data_row['vyskyt']}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {/ifset}
+        </div>
+    </div>
+{/block}

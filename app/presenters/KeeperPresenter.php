@@ -70,9 +70,10 @@ class KeeperPresenter extends BasePresenter
             ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
-            ->setRequired("Telefoní číslo je povinný údaj.");
+            ->setHtmlType('number')
+            ->setRequired(false);
         $form->addText('adresa', 'Bydliště: ')
-            ->setRequired("Adresa je povinný údaj.");
+            ->setRequired(false);
         $form->addText('titul', 'Tituly: ');
         $form->addText('login', 'Uživatelské jméno:')
             ->setRequired("Login je povinný údaj.");
@@ -95,6 +96,7 @@ class KeeperPresenter extends BasePresenter
 
         //Zaměstanec
         $form->addText('mzda', 'Mzda: ')
+            ->setHtmlType('number')
             ->setOption('id', 'mzda');
         $form->addText('specializace', 'Specializace: ')
             ->setOption('id', 'specializace');

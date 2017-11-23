@@ -67,8 +67,9 @@
 
                     {if $user->isAllowed('addKind','add')}
 						<li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>
-					{/if}
-                </ul>
+                    {/if}
+					<li><a n:href="AnimalKind:search">Hledat druhy zviřat</a></li>
+				</ul>
             </li>
 
 			{if $user->isAllowed('admin')}
