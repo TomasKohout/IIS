@@ -70,6 +70,7 @@ class FeedPresenter extends BasePresenter
         $form->addText('id_zvire', 'ID zvířete: ');
         $form->addText('jmeno', 'Jméno zvířete: ');
         $form->addText('datum', 'Datum: ');
+        $form->addText('login', 'Ošetřovatel: ');
 
 
         $form->addSubmit('submit', 'Vyhledat krmení');

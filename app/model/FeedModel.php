@@ -22,9 +22,12 @@ class FeedModel {
 
     public function searchFeed(array $values){
         $date = "";
+        $searchingLogin = "";
         if(isset($values['datum'])) {
             $date = $values['datum'];
             unset($values['datum']);
+            $searchingLogin = $values['login'];
+            unset($values['login']);
         }
         $animals =  $this->database->table('zvire')->where(array_filter($values));
 
@@ -39,19 +42,22 @@ class FeedModel {
                 if ($date != "" && $date != substr($krmeni->datum, 0, 10)) {
                     continue;
                 }
-                $ret_array[$i][$k] = array();
 
-                $ret_array[$i][$k]['login'] = array();
                 $login = "";
+                $tmp = "";
                 foreach($krmeni->related('provadi_krmeni') as $provadi){
-                    $osetrovatel = $provadi->rd_osetrovatel;
-                    $tmp = $this->database->table('osetrovatel')->get($osetrovatel);
+                    $tmp = $this->database->table('osetrovatel')->get($provadi->rd_osetrovatel);
                     if($login != ""){
                         $login .= ', ';
                     }
                     $login = $login.$tmp->login;
+                    $tmp = $tmp->login;
                 }
-
+                if ($searchingLogin != "" && !(strpos( $tmp, $searchingLogin) !== false)) {
+                    continue;
+                }
+                $ret_array[$i][$k] = array();
+                $ret_array[$i][$k]['login'] = array();
                 $ret_array[$i][$k]['login'] = $login;
                 $ret_array[$i][$k]['id_krmeni'] = array();
                 $ret_array[$i][$k]['id_krmeni'] = $krmeni->id_krmeni;

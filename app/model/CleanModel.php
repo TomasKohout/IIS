@@ -26,9 +26,12 @@ class CleanModel {
 
     public function searchClean(array $values){
         $date = "";
+        $searchingLogin = "";
         if(isset($values['datum'])) {
             $date = $values['datum'];
             unset($values['datum']);
+            $searchingLogin = $values['login'];
+            unset($values['login']);
         }
         $vybehy =  $this->database->table('vybeh')->where(array_filter($values));
 
@@ -43,9 +46,10 @@ class CleanModel {
                 if ($date != "" && $date != substr($cisteni->datum, 0, 10)) {
                     continue;
                 }
-                $ret_array[$i][$k] = array();
+
 
                 $login = "";
+                $tmp = "";
                 foreach($cisteni->related('provadi_cisteni') as $provadi){
                     $osetrovatel = $provadi->rd_osetrovatel;
                     $tmp = $this->database->table('osetrovatel')->get($osetrovatel);
@@ -53,8 +57,12 @@ class CleanModel {
                         $login .= ', ';
                     }
                     $login = $login.$tmp->login;
+                    $tmp = $tmp->login;
                 }
-
+                if ($searchingLogin != "" && !(strpos( $tmp, $searchingLogin) !== false)) {
+                    continue;
+                }
+                $ret_array[$i][$k] = array();
                 $ret_array[$i][$k]['id_cisteni'] = array();
                 $ret_array[$i][$k]['id_cisteni'] = $cisteni->id_cisteni;
                 $ret_array[$i][$k]['jeCisten'] = array();

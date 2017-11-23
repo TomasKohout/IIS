@@ -66,6 +66,9 @@ class CleanPresenter extends BasePresenter
 
         $form = $this->form();
         $form->addText('id_vybeh', 'ID výběhu: ');
+        $form->addText('datum', 'Datum: ');
+        $form->addText('login', 'Ošetřovatel: ');
+
 
         $form->addSubmit('submit', 'Vyhledat krmení');
         $form->onSuccess[] = [$this, 'searchCleanSucceed'];
