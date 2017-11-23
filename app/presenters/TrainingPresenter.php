@@ -81,12 +81,13 @@ class TrainingPresenter extends BasePresenter
         }
 
         $this->keeperModel->isValidRodneCislo($id_keeper);
+        
 
     }
 
     public function createComponentAddTrainingToKeeper(){
         $form = $this->form();
-        $form->addSelect('id_skoleni', 'Školení: ', $this->trainingModel->getTrainings());
+        $form->addSelect('id_skoleni', 'Školení: ', $this->trainingModel->getAllTrainingsSelect());
         $form->addHidden('rd_osetrovatel', $this->id_keeper);
         $form->addSubmit('submit','Udělit školení');
         $form->onSuccess[] = [$this, 'addTrainingToKeeperSucceed'];

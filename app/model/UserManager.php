@@ -46,17 +46,18 @@ class UserManager implements Nette\Security\IAuthenticator
 
 	    $i = 0;
         foreach ($ma_skoleni as $ma_skol)
-            foreach ($ma_skol->related('skoleni', 'id_skoleni') as $skoleni){
-                $ret_array[$i] = array();
-                $ret_array[$i]['nazev'] = array();
-                $ret_array[$i]['nazev'] = $skoleni->nazev;
-                $ret_array[$i]['datum'] = array();
-                $ret_array[$i]['datum'] = $skoleni->datum;
-                $ret_array[$i]['popis'] = array();
-                $ret_array[$i]['popis'] = $skoleni->popis;
-                $i++;
-            }
+        {
+            $ret_array[$i] = array();
+            $ret_array[$i]['nazev'] = array();
+            $ret_array[$i]['nazev'] = $ma_skol->skoleni->nazev;
+            $ret_array[$i]['datum'] = array();
+            $ret_array[$i]['datum'] = $ma_skol->skoleni->datum;
+            $ret_array[$i]['popis'] = array();
+            $ret_array[$i]['popis'] = $ma_skol->skoleni->popis;
+            $i++;
+        }
 
+        dump($ret_array);
         return $ret_array;
     }
 

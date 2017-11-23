@@ -26,6 +26,18 @@ class TrainingModel
         return $this->database->table('skoleni')->where(array_filter($values));
     }
 
+    public function getAllTrainingsSelect(){
+        $skoleni = $this->database->table('skoleni');
+        $ret_array = array();
+        foreach ($skoleni as $item){
+
+            $ret_array[$item->id_skoleni] = array();
+            $ret_array[$item->id_skoleni] = $item->nazev . ', ' . mb_substr($item->datum,0,10);
+
+        }
+
+        return $ret_array;
+    }
     public function getTrainings()
     {
         $skoleni = $this->database->table('skoleni');

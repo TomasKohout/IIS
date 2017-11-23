@@ -44,6 +44,16 @@ class ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'K' => 
+        array (
+            'Kdyby\\Replicator\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/kdyby/forms-replicator/src',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Latte\\CompileException' => __DIR__ . '/..' . '/latte/latte/src/Latte/exceptions.php',
         'Latte\\Compiler' => __DIR__ . '/..' . '/latte/latte/src/Latte/Compiler/Compiler.php',
@@ -410,6 +420,7 @@ class ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit9772deabdf0b9e0fdead628022fa45eb::$classMap;
 
         }, null, ClassLoader::class);
