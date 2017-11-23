@@ -47,9 +47,16 @@ class TrainingPresenter extends BasePresenter
             $this->redirect('MainPage:default');
         }
         $this->trainingModel->isValidID($id_skoleni);
-        $this->trainingModel->deleteTraining($id_skoleni);
+
+        try{
+            $this->trainingModel->deleteTraining($id_skoleni);
+        }
+        catch (\Exception $exception){
+            $this->flashMessage('Nelze smazat školení, které již někdo má!', 'warning');
+            $this->redirect('Training:search');
+        }
         $this->flashMessage('Školení smazáno!', 'success');
-        $this->redirect('Training:show');
+        $this->redirect('Training:search');
 
     }
 
@@ -125,6 +132,7 @@ class TrainingPresenter extends BasePresenter
             ->setRequired('Název je povinný údaj.');
 
         $form->addText('datum', "Datum:")
+            ->setDefaultValue(StrFTime("%Y-%m-%d", Time()))
             ->setRequired("Datum je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'rrrr-mm-dd')
@@ -142,11 +150,10 @@ class TrainingPresenter extends BasePresenter
     }
 
     public function addSkoleniSucceed(Form $form, Nette\Utils\ArrayHash $values){
-        $model = new AnimalModel($this->database);
         $this->trainingModel->addTraining($form->getValues(true));
 
         $this->flashMessage('Školení přidáno!' ,'success');
-        $this->redirect('Training:add');
+        $this->redirect('Training:search');
 
 
     }
@@ -184,7 +191,7 @@ class TrainingPresenter extends BasePresenter
 
         $this->trainingModel->updateTraining($form->getValues(true));
         $this->flashMessage('Školení upraveno!', 'success');
-        $this->redirect('Training:show');
+        $this->redirect('Training:update');
 
     }
 }
