@@ -12,7 +12,11 @@ class TrainingPresenter extends BasePresenter
 {
     protected $database;
     protected $trainingModel;
-    protected $id_skoleni;
+    /**
+     * @persistent
+     * @var
+     */
+    public $id_skoleni;
     protected $keeperModel;
     /**
      * @persistent
@@ -46,16 +50,16 @@ class TrainingPresenter extends BasePresenter
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
-        $this->trainingModel->isValidID($id_skoleni);
+        $this->id_skoleni = $id_skoleni;
 
         try{
             $this->trainingModel->deleteTraining($id_skoleni);
         }
-        catch (\Exception $exception){
+        catch (Nette\Database\ForeignKeyConstraintViolationException $exception){
             $this->flashMessage('Nelze smazat školení, které již někdo má!', 'warning');
             $this->redirect('Training:search');
         }
-        $this->flashMessage('Školení smazáno!', 'success');
+        $this->flashMessage('Školení smazáno!'. $id_skoleni, 'success');
         $this->redirect('Training:search');
 
     }
@@ -66,8 +70,10 @@ class TrainingPresenter extends BasePresenter
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
-        $this->trainingModel->isValidID($id_skoleni);
         $this->id_skoleni = $id_skoleni;
+
+        $this->trainingModel->isValidID($this->id_skoleni);
+
     }
 
 
@@ -191,7 +197,7 @@ class TrainingPresenter extends BasePresenter
 
         $this->trainingModel->updateTraining($form->getValues(true));
         $this->flashMessage('Školení upraveno!', 'success');
-        $this->redirect('Training:update');
+        $this->redirect('Training:search');
 
     }
 }
