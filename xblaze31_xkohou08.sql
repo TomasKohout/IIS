@@ -237,8 +237,8 @@ INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jme
 INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('1', '1', 'Božena', 'Z', '7', '8', 'Belgie', 'Fufin', 'Pipi','2006.02.27');
 
 
-INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('1', '2008.12.20', 'zrní', '50');
-INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('2', '2008.12.21', 'zrní', '20');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('2', '2008.12.20', 'zrní', '50');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('1', '2008.12.21', 'zrní', '20');
 INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('3', '2008.12.22', 'tráva', '20');
 INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('4', '2008.12.21', 'seno', '2000');
 INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('5', '2008.12.24', 'seno', '6000');
@@ -252,14 +252,25 @@ INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('12', '2008.12.21',
 INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('13', '2008.12.11', 'salát', '150');
 
 
-INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('7002021224', '1');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9508041235', '1');
 INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9502021232', '2');
-INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9501011234', '3');
-INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9509121237', '4');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '3');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9501011234', '4');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '5');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9501011234', '6');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '7');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9502021232', '8');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9508041235', '9');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '10');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9508041235', '11');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '12');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9501011234', '13');
 
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('7002021224', '1');
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9502021232', '2');
+
+
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9508041235', '1');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9501011234', '2');
 INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9501011234', '3');
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9509121237', '4');
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9509121237', '5');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9508041235', '4');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9501011234', '5');
 
