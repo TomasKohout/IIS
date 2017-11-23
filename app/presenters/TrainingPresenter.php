@@ -86,7 +86,7 @@ class TrainingPresenter extends BasePresenter
 
     public function createComponentAddTrainingToKeeper(){
         $form = $this->form();
-        $form->addSelect('id_skoleni', 'Školení: ', $this->trainingModel->getTrainings());
+        $form->addSelect('id_skoleni', 'Školení: ', $this->trainingModel->getAllTrainingsSelect());
         $form->addHidden('rd_osetrovatel', $this->id_keeper);
         $form->addSubmit('submit','Udělit školení');
         $form->onSuccess[] = [$this, 'addTrainingToKeeperSucceed'];
