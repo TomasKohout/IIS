@@ -45,6 +45,7 @@ class AnimalKindPresenter extends BasePresenter
             ->addRule($form::MAX_LENGTH,'Název je příliš dlouhý. Maximální délka je %d.',30)
             ->setRequired('Vyplňte název druhu.');
         $form->addText('vyskyt', 'Výskyt:')
+            ->setRequired(false)
             ->addRule($form::MAX_LENGTH,'Název je příliš dlouhý. Maximální délka je %d.',30);
         $form->addSubmit('submit', 'Přidat druh');
         $form->onSuccess[] = [$this, 'addDruhZvireteSucceed'];

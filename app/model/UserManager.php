@@ -58,7 +58,6 @@ class UserManager implements Nette\Security\IAuthenticator
             $i++;
         }
 
-        dump($ret_array);
         return $ret_array;
     }
 
