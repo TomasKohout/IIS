@@ -13,6 +13,8 @@ use App\Model\CleanModel;
 use Nette\Application\UI\Form;
 use Nextras;
 use App\Forms\MyValidation;
+use Nette\Forms\Container;
+
 
 class CleanPresenter extends BasePresenter
 {
@@ -70,7 +72,6 @@ class CleanPresenter extends BasePresenter
 
     public function createComponentAddClean()
     {
-        dump($this->cleanModel->getNumberOfNeededKeepersToClean($this->id_vybeh));
         $form = $this->form();
         $form->addHidden('jeCisten', 'ID výběhu: ')
             ->setDefaultValue($this->id_vybeh);
@@ -80,10 +81,12 @@ class CleanPresenter extends BasePresenter
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
-        $form->addSelect('rd_osetrovatel', 'Ošetřovatel:', $this->cleanModel->getRodneCisloByLoginWithTraining($this->id_vybeh))
-            ->setPrompt("Zvolte ošetřovatele")
-            ->setRequired("Ošetřovatel je povinný údaj.");
 
+        $form->addDynamic('osetrovatele', function ( Container $container){
+                $container->addSelect('rd_osetrovatel', 'Ošetřovatel:', $this->cleanModel->getRodneCisloByLoginWithTraining($this->id_vybeh))
+                    ->setPrompt("Zvolte ošetřovatele")
+                    ->setRequired("Ošetřovatel je povinný údaj.");
+        },intval($this->cleanModel->getNumberOfNeededKeepersToClean($this->id_vybeh)));
 
         $form->addSubmit('submit', 'Přidat');
         $form->onSuccess[] = [$this, 'addCleanSucceed'];
@@ -93,10 +96,13 @@ class CleanPresenter extends BasePresenter
 
     public function addCleanSucceed(Form $form, Nette\Utils\ArrayHash $values)
     {
-        $this->cleanModel->addClean($form->getValues(true));
-        $this->flashMessage('Čištění přidáno!' ,'success');
-        $this->redirect('Clean:add');
-
+        if($this->arrayHasDupes($form['osetrovatele']->getValues(true))){
+            $form->addError("Je nutno zadat různé ošetřovatele");
+        }else{
+            $this->cleanModel->addClean($form->getValues(true));
+            $this->flashMessage('Čištění přidáno!' ,'success');
+            $this->redirect('Coop:search');
+        }
     }
 
 }
