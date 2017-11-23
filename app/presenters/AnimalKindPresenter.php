@@ -7,7 +7,6 @@
  */
 
 namespace App\Presenters;
-use App\Model\AnimalKindModel;
 use App\Model\TrainingModel;
 use Nette;
 use App\Model\AnimalModel;
@@ -17,15 +16,15 @@ class AnimalKindPresenter extends BasePresenter
 {
 
     protected $database;
-    protected $model;
-    protected $kindModel;
+    protected $trainingModel;
+    protected $animalModel;
 
 
     public function __construct(Nette\Database\Context $database)
     {
-        $this->kindModel = new AnimalKindModel($database);
         $this->database = $database;
-        $this->model    = new TrainingModel($database);
+        $this->animalModel = new AnimalModel($database);
+        $this->trainingModel    = new TrainingModel($database);
 
     }
 
@@ -44,7 +43,7 @@ class AnimalKindPresenter extends BasePresenter
     }
 
     public function renderSearch(){
-        $this->template->dataAll = $this->kindModel->searchKind([]);
+        $this->template->dataAll = $this->animalModel->searchKind([]);
     }
 
     public function createComponentSearch(){
@@ -63,7 +62,7 @@ class AnimalKindPresenter extends BasePresenter
     }
 
     public function searchSucceed(Form $form){
-        $this->template->data = $this->kindModel->searchKind($form->getValues(true));
+        $this->template->data = $this->animalModel->searchKind($form->getValues(true));
 
     }
 
@@ -77,7 +76,7 @@ class AnimalKindPresenter extends BasePresenter
 
     public function createComponentAddDruhZvirete(){
         $form = $this->form();
-        $form->addSelect('naSkoleni', 'Vyber potřebné školení:', $this->model->getTrainings())
+        $form->addSelect('naSkoleni', 'Vyber potřebné školení:', $this->trainingModel->getTrainings())
             ->setRequired('Školení je požadovaná hodnota!');
         $form->addText('nazev', 'Název druhu:')
             ->setDefaultValue('Název')
@@ -93,8 +92,7 @@ class AnimalKindPresenter extends BasePresenter
 
     public function addDruhZvireteSucceed(Nette\Application\UI\Form $form, Nette\Utils\ArrayHash $values)
     {
-        $model = new AnimalModel($this->database);
-        $model->addDruh($form->getValues(true));
+        $this->animalModel->addDruh($form->getValues(true));
         $this->flashMessage('Druh přidán!' ,'success');
         $this->redirect('AnimalKind:add');
     }

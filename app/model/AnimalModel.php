@@ -50,6 +50,11 @@ class AnimalModel {
         return $this->database->table('zvire')->where(array_filter($values));
     }
 
+    public function searchKind($getValues)
+    {
+        return $this->database->table('druh_zvirete')->where(array_filter($getValues));
+
+    }
 
     /**
      * @param $id_zvire

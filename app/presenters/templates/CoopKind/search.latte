@@ -18,6 +18,8 @@
                         <th>Počet ošetřovatelů</th>
                         <th>Pomůcka k čištění</th>
                         <th>Doba čištění</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -29,6 +31,10 @@
                             <td>{$data_row->pocet_osetrovatelu}</td>
                             <td>{$data_row->pomucka_k_cisteni}</td>
                             <td>{$data_row->doba_cisteni}</td>
+                            {if $user->isAllowed('admin')}
+                                <td><a n:href="CoopKind:update $data_row->id_typ_vybehu" class="btn btn-default">Upravit</a></td>
+                                <td><a n:href="CoopKind:delete $data_row->id_typ_vybehu" class="btn btn-default">Smazat</a></td>
+                            {/if}
                         </tr>
                     {/foreach}
                     </tbody>
@@ -43,6 +49,8 @@
                         <th>Počet ošetřovatelů</th>
                         <th>Pomůcka k čištění</th>
                         <th>Doba čištění</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -54,6 +62,10 @@
                             <td>{$data_row->pocet_osetrovatelu}</td>
                             <td>{$data_row->pomucka_k_cisteni}</td>
                             <td>{$data_row->doba_cisteni}</td>
+                            {if $user->isAllowed('admin')}
+                                <td><a n:href="CoopKind:update $data_row->id_typ_vybehu" class="btn btn-default">Upravit</a></td>
+                                <td><a n:href="CoopKind:delete $data_row->id_typ_vybehu" class="btn btn-default">Smazat</a></td>
+                            {/if}
                         </tr>
                     {/foreach}
                     </tbody>

@@ -23,13 +23,21 @@ class CoopModel
         $this->database->table('vybeh')->insert($values);
     }
 
-    public function addTyp($values){
+    public function addCoopKind($values){
         $this->database->table('typ_vybehu')->insert($values);
     }
 
+    public function deleteCoopKind($id_typ_vybehu){
+        $this->database->table('typ_vybehu')->get($id_typ_vybehu)->delete();
+    }
+
+
+    public function updateCoopKind($values){
+        $this->database->table('typ_vybehu')->where('id_typ_vybehu', $values['id_typ_vybehu'])->update($values);
+    }
 
     public function updateCoop($values){
-        $this->database->table('vybeh')->where('id_vybeh', $values['id_vybeh'])->update($values);
+        $this->database->table('vybeh')->where(array_filter($values))->update($values);
     }
 
     public function showCoop(){
@@ -40,6 +48,9 @@ class CoopModel
         return $this->database->table('typ_vybehu')->where(array_filter($values));
     }
 
+    public function getCoopKindValues($id_typ_vybehu){
+        return $this->database->table('typ_vybehu')->get($id_typ_vybehu);
+    }
 
     public function getTypeOfCoop(){
         $typ = $this->database->table('typ_vybehu');
@@ -52,6 +63,16 @@ class CoopModel
         }
 
         return $ret_array;
+    }
+
+
+    public function isNotExist($id_typ_vybehu){
+        $tmp = $this->database->table('typ_vybehu')->get($id_typ_vybehu);
+        if (!$tmp) {
+            throw new BadRequestException("", 404);
+        }
+        return true;
+
     }
 
     public function getCoops(){
