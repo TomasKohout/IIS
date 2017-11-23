@@ -18,6 +18,11 @@ class AnimalKindPresenter extends BasePresenter
     protected $database;
     protected $trainingModel;
     protected $animalModel;
+    /**
+     * @persistent
+     * @var int
+     */
+    private $id_druh_zvirete;
 
 
     public function __construct(Nette\Database\Context $database)
@@ -66,13 +71,72 @@ class AnimalKindPresenter extends BasePresenter
 
     }
 
-    public function renderUpdate(){
+    public function renderUpdate($id_druh_zvirete){
+        if (!$this->getUser()->isAllowed('admin')){
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
 
+
+        if (!$this->animalModel->kindIsNotExist($id_druh_zvirete)) {
+            $this->flashMessage('Nelze upravovat typ výběhu, který neexistuje.', 'warning');
+            $this->redirect('AnimalKind:search');
+        }
+
+        $this->id_druh_zvirete = $id_druh_zvirete;
     }
 
-    public function renderDelete(){
+    public function renderDelete($id_druh_zvirete){
+        if (!$this->getUser()->isAllowed('admin')){
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
 
+
+        if (!$this->animalModel->kindIsNotExist($id_druh_zvirete)) {
+            $this->flashMessage('Nelze upravovat typ výběhu, který neexistuje.', 'warning');
+            $this->redirect('AnimalKind:search');
+        }
+
+        try{
+            $this->animalModel->deleteAnimalKind($id_druh_zvirete);
+        }
+        catch (Nette\Database\ForeignKeyConstraintViolationException $exception){
+            $this->flashMessage('Nelze smazat typ výběhu, který už je používán!', 'warning');
+            $this->redirect('CoopKind:search');
+        }
+        $this->redirect('AnimalKind:search');
     }
+
+    public function createComponentUpdateAnimalKind(){
+        $values = $this->animalModel->getAnimalKindValues($this->id_druh_zvirete);
+
+        $form = $this->form();
+        $form->addHidden('id_druh_zvirete')
+            ->setDefaultValue($values['id_druh_zvirete']);
+        $form->addSelect('naSkoleni', 'Vyber potřebné školení:', $this->trainingModel->getTrainings())
+            ->setDefaultValue($values['naSkoleni'])
+            ->setRequired('Školení je požadovaná hodnota!');
+        $form->addText('nazev', 'Název druhu:')
+            ->setDefaultValue($values['nazev'])
+            ->addRule($form::MAX_LENGTH,'Název je příliš dlouhý. Maximální délka je %d.',30)
+            ->setRequired('Vyplňte název druhu.');
+        $form->addText('vyskyt', 'Výskyt:')
+            ->setDefaultValue($values['vyskyt'])
+            ->setRequired(false)
+            ->addRule($form::MAX_LENGTH,'Název je příliš dlouhý. Maximální délka je %d.',30);
+        $form->addSubmit('submit', 'Upravit druh');
+        $form->onSuccess[] = [$this, 'updateAnimalKindSucceed'];
+        return $form;
+    }
+
+    public function updateAnimalKindSucceed(Nette\Application\UI\Form $form, Nette\Utils\ArrayHash $values)
+    {
+        $this->animalModel->updateAnimalKind($form->getValues(true));
+        $this->flashMessage('Druh upraven!' ,'success');
+        $this->redirect('AnimalKind:search');
+    }
+
 
     public function createComponentAddDruhZvirete(){
         $form = $this->form();

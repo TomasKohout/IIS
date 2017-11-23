@@ -73,11 +73,12 @@
                     {if $user->isAllowed('animal','add')}
 						<li><a n:href="Animal:add">Přidat zvíře</a></li>
 					{/if}
-
-                    {if $user->isAllowed('addKind','add')}
-						<li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>
+                    {if $user->isAllowed('animal','view')}
+                        <li><a n:href="AnimalKind:search">Hledat druhy zviřat</a></li>
                     {/if}
-					<li><a n:href="AnimalKind:search">Hledat druhy zviřat</a></li>
+                    {if $user->isAllowed('addKind','add')}
+                        <li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>
+                    {/if}
 				</ul>
             </li>
 

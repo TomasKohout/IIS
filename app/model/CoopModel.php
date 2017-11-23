@@ -66,7 +66,7 @@ class CoopModel
     }
 
 
-    public function isNotExist($id_typ_vybehu){
+    public function kindIsNotExist($id_typ_vybehu){
         $tmp = $this->database->table('typ_vybehu')->get($id_typ_vybehu);
         if (!$tmp) {
             throw new BadRequestException("", 404);

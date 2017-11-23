@@ -46,13 +46,13 @@ class CoopKindPresenter extends BasePresenter
 
     public function renderDelete($id_typ_vybehu)
     {
-        if (!$this->getUser()->isAllowed('animal', 'add')){
+        if (!$this->getUser()->isAllowed('admin')){
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
 
 
-        if (!$this->coopModel->isNotExist($id_typ_vybehu)) {
+        if (!$this->coopModel->kindIsNotExist($id_typ_vybehu)) {
             $this->flashMessage('Nelze upravovat typ výběhu, který neexistuje.', 'warning');
             $this->redirect('CoopKind:search');
         }
@@ -69,13 +69,13 @@ class CoopKindPresenter extends BasePresenter
 
     public function renderUpdate($id_typ_vybehu)
     {
-        if (!$this->getUser()->isAllowed('animal', 'add')){
+        if (!$this->getUser()->isAllowed('admin')){
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
 
 
-        if (!$this->coopModel->isNotExist($id_typ_vybehu)) {
+        if (!$this->coopModel->kindIsNotExist($id_typ_vybehu)) {
             $this->flashMessage('Nelze upravovat typ výběhu, který neexistuje.', 'warning');
             $this->redirect('CoopKind:search');
         }
@@ -165,6 +165,6 @@ class CoopKindPresenter extends BasePresenter
     {
         $this->coopModel->addCoopKind($form->getValues(true));
         $this->flashMessage('Druh přidán!' ,'success');
-        $this->redirect('CoopKind:search');
+        $this->redirect('CoopKind:add');
     }
 }

@@ -23,6 +23,10 @@
                             <td>{$data_row['id_druh_zvirete']}</td>
                             <td>{$data_row['nazev']}</td>
                             <td>{$data_row['vyskyt']}</td>
+                            {if $user->isAllowed('admin')}
+                                <td><a n:href="AnimalKind:update $data_row->id_druh_zvirete" class="btn btn-default">Upravit</a></td>
+                                <td><a n:href="AnimalKind:delete $data_row->id_druh_zvirete" class="btn btn-default">Smazat</a></td>
+                            {/if}
                         </tr>
                     {/foreach}
                     </tbody>
@@ -43,6 +47,10 @@
                             <td>{$data_row['id_druh_zvirete']}</td>
                             <td>{$data_row['nazev']}</td>
                             <td>{$data_row['vyskyt']}</td>
+                            {if $user->isAllowed('admin')}
+                                <td><a n:href="AnimalKind:update $data_row->id_druh_zvirete" class="btn btn-default">Upravit</a></td>
+                                <td><a n:href="AnimalKind:delete $data_row->id_druh_zvirete" class="btn btn-default">Smazat</a></td>
+                            {/if}
                         </tr>
                     {/foreach}
                     </tbody>

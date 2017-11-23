@@ -24,6 +24,10 @@ class AnimalModel {
         return $this->database->table('zvire')->get($id_zvire);
     }
 
+    public function getAnimalKindValues($id_druh_zvirete){
+        return $this->database->table('druh_zvirete')->get($id_druh_zvirete);
+    }
+
     public function isValidId($id_zvire){
         $testIfIsFalse = $this->database->table('zvire')->get($id_zvire);
         if (!$testIfIsFalse)
@@ -38,6 +42,16 @@ class AnimalModel {
     public function updateAnimal(array $values){
         $this->database->table('zvire')->where('id_zvire', $values['id_zvire'])
             ->update($values);
+    }
+
+    public function updateAnimalKind($values){
+        $this->database->table('druh_zvirete')->where('id_druh_zvirete', $values['id_druh_zvirete'])
+            ->update($values);
+    }
+
+
+    public function deleteAnimalKind($id_druh_zvirete){
+        $this->database->table('druh_zvirete')->get($id_druh_zvirete)->delete();
     }
 
     public function killAnimal(array $values){
@@ -124,8 +138,12 @@ class AnimalModel {
 
     }
 
-    public function getDefaultValuesForZvireTable(){
-
+    public function kindIsNotExist($id_druh_zvirete){
+        $tmp = $this->database->table('druh_zvirete')->get($id_druh_zvirete);
+        if (!$tmp) {
+            throw new BadRequestException("", 404);
+        }
+        return true;
     }
 
     public function addDruh(array $values){
