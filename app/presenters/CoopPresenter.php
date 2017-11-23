@@ -111,8 +111,8 @@ class CoopPresenter extends BasePresenter
 
     public function createComponentAddCoop(){
         $form = $this->form();
-        $form->addSelect('naTypVybehu','Velikost výběhu: ' , $this->model->getTypeOfCoop())
-            ->setPrompt('Vyber velikost')
+        $form->addSelect('naTypVybehu','Typ výběhu: ' , $this->model->getTypeOfCoop())
+            ->setPrompt('Vyber typ')
             ->setRequired('Velikost je povinný údaj.');
         $form->addText('poloha', 'Poloha výběhu: ')
             ->setRequired('Poloha je povinný údaj.');

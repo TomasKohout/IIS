@@ -1,0 +1,44 @@
+{block content}
+<div class="container-fluid">
+    <div class="col-md-offset-6 col-md-4">
+        <div class="h3">Přidat typ výběhu</div>
+    </div>
+    <div class="col-md-offset-4 col-md-4">
+        {form addTypVybehu}
+        <form n:name=$form class=form-horizontal>
+            <ul class=error n:if="$form->hasErrors()">
+                <li n:foreach="$form->errors as $error">{$error}</li>
+            </ul>
+
+            <div n:foreach="$form->controls as $name => $input"
+                 n:if="!$input->getOption(rendered) && $input->getOption(type) !== hidden"
+                 n:class="form-group, $input->required ? required, $input->error ? has-error">
+
+                {label $input}
+
+
+                {if $input->getOption(type) in [text, textarea]}
+                {input $input class => form-control}
+                {elseif $input->getOption(type) in [select, p]}
+                {input $input class => form-control}
+                <span class="help-block">Pokud není vytvořeno školení pro daný typ, tak nelze tento typ přidat! Vytvoř proto nejdříve školení a poté druh <a href="{link :Training:add}">zde</a>.</span>
+
+                {elseif $input->getOption(type) === button}
+                {input $input class => "btn btn-primary button"}
+                {elseif $input->getOption(type) === checkbox}
+                <div class="checkbox">{input $input}</div>
+                {elseif $input->getOption(type) === radio}
+                <div class="radio">{input $input}</div>
+                {else}
+                {input $input}
+                {/if}
+
+                <span class=help-block n:ifcontent>{$input->error ?: $input->getOption(description)}</span>
+
+            </div>
+        </form>
+        {/form}
+    </div>
+</div>
+
+{/block}

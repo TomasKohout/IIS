@@ -1,0 +1,64 @@
+{block content}
+    <div class="container-fluid">
+        <div class="col-md-offset-6 col-md-4">
+            <div class="h3">Vyhledat typ výběhu</div>
+        </div>
+        <div class="col-md-offset-4 col-md-4">
+            {control searchCoopKind}
+        </div>
+        <div class="col-md-12 table-responsive">
+            {default $show = false}
+            {if $show}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Název</th>
+                        <th>Školení</th>
+                        <th>Počet ošetřovatelů</th>
+                        <th>Pomůcka k čištění</th>
+                        <th>Doba čištění</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $data as $data_row}
+                        <tr>
+                            <td>{$data_row->id_typ_vybehu}</td>
+                            <td>{$data_row->nazev}</td>
+                            <td>{$data_row->naSkoleni}</td>
+                            <td>{$data_row->pocet_osetrovatelu}</td>
+                            <td>{$data_row->pomucka_k_cisteni}</td>
+                            <td>{$data_row->doba_cisteni}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {else}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Název</th>
+                        <th>Školení</th>
+                        <th>Počet ošetřovatelů</th>
+                        <th>Pomůcka k čištění</th>
+                        <th>Doba čištění</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $dataAll as $data_row}
+                        <tr>
+                            <td>{$data_row->id_typ_vybehu}</td>
+                            <td>{$data_row->nazev}</td>
+                            <td>{$data_row->naSkoleni}</td>
+                            <td>{$data_row->pocet_osetrovatelu}</td>
+                            <td>{$data_row->pomucka_k_cisteni}</td>
+                            <td>{$data_row->doba_cisteni}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {/if}
+        </div>
+    </div>
+{/block}

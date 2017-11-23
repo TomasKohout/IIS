@@ -23,6 +23,11 @@ class CoopModel
         $this->database->table('vybeh')->insert($values);
     }
 
+    public function addTyp($values){
+        $this->database->table('typ_vybehu')->insert($values);
+    }
+
+
     public function updateCoop($values){
         $this->database->table('vybeh')->where('id_vybeh', $values['id_vybeh'])->update($values);
     }
@@ -31,6 +36,11 @@ class CoopModel
         return $this->database->table('vybeh')->fetchAll();
     }
 
+    public function searchCoopKind($values){
+        return $this->database->table('typ_vybehu')->where(array_filter($values));
+    }
+
+
     public function getTypeOfCoop(){
         $typ = $this->database->table('typ_vybehu');
 
@@ -38,7 +48,7 @@ class CoopModel
 
         foreach ($typ as $row){
             $ret_array[$row->id_typ_vybehu] = array();
-            $ret_array[$row->id_typ_vybehu] = $row->velikost;
+            $ret_array[$row->id_typ_vybehu] = $row->nazev;
         }
 
         return $ret_array;
