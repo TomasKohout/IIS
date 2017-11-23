@@ -214,6 +214,8 @@ INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9501011234', '6');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9502021232', '7');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '7');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '8');
+INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9501011234', '8');
+INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9508041235', '8');
 
 
 
