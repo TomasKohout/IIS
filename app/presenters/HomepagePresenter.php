@@ -95,6 +95,7 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
 
         $this->keeperModel->isValidRodneCislo($rodne_cislo);
         $this->rodne_cislo = $rodne_cislo;
+        $this->template->login = $this->keeperModel->getKeeperValues($rodne_cislo)->login;
     }
 
     public function createComponentChangePassTo(){

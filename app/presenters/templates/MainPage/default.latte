@@ -1,12 +1,74 @@
 {block content}
     <div class="container-fluid">
-        {foreach $data as $one_piece_of_data}
-        <div class="row">
-                    <div class="col-sm-1">Jmeno: </div>
-                    <div class="col-sm-2">{$one_piece_of_data->jmeno}</div>
-                    <div class="col-sm-2">Poslední krmení: </div>
-                    <div class="col-sm-2">{$one_piece_of_data->datum}</div>
+        <div class="col-md-offset-6 col-md-4">
+            <div class="h3">Vítejte v ZooWisu!</div>
         </div>
-        {/foreach}
+
+        <div class="col-md-6 table-responsive">
+            <div class="h3" align="center">Naplánovaná čištění</div>
+            {if $dataClean}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID výběhu</th>
+                    <th>Poloha výběhu</th>
+                    <th>Datum plánovaného čištění</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {foreach $dataClean as $clean}
+                        <tr>
+                            <td>{$clean['id_vybeh']}</td>
+                            <td>{$clean['poloha']}</td>
+                            <td>{substr($clean['datum'],0,10)}</td>
+                            <td><a n:href="MainPage:cleaned ['id' => $feed['id'], 'table' => 'provadi_cisteni']" class="btn btn-default">Vyčistit</a></td>
+                        </tr>
+
+                    {/foreach}
+
+                </tbody>
+            </table>
+            {else}
+            <div class="h4" align="center">Již jste vše vyčistili, dejte si chvíli pauzu. :-)</div>
+            {/if}
+
+        </div>
+        <div class="col-md-6 table-responsive">
+            <div class="h3" align="center">Naplánovaná krmení</div>
+            {if $dataFeed}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Jméno zvířete</th>
+                    <th>ID výběhu</th>
+                    <th>Poloha</th>
+                    <th>Druh krmení</th>
+                    <th>Množství</th>
+                    <th>Datum</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $dataFeed as $feed}
+                    <tr>
+                        <td>{$feed['jmeno']}</td>
+                        <td>{$feed['id_vybeh']}</td>
+                        <td>{$feed['poloha']}</td>
+                        <td>{$feed['druh']}</td>
+                        <td>{$feed['mnozstvi']}</td>
+                        <td>{$feed['datum']}</td>
+                        <td><a n:href="MainPage:feeded $feed['id']" class="btn btn-default">Nakrmeno</a></td>
+                    </tr>
+
+                {/foreach}
+                </tbody>
+            </table>
+            {else}
+                <div class="h4" align="center">Již jste vše nakrmili, dejte si chvíli pauzu. :-)</div>
+            {/if}
+
+
+        </div>
     </div>
 {/block}
