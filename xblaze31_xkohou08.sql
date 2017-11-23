@@ -188,8 +188,8 @@ INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('87121
 INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('7002021224', '55000', 'Sekretářka', '');
 
 INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','A','1','Malá sada','30');
-INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','B','2','Střední sada','120');
-INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','C','3','Velká sada','300');
+INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('7','B','2','Střední sada','120');
+INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('8','C','3','Velká sada','300');
 
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('1','Pavilon-A','1','');
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('2','Pavilon-B','5','Moderni typ vyběhu.');
@@ -208,10 +208,12 @@ INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9508041235', '1');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9501011234', '2');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9502021232', '3');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '4');
+INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '5');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9508041235', '6');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9501011234', '6');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9502021232', '7');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '7');
+INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '8');
 
 
 

@@ -95,7 +95,6 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Čištění<span class="caret"></span> </a>
                 <ul class="dropdown-menu">
                     {if $user->isAllowed('clean','view')}<li><a n:href="Clean:search">Hledat čištění</a></li>{/if}
-                    {if $user->isAllowed('clean', 'add')}<li><a n:href="Clean:add">Naplánovat čištění</a></li>{/if}
                 </ul>
             </li>
 

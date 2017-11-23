@@ -7,8 +7,8 @@
  */
 
 namespace App\Presenters;
+use App\Model\CoopModel;
 use Nette;
-use App\Model\AnimalModel;
 use App\Model\CleanModel;
 use Nette\Application\UI\Form;
 use Nextras;
@@ -18,14 +18,19 @@ class CleanPresenter extends BasePresenter
 {
 
     protected $database;
-    protected $model;
-    protected $animalModel;
+    protected $cleanModel;
+    protected $coopModel;
+    /**
+     * @persistent
+     * @var int;
+     */
+    public $id_vybeh;
 
     public function __construct(Nette\Database\Context $database)
     {
         $this->database = $database;
-        $this->model = new CleanModel($this->database);
-        $this->animalModel = new AnimalModel($this->database);
+        $this->cleanModel = new CleanModel($this->database);
+        $this->coopModel = new CoopModel($this->database);
     }
 
     protected function startup(){
@@ -40,12 +45,12 @@ class CleanPresenter extends BasePresenter
 
 
     public function renderSearch(){
-        $this->template->dataAll = $this->model->allClean();
-        $this->template->druh = $this->animalModel->getZvire();
+        $this->template->dataAll = $this->cleanModel->allClean();
     }
 
-    public function renderAdd(){
-
+    public function renderAdd($id_vybeh){
+        $this->coopModel->isValidId($id_vybeh);
+        $this->id_vybeh = $id_vybeh;
     }
 
     public function createComponentSearchClean(){
@@ -59,22 +64,26 @@ class CleanPresenter extends BasePresenter
     }
 
     public function searchCleanSucceed(Nette\Application\UI\Form $form){
-        $this->template->data = $this->model->searchClean($form->getValues(true));
+        $this->template->data = $this->cleanModel->searchClean($form->getValues(true));
         $this->template->show = true;
     }
 
     public function createComponentAddClean()
     {
-
+        dump($this->cleanModel->getNumberOfNeededKeepersToClean($this->id_vybeh));
         $form = $this->form();
-        $form->addText('jeCisten', 'ID výběhu: ')
-            ->setRequired('Jméno je povinný údaj.');
-        $form->addHidden('cas', "Datum:")
-            ->setDefaultValue(StrFTime("%Y.%m.%d", Time()))
+        $form->addHidden('jeCisten', 'ID výběhu: ')
+            ->setDefaultValue($this->id_vybeh);
+        $form->addText('datum', "Datum:")
+            ->setDefaultValue(StrFTime("%Y-%m-%d", Time()))
             ->setRequired("Datum a čas krmení je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
+        $form->addSelect('rd_osetrovatel', 'Ošetřovatel:', $this->cleanModel->getRodneCisloByLoginWithTraining($this->id_vybeh))
+            ->setPrompt("Zvolte ošetřovatele")
+            ->setRequired("Ošetřovatel je povinný údaj.");
+
 
         $form->addSubmit('submit', 'Přidat');
         $form->onSuccess[] = [$this, 'addCleanSucceed'];
@@ -84,7 +93,7 @@ class CleanPresenter extends BasePresenter
 
     public function addCleanSucceed(Form $form, Nette\Utils\ArrayHash $values)
     {
-        $this->model->addClean($form->getValues(true));
+        $this->cleanModel->addClean($form->getValues(true));
         $this->flashMessage('Čištění přidáno!' ,'success');
         $this->redirect('Clean:add');
 

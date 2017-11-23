@@ -11,6 +11,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Výběh</th>
+                        <th>Ošetřovatel</th>
                         <th>Datum</th>
                     </tr>
                     </thead>
@@ -19,7 +20,7 @@
                         <tr>
                             <td>{$data_row->id_cisteni}</td>
                             <td>{$data_row->jeCisten}</td>
-                            <td>{substr($data_row->cas,0,10)}</td>
+                            <td>{substr($data_row->datum,0,10)}</td>
                         </tr>
                     {/foreach}
                     </tbody>
@@ -30,6 +31,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Výběh</th>
+                        <th>Ošetřovatel</th>
                         <th>Datum</th>
                     </tr>
                     </thead>
@@ -38,7 +40,7 @@
                         <tr>
                             <td>{$data_row->id_cisteni}</td>
                             <td>{$data_row->jeCisten}</td>
-                            <td>{substr($data_row->cas,0,10)}</td>
+                            <td>{substr($data_row->datum,0,10)}</td>
                         </tr>
                     {/foreach}
                     </tbody>

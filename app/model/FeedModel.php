@@ -105,6 +105,8 @@ class FeedModel {
         $zvire = $this->database->table('zvire')->get($id_zvire);
 
         $zvireAndSkoleni = array();
+        $zvireAndSkoleni['id_zvire'] = "";
+        $zvireAndSkoleni['id_skoleni'] = "";
         foreach($zvire->related('druh_zvirete', 'id_druh_zvirete') as $druh){
             $zvireAndSkoleni['id_zvire'] = $zvire->id_zvire;
             $zvireAndSkoleni['id_skoleni'] = $druh->skoleni->id_skoleni;
