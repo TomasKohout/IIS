@@ -92,7 +92,7 @@ CREATE TABLE osetrovatel (
   role INT(1) NOT NULL,
   login VARCHAR(255) NOT NULL UNIQUE,
   heslo VARCHAR(255) NOT NULL,
-  rodne_cislo bigint(10) NOT NULL,
+  rodne_cislo VARCHAR(10) NOT NULL,
   jmeno varchar(20) NOT NULL,
   prijmeni varchar(30) NOT NULL,
   datum_narozeni date NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE osetrovatel (
 
 CREATE TABLE ma_skoleni (
   id int NOT NULL AUTO_INCREMENT,
-  rd_osetrovatel bigint(10) NOT NULL,
+  rd_osetrovatel VARCHAR(10) NOT NULL,
   id_skoleni int NOT NULL,
   PRIMARY KEY(id),
   CONSTRAINT FK_RdOsetrovatelMaSkoleni FOREIGN KEY (rd_osetrovatel) REFERENCES osetrovatel(rodne_cislo),
@@ -116,7 +116,7 @@ CREATE TABLE ma_skoleni (
 
 CREATE TABLE provadi_krmeni (
   id int NOT NULL AUTO_INCREMENT,
-  rd_osetrovatel bigint(10) NOT NULL,
+  rd_osetrovatel VARCHAR(10) NOT NULL,
   id_krmeni int NOT NULL,
   provedl TINYINT(1) DEFAULT '0',
   PRIMARY KEY(id),
@@ -126,7 +126,7 @@ CREATE TABLE provadi_krmeni (
 
 CREATE TABLE provadi_cisteni (
   id int NOT NULL AUTO_INCREMENT,
-  rd_osetrovatel bigint(10) NOT NULL,
+  rd_osetrovatel VARCHAR(10) NOT NULL,
   id_cisteni int NOT NULL,
   provedl TINYINT(1) DEFAULT '0',
   PRIMARY KEY(id),
@@ -135,16 +135,16 @@ CREATE TABLE provadi_cisteni (
 )ENGINE=InnoDB, CHARSET=utf8;
 
 CREATE TABLE dobrovolnik (
-  osetrovatel bigint(10) NOT NULL,
+  osetrovatel VARCHAR(10) NOT NULL,
   organizace VARCHAR(30),
-  zodpovedna_osoba bigint(10) NOT NULL,
+  zodpovedna_osoba VARCHAR(10) NOT NULL,
   PRIMARY KEY(osetrovatel),
   CONSTRAINT FK_ZodpovednaOsoba FOREIGN KEY (zodpovedna_osoba) REFERENCES osetrovatel(rodne_cislo),
   CONSTRAINT FK_RDPropojeniDobrovolnik FOREIGN KEY (osetrovatel) REFERENCES osetrovatel(rodne_cislo)
 )ENGINE=InnoDB, CHARSET=utf8;
 
 CREATE TABLE zamestnanec (
-  osetrovatel bigint(10),
+  osetrovatel VARCHAR(10),
   mzda int NOT NULL,
   pozice VARCHAR(25),
   specializace VARCHAR(25),

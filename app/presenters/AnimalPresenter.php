@@ -72,8 +72,9 @@ class AnimalPresenter extends BasePresenter
         }
         if ($this->animalModel->isDead($id_zvire)) {                                                                  
             $this->flashMessage('Nelze upravovat zvířata, která jsou vedena jako mrtvá.', 'warning');                 
-            $this->redirect('Animal:search');                                                                         $this->id_zvire = $id_zvire;
-        }                                                                                                             
+            $this->redirect('Animal:search');
+        }
+        $this->id_zvire = $id_zvire;
     }
 
     public function createComponentDeadAnimal(){
@@ -86,7 +87,7 @@ class AnimalPresenter extends BasePresenter
             ->setDefaultValue(StrFTime("%Y-%m-%d", Time()))
             ->setRequired("Datum úmrtí je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addSubmit('submit', 'Upravit zvíře');
@@ -154,7 +155,7 @@ class AnimalPresenter extends BasePresenter
             ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addSubmit('submit', 'Upravit zvíře');
@@ -203,7 +204,7 @@ class AnimalPresenter extends BasePresenter
         $form->addText('datum_narozeni', "Datum:")
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addSubmit('submit', 'Přidat');

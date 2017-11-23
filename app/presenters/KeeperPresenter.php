@@ -59,7 +59,7 @@ class KeeperPresenter extends BasePresenter
         $form->addText('prijmeni', 'Příjmení: ')
             ->setRequired("Příjmení je povinný údaj.");
         $form->addText('rodne_cislo', 'Rodné číslo: ')
-            ->addRule(MyValidation::RODNECISLO, 'Zadejte rodné číslo.')
+            ->addRule(MyValidation::RODNECISLO, 'Zadejte platné rodné číslo.')
             ->setRequired("Rodné číslo je povinný údaj.");
         $sex = ['M' => 'muž', 'Z' => 'žena'];
         $form->addRadioList('pohlavi', 'Pohlaví:', $sex)
@@ -67,7 +67,7 @@ class KeeperPresenter extends BasePresenter
         $form->addText('datum_narozeni', "Datum narození:")
             ->setRequired("Datum narození je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
             ->setRequired("Telefoní číslo je povinný údaj.");
@@ -76,6 +76,10 @@ class KeeperPresenter extends BasePresenter
         $form->addText('titul', 'Tituly: ');
         $form->addText('login', 'Uživatelské jméno:')
             ->setRequired("Login je povinný údaj.");
+        $form->addText('datum_nastupu', 'Datum nástupu:')
+            ->setAttribute('placeholder', 'YYYY-MM-DD')
+            ->setRequired(false)
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
 
         $role = ['0' => 'Admin', '1' => 'Zaměstnanec', '2' => 'Dobrovolník'];
@@ -117,16 +121,39 @@ class KeeperPresenter extends BasePresenter
     {
 
         try {
-            $model = new KeeperModel($this->database);
-            if ($values->role == 0) {
-                $model->addKeeper($values);
-            } else if ($values->role == 1) {
-                $model->addKeeperEmployee($values);
-            } else {
-                $model->addKeeperVolunteer($values);
+
+            $rr = mb_substr($values->rodne_cislo, 0, 2);
+            $mm = mb_substr($values->rodne_cislo, 2,2);
+            $dd = mb_substr($values->rodne_cislo, 4, 2);
+
+            $rrDate = mb_substr($values->datum_narozeni, 2,2);
+            $mmDate = mb_substr($values->datum_narozeni, 5, 2);
+            $ddDate = mb_substr($values->datum_narozeni, 8,2);
+
+            if($rr === $rrDate && $dd === $ddDate &&
+                ($mm === $mmDate || '0'.(string)($mm - 50) === $mmDate ||
+                    '0'.(string) ($mm-20) === $mmDate || '0'.(string) ($mm - 70) === $mmDate))
+            {
+                $model = new KeeperModel($this->database);
+                if ($values->role == 0) {
+                    $model->addKeeper($values);
+                } else if ($values->role == 1) {
+                    $model->addKeeperEmployee($values);
+                } else {
+                    $model->addKeeperVolunteer($values);
+                }
+
+
+
+                $this->flashMessage('Záznam přidán!' ,'success');
+                $this->redirect('Keeper:add');
             }
-            $this->flashMessage('Záznam přidán!' ,'success');
-            $this->redirect('Keeper:Add');
+            else
+            {
+                $form['datum_narozeni']->addError("Datum narození se neshoduje s rodným číslem.");
+            }
+
+
         }
         catch (Nette\Database\UniqueConstraintViolationException $e)
         {
@@ -165,7 +192,7 @@ class KeeperPresenter extends BasePresenter
             ->setRequired("Datum narození je povinný údaj")
             ->setDefaultValue(substr($values['datum_narozeni'],0,10))
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
         $form->addText('tel_cislo', 'Telefoní číslo: ')
             ->setRequired("Telefoní číslo je povinný údaj.")->setDefaultValue($values['tel_cislo']);

@@ -19,6 +19,11 @@ class KeeperModel
         $this->database = $database;
     }
 
+    public function checkForPass($id_keeper)
+    {
+        return "1234567" === $this->database->table('osetrovatel')->get($id_keeper)->heslo;
+    }
+
     public function getKeeperValues($rodne_cislo){
         return $this->database->table('osetrovatel')->get($rodne_cislo);
     }

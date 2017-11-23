@@ -50,6 +50,12 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
 
     }
 
+    public function renderShowTraining(){
+        $this->template->data = $this->model->showTraining($this->user->getId());
+    }
+
+
+
     public function createComponentChangeCredentials(){
         $form = $this->form();
         $form->addText('adresa', 'Adresa trvalého bydliště: ')

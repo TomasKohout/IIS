@@ -63,4 +63,8 @@ class TrainingModel
             throw new Nette\Application\BadRequestException("Bad Request", 404);
     }
 
+    public function addTrainingToKeeper(array  $values){
+        $this->database->table('ma_skoleni')->insert($values);
+    }
+
 }

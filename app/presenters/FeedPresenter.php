@@ -88,7 +88,7 @@ class FeedPresenter extends BasePresenter
             ->setDefaultValue(StrFTime("%Y-%m-%d", Time()))
             ->setRequired("Datum a čas krmení je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
         $form->addText('druh', 'Krmivo:')
             ->setRequired('Krmivo je povinný údaj.');
