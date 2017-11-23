@@ -39,6 +39,7 @@
                                 <td>{$data_row->datum_odchodu}</td>
                                 <td><a n:href="Keeper:update $data_row->login" class="btn btn-default">Upravit</a></td>
                                 <td><a n:href="Training:addTrainingToKeeper $data_row->rodne_cislo" class="btn btn-default">Přidat školení</a></td>
+                                <td><a n:href="Homepage:changePassTo $data_row->rodne_cislo" class="btn btn-default">Změnit heslo</a></td>
                             </tr>
                         {/foreach}
                     </tbody>
@@ -77,6 +78,7 @@
                             <td>{$data_row->datum_odchodu}</td>
                             <td><a n:href="Keeper:update $data_row->rodne_cislo" class="btn btn-default">Upravit</a></td>
                             <td><a n:href="Training:addTrainingToKeeper $data_row->rodne_cislo" class="btn btn-default">Přidat školení</a></td>
+                            <td><a n:href="Homepage:changePassTo $data_row->rodne_cislo" class="btn btn-default">Změnit heslo</a></td>
                         </tr>
                     {/foreach}
                     </tbody>

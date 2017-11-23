@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use App\Model\KeeperModel;
 use Nette;
 use App\Model\UserManager;
 use Nette\Application\UI\Form;
@@ -12,9 +13,16 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
 {
     protected $database;
     protected $model;
+    protected $keeperModel;
+    /**
+     * @persist
+     * @var string
+     */
+    public $rodne_cislo;
 
     public function __construct(Nette\Database\Context $database)
     {
+        $this->keeperModel = new KeeperModel($database);
         $this->database = $database;
         $this->model = new UserManager($database);
     }
@@ -75,6 +83,42 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
     }
 
     public function renderChangePass(){
+
+    }
+
+    public function renderChangePassTo($rodne_cislo){
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro zobrazení této stránky nemáte dostatečná oprávnění.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+
+        $this->keeperModel->isValidRodneCislo($rodne_cislo);
+        $this->rodne_cislo = $rodne_cislo;
+    }
+
+    public function createComponentChangePassTo(){
+        $form = $this->form();
+
+        $form->addPassword('heslo', 'Nové heslo: ')
+            ->setRequired('Zadejte nové heslo.')
+            ->addRule($form::MIN_LENGTH, 'Minimální délka je 6 znaků.', 6);
+        $form->addPassword('hesloControl', 'Nové heslo podruhé: ')
+            ->setRequired('Zadejte nové heslo podruhé!');
+        $form->addSubmit('submit', 'Změnit heslo');
+        $form->onSuccess[] = [$this, 'changePassToSucceed'];
+        return $form;
+    }
+
+    public function changePassToSucceed(Form $form, Nette\Utils\ArrayHash $values){
+        if (strcmp($values->heslo, $values->hesloControl) != 0) {
+            $this->flashMessage('Hesla se neshodují!', 'danger');
+            $this->redirect('Homepage:changePass');
+        }
+
+        $this->model->changePass($values->heslo, $this->rodne_cislo);
+        $this->flashMessage('Heslo bylo úspěšně změněno.', 'success');
+       // $this->redirect('Keeper:search');
 
     }
 
