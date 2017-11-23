@@ -38,7 +38,7 @@ class CleanPresenter extends BasePresenter
     protected function startup(){
         parent::startup();
 
-        if (!$this->user->isAllowed('clean', 'add'))
+        if (!$this->user->isAllowed('clean', 'view'))
         {
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
@@ -47,10 +47,17 @@ class CleanPresenter extends BasePresenter
 
 
     public function renderSearch(){
-        $this->template->dataAll = $this->cleanModel->allClean();
+        $arr = array();
+        $this->template->dataAll = $this->cleanModel->searchClean($arr);
     }
 
     public function renderAdd($id_vybeh){
+        if (!$this->user->isAllowed('clean', 'add'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+
         $this->coopModel->isValidId($id_vybeh);
         $this->id_vybeh = $id_vybeh;
     }
@@ -67,6 +74,7 @@ class CleanPresenter extends BasePresenter
 
     public function searchCleanSucceed(Nette\Application\UI\Form $form){
         $this->template->data = $this->cleanModel->searchClean($form->getValues(true));
+        $this->cleanModel->getCleaners("1");
         $this->template->show = true;
     }
 

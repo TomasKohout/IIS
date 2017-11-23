@@ -20,17 +20,15 @@
                     </thead>
                     <tbody>
                     {foreach $data as $data_row}
-                        {foreach $data_row as $krm}
-                            <tr>
-                                <td>{$krm['id_krmeni']}</td>
-                                <td>{$krm['jmeno']}</td>
-                                <td>{$krm['jeKrmeno']}</td>
-                                <td>{$krm['login']}</td>
-                                <td>{$krm['datum']}</td>
-                                <td>{$krm['druh']}</td>
-                                <td>{$krm['mnozstvi']}</td>
-                            </tr>
-                        {/foreach}
+                        <tr>
+                            <td>{$data_row['id_krmeni']}</td>
+                            <td>{$data_row['jmeno']}</td>
+                            <td>{$data_row['jeKrmeno']}</td>
+                            <td>{$data_row['login']}</td>
+                            <td>{$data_row['datum']}</td>
+                            <td>{$data_row['druh']}</td>
+                            <td>{$data_row['mnozstvi']}</td>
+                        </tr>
                     {/foreach}
                     </tbody>
                 </table>
@@ -41,20 +39,22 @@
                         <th>ID</th>
                         <th>Zvíře</th>
                         <th>ID zvířete</th>
+                        <th>Ošetřovatel</th>
                         <th>Datum</th>
-                        <th>Druh krmení</th>
+                        <th>Krmivo</th>
                         <th>Množství(gramů)</th>
                     </tr>
                     </thead>
                     <tbody>
                     {foreach $dataAll as $data_row}
                         <tr>
-                            <td>{$data_row->id_krmeni}</td>
-                            <td>{$druh[$data_row->jeKrmeno]}</td>
-                            <td>{$data_row->jeKrmeno}</td>
-                            <td>{substr($data_row->datum,0,10)}</td>
-                            <td>{$data_row->druh}</td>
-                            <td>{$data_row->mnozstvi}</td>
+                            <td>{$data_row['id_krmeni']}</td>
+                            <td>{$data_row['jmeno']}</td>
+                            <td>{$data_row['jeKrmeno']}</td>
+                            <td>{$data_row['login']}</td>
+                            <td>{$data_row['datum']}</td>
+                            <td>{$data_row['druh']}</td>
+                            <td>{$data_row['mnozstvi']}</td>
                         </tr>
                     {/foreach}
                     </tbody>

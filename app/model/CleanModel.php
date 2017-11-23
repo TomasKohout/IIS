@@ -8,6 +8,7 @@
 
 namespace App\Model;
 
+use Instante\ExtendedFormMacros\PairAttributes;
 use Nette;
 
 
@@ -19,14 +20,73 @@ class CleanModel {
         $this->database = $database;
     }
 
+//    public function searchClean(array $values){
+//        return $this->database->table('cisteni')->where(array_filter($values));
+//    }
+
     public function searchClean(array $values){
-        return $this->database->table('cisteni')->where(array_filter($values));
+        $date = "";
+        if(isset($values['datum'])) {
+            $date = $values['datum'];
+            unset($values['datum']);
+        }
+        $vybehy =  $this->database->table('vybeh')->where(array_filter($values));
+
+
+
+        $ret_array = array();
+        $i = 0;
+        $k = 0;
+        foreach ($vybehy as $vybeh) {
+            $ret_array[$i] = array();
+            foreach ($vybeh->related('cisteni') as $cisteni) {
+                if ($date != "" && $date != substr($cisteni->datum, 0, 10)) {
+                    continue;
+                }
+                $ret_array[$i][$k] = array();
+
+                $login = "";
+                foreach($cisteni->related('provadi_cisteni') as $provadi){
+                    $osetrovatel = $provadi->rd_osetrovatel;
+                    $tmp = $this->database->table('osetrovatel')->get($osetrovatel);
+                    if($login != ""){
+                        $login .= ', ';
+                    }
+                    $login = $login.$tmp->login;
+                }
+
+                $ret_array[$i][$k]['id_cisteni'] = array();
+                $ret_array[$i][$k]['id_cisteni'] = $cisteni->id_cisteni;
+                $ret_array[$i][$k]['jeCisten'] = array();
+                $ret_array[$i][$k]['jeCisten'] = $cisteni->jeCisten;
+                $ret_array[$i][$k]['login'] = array();
+                $ret_array[$i][$k]['login'] = $login;
+                $ret_array[$i][$k]['datum'] = array();
+                $ret_array[$i][$k]['datum'] = substr($cisteni->datum, 0, 10);
+                //echo $vybeh->jmeno." ";
+                //echo $cisteni->id_krmeni ."</br>";
+                $k++;
+            }
+            $k = 0;
+            $i++;
+        }
+
+        $i = 0;
+        $sorted_ret = array();
+        foreach ($ret_array as $vybeh){
+            foreach ($vybeh as $cisteni){
+                $sorted_ret[$i] = array();
+                $sorted_ret[$i]['id_cisteni'] = $cisteni['id_cisteni'];
+                $sorted_ret[$i]['jeCisten'] = $cisteni['jeCisten'];
+                $sorted_ret[$i]['login'] = $cisteni['login'];
+                $sorted_ret[$i]['datum'] = $cisteni['datum'];
+                $i++;
+            }
+        }
+        arsort($sorted_ret);
+        return $sorted_ret;
     }
 
-    public function allClean(){
-
-        return $this->database->table('cisteni');
-    }
 
     public function addClean(array $values){
         $valuesCisteni = $values;
@@ -42,6 +102,18 @@ class CleanModel {
         }
     }
 
+
+    public function getCleaners($id_cisteni){
+
+        $cisteni = $this->database->table('provadi_cisteni')->where('id_cisteni', $id_cisteni);
+
+        $cleaners = '';
+        foreach ($cisteni as $cist){
+            $tmp = $this->database->table('osetrovatel')->get($cist->rd_osetrovatel);
+            $cleaners .= ' '.$tmp->login;
+        }
+        return $cleaners;
+    }
 
     public  function  getNumberOfNeededKeepersToClean($id_vybeh){
         $vybeh = $this->database->table('vybeh')->get($id_vybeh);

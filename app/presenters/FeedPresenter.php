@@ -39,7 +39,7 @@ class FeedPresenter extends BasePresenter
     protected function startup(){
         parent::startup();
 
-        if (!$this->user->isAllowed('feed', 'add'))
+        if (!$this->user->isAllowed('feed', 'view'))
         {
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
@@ -48,11 +48,18 @@ class FeedPresenter extends BasePresenter
 
 
     public function renderSearch(){
-        $this->template->dataAll = $this->feedModel->allFeed();
+        $arr = array();
+        $this->template->dataAll = $this->feedModel->searchFeed($arr);
         $this->template->druh = $this->animalModel->getZvire();
     }
 
     public function renderAdd($id_zvire){
+        if (!$this->user->isAllowed('feed', 'add'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+
         $this->animalModel->isValidId($id_zvire);
         $this->id_zvire = $id_zvire;
     }

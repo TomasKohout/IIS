@@ -46,7 +46,10 @@ class FeedModel {
                 foreach($krmeni->related('provadi_krmeni') as $provadi){
                     $osetrovatel = $provadi->rd_osetrovatel;
                     $tmp = $this->database->table('osetrovatel')->get($osetrovatel);
-                    $login = $login.' '.$tmp->login;
+                    if($login != ""){
+                        $login .= ', ';
+                    }
+                    $login = $login.$tmp->login;
                 }
 
                 $ret_array[$i][$k]['login'] = $login;
@@ -70,14 +73,24 @@ class FeedModel {
             $i++;
         }
 
-        asort($ret_array);
+        $i = 0;
+        $sorted_ret = array();
+        foreach ($ret_array as $zvire){
+            foreach ($zvire as $krmeni){
+                $sorted_ret[$i] = array();
+                $sorted_ret[$i]['id_krmeni'] = $krmeni['id_krmeni'];
+                $sorted_ret[$i]['jeKrmeno'] = $krmeni['jeKrmeno'];
+                $sorted_ret[$i]['jmeno'] = $krmeni['jmeno'];
+                $sorted_ret[$i]['login'] = $krmeni['login'];
+                $sorted_ret[$i]['druh'] = $krmeni['druh'];
+                $sorted_ret[$i]['mnozstvi'] = $krmeni['mnozstvi'];
+                $sorted_ret[$i]['datum'] = $krmeni['datum'];
+                $i++;
+            }
+        }
+        arsort($sorted_ret);
 
-        return $ret_array;
-    }
-
-    public function allFeed(){
-
-        return $this->database->table('krmeni');
+        return $sorted_ret;
     }
 
     public function addFeed(array $values)
