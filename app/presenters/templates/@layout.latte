@@ -88,6 +88,8 @@
                 <ul class="dropdown-menu">
                     {if $user->isAllowed('coop', 'view')}<li><a n:href="Coop:search">Hledat výběh</a></li>{/if}
                     {if $user->isAllowed('coop','add')}	<li><a n:href="Coop:add">Přidat výběh</a></li>{/if}
+                    {if $user->isAllowed('coop','view')}<li><a n:href="CoopKind:search">Hledat typ výběhu</a></li>{/if}
+                    {if $user->isAllowed('coop','add')}	<li><a n:href="CoopKind:add">Přidat typ výběhu</a></li>{/if}
                 </ul>
             </li>
 

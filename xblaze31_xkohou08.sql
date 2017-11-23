@@ -34,10 +34,10 @@ CREATE TABLE druh_zvirete (
 CREATE TABLE typ_vybehu (
   id_typ_vybehu int NOT NULL AUTO_INCREMENT,
   naSkoleni int NOT NULL,
-  velikost char(1) NOT NULL,
+  nazev varchar(30) NOT NULL UNIQUE,
   pocet_osetrovatelu int NOT NULL,
-  pomucka_k_cisteni varchar(30) NOT NULL,
-  doba_cisteni int NOT NULL,
+  pomucka_k_cisteni varchar(30),
+  doba_cisteni int,
   PRIMARY KEY (id_typ_vybehu),
   CONSTRAINT FK_NaSkoleniTypVybehu FOREIGN KEY (naSkoleni) REFERENCES skoleni(id_skoleni)
 )ENGINE=InnoDB, CHARSET=utf8;
@@ -187,9 +187,10 @@ INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('95020
 INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('8712121231', '1100000', 'Vrchní zoolog', 'Želvy');
 INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('7002021224', '55000', 'Sekretářka', '');
 
-INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','A','1','Malá sada','30');
-INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('7','B','2','Střední sada','120');
-INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('8','C','3','Velká sada','300');
+INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','A','1','Malá sada','30');
+INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('7','B','2','Střední sada','120');
+INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('8','C','3','Velká sada','300');
+INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('8','Ohrada','1','Velká sada','30');
 
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('1','Pavilon-A','1','');
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('2','Pavilon-B','5','Moderni typ vyběhu.');

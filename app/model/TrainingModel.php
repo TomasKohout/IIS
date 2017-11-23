@@ -43,11 +43,8 @@ class TrainingModel
         $skoleni = $this->database->table('skoleni');
         $ret_array = array();
         foreach ($skoleni as $item){
-            if (strlen($item->nazev) != 1)
-            {
-                $ret_array[$item->id_skoleni] = array();
-                $ret_array[$item->id_skoleni] = $item->nazev;
-            }
+            $ret_array[$item->id_skoleni] = array();
+            $ret_array[$item->id_skoleni] = $item->nazev;
         }
 
         return $ret_array;
