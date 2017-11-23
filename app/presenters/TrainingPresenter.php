@@ -81,6 +81,7 @@ class TrainingPresenter extends BasePresenter
         }
 
         $this->keeperModel->isValidRodneCislo($id_keeper);
+        
 
     }
 

@@ -32,7 +32,7 @@ class TrainingModel
         foreach ($skoleni as $item){
 
             $ret_array[$item->id_skoleni] = array();
-            $ret_array[$item->id_skoleni] = $item->nazev;
+            $ret_array[$item->id_skoleni] = $item->nazev . ', ' . mb_substr($item->datum,0,10);
 
         }
 
