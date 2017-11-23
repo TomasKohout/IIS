@@ -36,6 +36,7 @@ class UserManager implements Nette\Security\IAuthenticator
     }
 
 	public function changePass($password, $userId){
+
 	    $this->database->table('osetrovatel')->where('rodne_cislo', $userId)->update(['heslo'=> Nette\Security\Passwords::hash($password)]);
     }
 
