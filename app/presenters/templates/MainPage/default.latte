@@ -22,7 +22,7 @@
                             <td>{$clean['id_vybeh']}</td>
                             <td>{$clean['poloha']}</td>
                             <td>{substr($clean['datum'],0,10)}</td>
-                            <td><a n:href="MainPage:cleaned ['id' => $feed['id'], 'table' => 'provadi_cisteni']" class="btn btn-default">Vyčistit</a></td>
+                            <td><a n:href="MainPage:cleaned $clean['id'] "class="btn btn-default">Vyčistit</a></td>
                         </tr>
 
                     {/foreach}
@@ -57,7 +57,7 @@
                         <td>{$feed['poloha']}</td>
                         <td>{$feed['druh']}</td>
                         <td>{$feed['mnozstvi']}</td>
-                        <td>{$feed['datum']}</td>
+                        <td>{substr($feed['datum'],0,10)}</td>
                         <td><a n:href="MainPage:feeded $feed['id']" class="btn btn-default">Nakrmeno</a></td>
                     </tr>
 

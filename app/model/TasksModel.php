@@ -45,7 +45,7 @@ class TasksModel
             $ret_array[$i]['datum']      = $cisteniRow->datum;
             $ret_array[$i]['id']         = array();
             $ret_array[$i]['id']         = $row->id;
-            dump($row->id);
+            //dump($row->id);
 
             $i++;
         }
