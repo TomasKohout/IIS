@@ -35,7 +35,7 @@ class AnimalKindPresenter extends BasePresenter
 
     protected function startup(){
         parent::startup();
-        if (!$this->user->isAllowed('addKind', 'add')){
+        if (!$this->user->isAllowed('kind', 'view')){
             $this->flashMessage('Pro přístup do této stránky nemáte oprávnění. Obraťte se na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
@@ -44,7 +44,10 @@ class AnimalKindPresenter extends BasePresenter
 
     public function renderAdd()
     {
-
+        if (!$this->user->isAllowed('addKind', 'add')){
+            $this->flashMessage('Pro přístup do této stránky nemáte oprávnění. Obraťte se na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
     }
 
     public function renderSearch(){

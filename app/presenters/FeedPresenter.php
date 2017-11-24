@@ -60,6 +60,10 @@ class FeedPresenter extends BasePresenter
             $this->redirect('MainPage:default');
         }
 
+        if ($this->animalModel->isDead($id_zvire)) {
+            $this->flashMessage('Nelze upravovat zvířata, která jsou vedena jako mrtvá.', 'warning');
+            $this->redirect('Animal:search');
+        }
         $this->animalModel->isValidId($id_zvire);
         $this->id_zvire = $id_zvire;
     }

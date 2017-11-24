@@ -40,6 +40,34 @@ class KeeperPresenter extends BasePresenter
 
     }
 
+    public function renderInformation ($rodne_cislo){
+        $this->model->isValidRodneCislo($rodne_cislo);
+
+        $post = $this->model->getEmployeeKeeperValues($rodne_cislo);
+
+        if ($post)
+            $this->template->employee = $post;
+        else
+        {
+            $volunteer  =  $this->model->getVolunteerKeeperValues($rodne_cislo);
+            $this->template->zodpovednaOsoba = $this->model->getKeeperValues($volunteer['zodpovedna_osoba']);
+            $this->template->volunteer = $volunteer;
+        }
+
+        $data = $this->model->getKeeperValues($rodne_cislo);
+        $rodneCislo = '';
+        if (strlen($data['rodne_cislo']) == 10)
+            $rodneCislo = substr($data['rodne_cislo'], 0,6) . "/" . substr($data['rodne_cislo'], 6,4);
+        else
+            $rodneCislo = substr($data['rodne_cislo'], 0,6) . "/" . substr($data['rodne_cislo'], 6, 3);
+
+
+        $this->template->data = $data;
+        $this->template->rodneCislo = $rodneCislo;
+
+    }
+
+
     public function renderSearch(){
         $this->template->dataAll = $this->model->allKeeper();
 
@@ -75,8 +103,7 @@ class KeeperPresenter extends BasePresenter
         $form->addText('adresa', 'Bydliště: ')
             ->setRequired(false);
         $form->addText('titul', 'Tituly: ');
-        $form->addText('login', 'Uživatelské jméno:')
-            ->setRequired("Login je povinný údaj.");
+        $form->addHidden('login', 'x');
         $form->addText('datum_nastupu', 'Datum nástupu:')
             ->setAttribute('placeholder', 'YYYY-MM-DD')
             ->setRequired(false)
@@ -136,6 +163,21 @@ class KeeperPresenter extends BasePresenter
                 ($mm === $mmDate || '0'.(string)($mm - 50) === $mmDate ||
                     '0'.(string) ($mm-20) === $mmDate || '0'.(string) ($mm - 70) === $mmDate))
             {
+                $values->login = '';
+                $i = 0;
+                $allLogins = $this->model->getAllLogins();
+                do{
+                    if ($i > 9)
+                    {
+                        $values->login = 'x'. mb_strtolower(mb_substr($values->prijmeni,0,5 )) . (string)$i;
+                    }
+                    else
+                        $values->login = 'x'. mb_strtolower(mb_substr($values->prijmeni,0,5 )) . '0'.(string)$i;
+
+                    $i++;
+
+                }while(!(array_search( $values->login, $allLogins) === false));
+
                 $model = new KeeperModel($this->database);
                 if ($values->role == 0) {
                     $model->addKeeper($values);
@@ -159,10 +201,6 @@ class KeeperPresenter extends BasePresenter
         }
         catch (Nette\Database\UniqueConstraintViolationException $e)
         {
-
-            if (strpos($values->login, $e->getMessage()) === false)
-                $form['login']->addError('Tento login je již přidělen');
-
             if (strpos($values->rodne_cislo, $e->getMessage()) === false)
                 $form['rodne_cislo']->addError('Toto rodne čislo je již jednou vložené.');
 

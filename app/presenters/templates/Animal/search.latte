@@ -1,15 +1,18 @@
 {block content}
     <div class="container-fluid">
-        <div class="col-md-offset-6 col-md-4">
-            <div class="h3">Vyhledat zvíře</div>
-        </div>
+
+
+            <div class="h3" align="center">Vyhledat zvíře</div>
+
+
         <div class="col-md-offset-4 col-md-4">
             {control searchAnimal}
         </div>
-        <div class="col-md-12 table-responsive">
+    </div>
+    <div class="container">
             {default $showAnimals = false}
             {if $showAnimals}
-                <table class="table">
+                <table class="table table-striped table-responsive">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -59,7 +62,7 @@
                     </tbody>
                 </table>
             {else}
-                <table class="table">
+                <table class="table table-striped table-responsive">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -108,6 +111,5 @@
                     </tbody>
                 </table>
             {/if}
-        </div>
     </div>
 {/block}

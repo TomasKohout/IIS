@@ -103,7 +103,7 @@ class KeeperModel
             ->insert(['mzda' =>$values->mzda,
                       'pozice' =>$values->pozice,
                       'specializace' =>$values->specializace,
-                      'osetrovatel' =>$values->rodne_cislo]);
+                      'osetrovatel' =>str_replace("/", "", $values->rodne_cislo)]);
     }
 
     public function addKeeperVolunteer(Nette\Utils\ArrayHash $values)
@@ -143,6 +143,11 @@ class KeeperModel
         $testIfIsFalse = $this->database->table('osetrovatel')->get($rodne_cislo);
         if (!$testIfIsFalse)
             throw new Nette\Application\BadRequestException("Bad Request", 404);
+    }
+
+    public function getAllLogins()
+    {
+        return $this->database->table('osetrovatel')->fetchPairs('login', 'login');
     }
 
 
