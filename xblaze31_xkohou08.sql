@@ -269,8 +269,11 @@ INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9501011234', '13
 
 
 INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9508041235', '1');
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9501011234', '2');
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9501011234', '3');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('8712121231', '2');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9502021232', '2');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('8712121231', '3');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9502021232', '3');
 INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9508041235', '4');
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9501011234', '5');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9502021232', '5');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('8712121231', '5');
 

@@ -49,6 +49,7 @@ class AnimalKindPresenter extends BasePresenter
 
     public function renderSearch(){
         $this->template->dataAll = $this->animalModel->searchKind([]);
+        $this->template->skoleni = $this->trainingModel->getTrainings();
     }
 
     public function createComponentSearch(){
@@ -67,8 +68,8 @@ class AnimalKindPresenter extends BasePresenter
     }
 
     public function searchSucceed(Form $form){
-        $this->template->data = $this->animalModel->searchKind($form->getValues(true));
-
+        $values = $form->getValues(true);
+        $this->template->data = $this->animalModel->searchKind($values);
     }
 
     public function renderUpdate($id_druh_zvirete){

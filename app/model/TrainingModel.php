@@ -38,6 +38,11 @@ class TrainingModel
 
         return $ret_array;
     }
+
+    public function getTrainingByAnimalKind($id_druh_zvirete){
+        return $this->database->table('druh_zvirete')->get($id_druh_zvirete)['naSkoleni'];
+    }
+
     public function getTrainings()
     {
         $skoleni = $this->database->table('skoleni');
