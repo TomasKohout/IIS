@@ -1,6 +1,6 @@
 {block content}
     <div class="container-fluid">
-        <div class="col-md-offset-6 col-md-4">
+        <div class="col-md-offset-5">
             <div class="h3">Vítejte v ZooWisu!</div>
         </div>
 
@@ -12,6 +12,7 @@
                 <tr>
                     <th>ID výběhu</th>
                     <th>Poloha výběhu</th>
+                    <th>Pomůcka k čištění</th>
                     <th>Datum plánovaného čištění</th>
                     <th></th>
                 </tr>
@@ -21,6 +22,7 @@
                         <tr>
                             <td>{$clean['id_vybeh']}</td>
                             <td>{$clean['poloha']}</td>
+                            <td>{$clean['pomucka_k_cisteni']}</td>
                             <td>{substr($clean['datum'],0,10)}</td>
                             <td><a n:href="MainPage:cleaned $clean['id']" class="btn btn-default">Vyčistit</a></td>
                         </tr>

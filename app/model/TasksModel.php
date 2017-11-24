@@ -27,12 +27,14 @@ class TasksModel
         $results = $this->database->table('provadi_cisteni')->where(['rd_osetrovatel' => $rodne_cislo, 'provedl' => '0']);
         $cisteni = $this->database->table('cisteni');
         $vybeh   = $this->database->table('vybeh');
+        $typVybehu   = $this->database->table('typ_vybehu');
 
         $ret_array = array();
         $i = 0;
         foreach ($results as $row){
             $cisteniRow = $cisteni->get($row->id_cisteni);
             $vybehRow = $vybeh->get($cisteniRow->jeCisten);
+            $typVybehuRow = $typVybehu->get($vybehRow->naTypVybehu);
 
             $ret_array[$i] = array();
             $ret_array[$i]['id_vybeh'] = array();
@@ -41,6 +43,8 @@ class TasksModel
             $ret_array[$i]['poloha']   = $vybehRow->poloha;
             $ret_array[$i]['id_cisteni'] = array();
             $ret_array[$i]['id_cisteni'] = $row->id_cisteni;
+            $ret_array[$i]['pomucka_k_cisteni'] = array();
+            $ret_array[$i]['pomucka_k_cisteni'] = $typVybehuRow->pomucka_k_cisteni;
             $ret_array[$i]['datum']      = array();
             $ret_array[$i]['datum']      = $cisteniRow->datum;
             $ret_array[$i]['id']         = array();
