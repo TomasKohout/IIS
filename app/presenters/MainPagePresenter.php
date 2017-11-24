@@ -37,7 +37,6 @@ class MainPagePresenter extends BasePresenter
 
         $this->tasksModel->isValid($id, 'provadi_cisteni');
         $this->tasksModel->taskCleanDone($id);
-        $this->flashMessage('Čištění provedeno.', 'success');
         $this->redirect('MainPage:default');
     }
 
@@ -45,7 +44,6 @@ class MainPagePresenter extends BasePresenter
     public function renderFeeded($id){
         $this->tasksModel->isValid($id, 'provadi_krmeni');
         $this->tasksModel->taskFeedDone($id);
-        $this->flashMessage('Krmení provedeno.', 'success');
         $this->redirect('MainPage:default');
     }
 }
