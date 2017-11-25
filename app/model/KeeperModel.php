@@ -86,6 +86,7 @@ class KeeperModel
                       'login' =>$values->login,
                       'rodne_cislo' => str_replace("/", "", $values->rodne_cislo),
                       'datum_narozeni' =>$values->datum_narozeni,
+                      'datum_nastupu' =>$values->datum_nastupu,
                       'titul' =>$values->titul,
                       'adresa' =>$values->adresa,
                       'tel_cislo' =>$values->tel_cislo,

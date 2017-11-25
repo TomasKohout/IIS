@@ -67,6 +67,10 @@
                 <td class="h4"><a n:href="Keeper:information $zodpovednaOsoba['rodne_cislo']" class="links">{$zodpovednaOsoba['jmeno']} {$zodpovednaOsoba['prijmeni']}</a></td>
             </tr>
         {/ifset}
+        <tr>
+            <th class="h4">Školení:</th>
+            <td class="h4">{if $skoleni}{$skoleni}{else}<br/>{/if}</td>
+        </tr>
         </tbody>
     </table>
 
