@@ -81,4 +81,18 @@ class TrainingModel
         $this->database->table('ma_skoleni')->insert($values);
     }
 
+    public function getTrainingsByRodneCislo($rd){
+        $osetrovatele = $this->database->table('osetrovatel')->get($rd);
+
+        $skoleni = "";
+        foreach ($osetrovatele->related('ma_skoleni') as $maSkoleni){
+            if($skoleni != ""){
+                $skoleni .= ", ";
+            }
+            $skoleni .= ($this->database->table('skoleni')->get(($maSkoleni)->id_skoleni))->nazev;
+        }
+
+        return $skoleni;
+    }
+
 }

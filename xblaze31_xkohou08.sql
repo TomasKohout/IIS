@@ -186,6 +186,7 @@ INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('95010
 INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('9502021232', '42000', 'Zoolog', 'Ptáci');
 INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('8712121231', '1100000', 'Vrchní zoolog', 'Želvy');
 INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('7002021224', '55000', 'Sekretářka', '');
+INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('7002021235', '550000', 'Administrátor', 'Adminování');
 
 INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','A','1','Malá sada','30');
 INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('7','B','2','Střední sada','120');

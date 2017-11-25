@@ -11,6 +11,7 @@ namespace App\Presenters;
 use App\Forms\MyValidation;
 use App\Model\KeeperModel;
 use App\Model\RodneCisloException;
+use App\Model\TrainingModel;
 use Nette\Application\UI\Form;
 use Nette;
 
@@ -19,12 +20,14 @@ class KeeperPresenter extends BasePresenter
     protected $database;
     protected $model;
     protected $rodne_cislo;
+    protected $trainingModel;
 
     public function __construct(Nette\Database\Context $database)
     {
 
         $this->database = $database;
         $this->model =  new KeeperModel($database);
+        $this->trainingModel = new TrainingModel($database);
     }
 
     protected function startup(){
@@ -43,6 +46,7 @@ class KeeperPresenter extends BasePresenter
     public function renderInformation ($rodne_cislo){
         $this->model->isValidRodneCislo($rodne_cislo);
 
+        $this->template->skoleni = $this->trainingModel->getTrainingsByRodneCislo($rodne_cislo);
         $post = $this->model->getEmployeeKeeperValues($rodne_cislo);
 
         if ($post)
@@ -145,13 +149,19 @@ class KeeperPresenter extends BasePresenter
         $form->addText('titul', 'Tituly: ');
         $form->addHidden('login', 'x');
         $form->addText('datum_nastupu', 'Datum nástupu:')
+            ->setDefaultValue(StrFTime("%Y-%m-%d", Time()))
             ->setAttribute('placeholder', 'YYYY-MM-DD')
-            ->setRequired(false)
+            ->setRequired("Datum nástupu je povinný údaj.")
             ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
 
         $role = ['0' => 'Admin', '1' => 'Zaměstnanec', '2' => 'Dobrovolník'];
         $form->addRadioList('role', 'Typ zařadění: ', $role)->setDefaultValue('1')
+            ->addCondition($form::EQUAL, '0')
+                ->toggle('mzda')
+                ->toggle('specializace')
+                ->toggle('pozice')
+            ->endCondition()
             ->addCondition($form::EQUAL, '1')
                 ->toggle('mzda')
                 ->toggle('specializace')
@@ -219,17 +229,17 @@ class KeeperPresenter extends BasePresenter
                 }while(!(array_search( $values->login, $allLogins) === false));
 
                 $model = new KeeperModel($this->database);
-                if ($values->role == 0) {
-                    $model->addKeeper($values);
-                } else if ($values->role == 1) {
+                if ($values->role <= 1) {
                     $model->addKeeperEmployee($values);
                 } else {
                     $model->addKeeperVolunteer($values);
                 }
 
 
-
-                $this->flashMessage('Záznam přidán!' ,'success');
+                $flashMessage = "Záznam uživatele '";
+                $flashMessage .= $values->login;
+                $flashMessage .= "' přidán!";
+                $this->flashMessage($flashMessage ,'success');
                 $this->redirect('Keeper:add');
             }
             else
