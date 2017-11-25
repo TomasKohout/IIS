@@ -45,7 +45,7 @@ class TrainingModel
         foreach ($ma_skoleni as $item){
             $itemSkoleni = $this->database->table('skoleni')->get($item->id_skoleni);
             $ret_array[$item->id] = array();
-            $ret_array[$item->id] = ($itemSkoleni)->nazev. ', ' . substr(($itemSkoleni)->datum,0,10);
+            $ret_array[$item->id] = $itemSkoleni->nazev. ', ' . substr($itemSkoleni->datum,0,10);
 
         }
         asort($ret_array);

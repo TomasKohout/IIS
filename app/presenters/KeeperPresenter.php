@@ -267,8 +267,7 @@ class KeeperPresenter extends BasePresenter
         $model = new KeeperModel($this->database);
         $values = $model->getKeeperValues($this->rodne_cislo);
 
-        $form->addText('login', $values['login'])
-            ->setRequired("Login je povinný údaj.")->setDefaultValue($values['login']);
+        $form->addHidden('login')->setDefaultValue($values['login']);
         $form->addText('jmeno', 'Jméno: ')
             ->setRequired("Jméno je povinný údaj.")->setDefaultValue($values['jmeno']);
         $form->addText('prijmeni', 'Příjmení: ')
