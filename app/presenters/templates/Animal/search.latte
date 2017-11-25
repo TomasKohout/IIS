@@ -110,6 +110,30 @@
                     {/foreach}
                     </tbody>
                 </table>
+
+
             {/if}
+        {default $jmeno = null}
+        {default $jeDruhu = null}
+        <div class="pagination">
+            {if !$paginator->isFirst()}
+                <a  n:href="search, 1 ,$jmeno, $jeDruhu" >První</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page-1, $jmeno, $jeDruhu">Předchozí</a>
+                &nbsp;|&nbsp;
+            {/if}
+
+            Stránka {$paginator->page} z {$paginator->pageCount}
+
+            {if !$paginator->isLast()}
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page+1, $jmeno, $jeDruhu" >Další</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->pageCount, $jmeno, $jeDruhu" >Poslední</a>
+
+            {/if}
+        </div>
+
+
     </div>
 {/block}

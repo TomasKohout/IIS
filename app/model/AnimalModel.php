@@ -82,9 +82,20 @@ class AnimalModel {
 
     }
 
-    public function allAnimals(){
+    public function allAnimals($limit, $offset,array $array = null){
 
-        return $this->database->table('zvire');
+        if (empty($array))
+            return $this->database->table('zvire')->order('id_zvire ASC')->limit($limit, $offset);
+        else
+            return $this->database->table('zvire')->where(array_filter($array))->order('id_zvire ASC')->limit($limit, $offset);
+    }
+
+    public function getCountOfAnimals($array = null)
+    {
+        if (empty($array))
+            return $this->database->table('zvire')->count('id_zvire');
+        else
+            return $this->database->table('zvire')->where(array_filter($array))->count('id_zvire');
     }
 
     public function getTypVybehu()

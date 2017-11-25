@@ -44,10 +44,48 @@ class AnimalPresenter extends BasePresenter
         }
     }
 
-    public function renderSearch()
+    public function renderSearch($page = 1, $jmeno = null, $jeDruhu = null)
     {
-        $this->template->dataAll = $this->animalModel->allAnimals();
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+        if ($jmeno != null || $jeDruhu != null)
+        {
+
+
+            if (empty($jmeno) && !empty($jeDruhu))
+            {
+                $animalCount = $this->animalModel->getCountOfAnimals(array(['jeDruhu' => $jeDruhu]));
+                $paginator->setItemCount($animalCount);
+                $this->template->data = $this->animalModel->allAnimals($paginator->getLength(), $paginator->getOffset(), array(['jeDruhu' => $jeDruhu]));
+            }
+            elseif (empty($jeDruhu) && !empty($jmeno))
+            {
+                $animalCount = $this->animalModel->getCountOfAnimals(array(['jmeno' => $jmeno]));
+                $paginator->setItemCount($animalCount);
+                $this->template->data = $this->animalModel->allAnimals($paginator->getLength(), $paginator->getOffset(), array(['jmeno' => $jmeno]));
+            }
+            else
+            {
+                $animalCount = $this->animalModel->getCountOfAnimals(array(['jmeno'=> $jmeno,'jeDruhu' => $jeDruhu]));
+                $paginator->setItemCount($animalCount);
+                $this->template->data = $this->animalModel->allAnimals($paginator->getLength(), $paginator->getOffset(), array(['jmeno' => $jmeno, 'jeDruhu' => $jeDruhu]));
+            }
+
+            $this->template->jmeno = $jmeno;
+            $this->template->jeDruhu = $jeDruhu;
+            $this->template->showAnimals = true;
+        }
+        else
+        {
+            $animalCount = $this->animalModel->getCountOfAnimals();
+
+            $paginator->setItemCount($animalCount);
+            $this->template->dataAll = $this->animalModel->allAnimals($paginator->getLength(), $paginator->getOffset());
+        }
+
         $this->template->druh = $this->animalModel->getDruh();
+        $this->template->paginator = $paginator;
     }
 
     public function renderUpdate($id_zvire){
@@ -241,9 +279,7 @@ class AnimalPresenter extends BasePresenter
         return $form;
     }
 
-    public function searchAnimalSucceed(Nette\Application\UI\Form $form){
-        $this->template->data = $this->animalModel->searchAnimal($form->getValues(true));
-        //$this->template->druh = $this->model->getDruh();
-        $this->template->showAnimals = true;
+    public function searchAnimalSucceed(Nette\Application\UI\Form $form , Nette\Utils\ArrayHash $values){
+        $this->redirect('Animal:search',1, $values->jmeno, (int)$values->jeDruhu);
     }
 }
