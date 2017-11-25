@@ -23,6 +23,11 @@ class TrainingPresenter extends BasePresenter
      * @var int
      */
     public $id_keeper;
+    /**
+     * @persistent
+     * @var int
+     */
+    public $rodne_cislo;
 
     public function __construct(Nette\Database\Context $database)
     {
@@ -98,6 +103,34 @@ class TrainingPresenter extends BasePresenter
 
     }
 
+    public function renderRemoveTrainingToKeeper($rd){
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+
+        $this->keeperModel->isValidRodneCislo($rd);
+        $this->rodne_cislo = $rd;
+    }
+
+
+
+    public function createComponentRemoveTrainingToKeeper(){
+        $form = $this->form();
+        $form->addSelect('id', 'Školení: ', $this->trainingModel->getAllTrainingsSelectByRodneCislo($this->rodne_cislo));
+        $form->addSubmit('submit','Odebrat školení');
+        $form->onSuccess[] = [$this, 'removeTrainingToKeeperSucceed'];
+        return $form;
+    }
+
+    public function removeTrainingToKeeperSucceed(Form $form){
+        $this->trainingModel->removeTrainingToKeeper($form->getValues(true));
+
+        $this->flashMessage('Školení úspěšně odebráno.', 'success');
+        $this->redirect('Keeper:search');
+    }
+
     public function createComponentAddTrainingToKeeper(){
         $form = $this->form();
         $form->addSelect('id_skoleni', 'Školení: ', $this->trainingModel->getAllTrainingsSelect());
@@ -113,6 +146,7 @@ class TrainingPresenter extends BasePresenter
         $this->flashMessage('Školení úspěšně přidáno.', 'success');
         $this->redirect('Keeper:search');
     }
+
     public function createComponentSearchTraining(){
         $form = $this->form();
         $form->addText("nazev", "Název:");

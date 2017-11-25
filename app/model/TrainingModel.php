@@ -32,12 +32,26 @@ class TrainingModel
         foreach ($skoleni as $item){
 
             $ret_array[$item->id_skoleni] = array();
-            $ret_array[$item->id_skoleni] = $item->nazev . ', ' . mb_substr($item->datum,0,10);
+            $ret_array[$item->id_skoleni] = $item->nazev . ', ' . substr($item->datum,0,10);
 
         }
-
+        asort($ret_array);
         return $ret_array;
     }
+
+    public function getAllTrainingsSelectByRodneCislo($rd){
+        $ma_skoleni = $this->database->table('ma_skoleni')->where('rd_osetrovatel', $rd );
+        $ret_array = array();
+        foreach ($ma_skoleni as $item){
+            $itemSkoleni = $this->database->table('skoleni')->get($item->id_skoleni);
+            $ret_array[$item->id] = array();
+            $ret_array[$item->id] = ($itemSkoleni)->nazev. ', ' . substr(($itemSkoleni)->datum,0,10);
+
+        }
+        asort($ret_array);
+        return $ret_array;
+    }
+
 
     public function getTrainingByAnimalKind($id_druh_zvirete){
         return $this->database->table('druh_zvirete')->get($id_druh_zvirete)['naSkoleni'];
@@ -63,6 +77,10 @@ class TrainingModel
         $this->database->table('skoleni')->where('id_skoleni', $id_skoleni)->delete();
     }
 
+    public function removeTrainingToKeeper($values){
+        $this->database->table('ma_skoleni')->where($values)->delete();
+    }
+
     public function getTraining($id_skoleni){
         return $this->database->table('skoleni')->get($id_skoleni);
     }
@@ -77,19 +95,25 @@ class TrainingModel
             throw new Nette\Application\BadRequestException("Bad Request", 404);
     }
 
-    public function addTrainingToKeeper(array  $values){
-        $this->database->table('ma_skoleni')->insert($values);
+    public function addTrainingToKeeper(array  $values)
+    {
+        if ($this->database->table('ma_skoleni')->where($values)->count() == 0) {
+            $this->database->table('ma_skoleni')->insert($values);
+        }
     }
 
     public function getTrainingsByRodneCislo($rd){
         $osetrovatele = $this->database->table('osetrovatel')->get($rd);
 
         $skoleni = "";
+        $i = 1;
         foreach ($osetrovatele->related('ma_skoleni') as $maSkoleni){
             if($skoleni != ""){
-                $skoleni .= ", ";
+                $skoleni .= "\n";
             }
-            $skoleni .= ($this->database->table('skoleni')->get(($maSkoleni)->id_skoleni))->nazev;
+            $item_skoleni = $this->database->table('skoleni')->get(($maSkoleni)->id_skoleni);
+            $skoleni .= "[".substr(($item_skoleni)->datum,0,10).'] '.($item_skoleni)->nazev;
+            $i++;
         }
 
         return $skoleni;
