@@ -1,0 +1,98 @@
+{block content}
+<div class="container">
+
+    <div class="h3">{$data['jmeno']} {$data['prijmeni']} - {ifset $employee}zaměstnanec {else}dobrovolník {/ifset}</div>
+
+    <div class="row">
+        <div class="col-md-1">
+            <a class="btn btn-default" n:href="Homepage:changePassTo $data['rodne_cislo']">Změnit heslo</a>
+        </div>
+        <div class="col-md-offset-1 col-md-1">
+            <a n:href="Keeper:update $data['rodne_cislo']" class="btn btn-default">Upravit údaje</a>
+        </div>
+        <div class="col-md-offset-1 col-md-1">
+            <a n:href="Training:addTrainingToKeeper $data['rodne_cislo']" class="btn btn-default">Přidat školení</a>
+        </div>
+        <div class="col-md-offset-1 col-md-1">
+            <a n:href="Training:removeTrainingToKeeper $data['rodne_cislo']" class="btn btn-default">Odebrat školení</a>
+        </div>
+
+    </div>
+    <table class="table table-striped table-responsive" style="margin-top:15px">
+        <tbody>
+        <tr>
+            <th class="h4">Login:</th>
+            <td class="h4">{$data['login']}</td>
+        </tr>
+
+        <tr>
+            <th class="h4">Rodné číslo:</th>
+            <td class="h4">{$rodneCislo}</td>
+
+        </tr>
+        <th class="h4">Datum narození:</th>
+        <td class="h4">{if $data['datum_narozeni']}{substr($data['datum_narozeni'],0,10)}{else}<br/>{/if}</td>
+
+        <tr>
+            <th class="h4">Tituly:</th>
+            <td class="h4">{if $data['titul']}{$data['titul']}{else}<br/>{/if}</td>
+
+        </tr>
+        <tr>
+            <th class="h4">Adresa:</th>
+            <td class="h4">{if $data['adresa']}{$data['adresa']}{else}<br/>{/if}</td>
+
+        </tr>
+        <tr>
+            <th class="h4">Telefonní číslo:</th>
+            <td class="h4">{if $data['tel_cislo']}{$data['tel_cislo']}{else}<br/>{/if}</td>
+
+        </tr>
+        <tr>
+            <th class="h4">Pohlaví</th>
+            <td class="h4">{if strcmp($data['pohlavi'], 'Z')}muž{else}žena{/if}</td>
+        </tr>
+        <tr>
+            <th class="h4">Datum nástupu:</th>
+            <td class="h4">{if $data['datum_nastupu']}{substr($data['datum_nastupu'],0,10)}{else}<br/>{/if}</td>
+        </tr>
+        <tr>
+            <th class="h4">Datum odchodu:</th>
+            <td class="h4">{if $data['datum_odchodu']}{substr($data['datum_odchodu'],0,10)}{else}<br/> {/if}</td>
+        {ifset $employee}
+            <tr>
+                <th class="h4">Mzda</th>
+                <td class="h4">{if $employee['mzda']}{$employee['mzda']} Kč{else}<br/>{/if}</td>
+            </tr>
+            <tr>
+                <th class="h4">Pozice</th>
+                <td class="h4">{if $employee['pozice']}{$employee['pozice']}{else}<br/>{/if}</td>
+            </tr>
+            <tr>
+                <th class="h4">Specializace</th>
+                <td class="h4">{if $employee['specializace']}{$employee['specializace']}{else}<br/>{/if}</td>
+            </tr>
+        {else}
+            <tr>
+                <th class="h4">Organizace:</th>
+                <td class="h4">{if $volunteer['organizace']}{$volunteer['organizace']}{else}<br/>{/if}</td>
+            </tr>
+            <tr>
+                <th class="h4">Zodpovědná osoba:</th>
+                <td class="h4"><a n:href="Keeper:information $zodpovednaOsoba['rodne_cislo']" class="links">{$zodpovednaOsoba['jmeno']} {$zodpovednaOsoba['prijmeni']}</a></td>
+            </tr>
+        {/ifset}
+
+        <tr>
+            <th class="h4">Školení:</th>
+            <td class="h4">{if $skoleni}<pre class="h4" style="border: 0; padding: 0; background-color: transparent">{$skoleni}</pre>{else}<br/>{/if}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    {*<div class="h3">*}
+        {*Zde můžete {if strcmp($data['pohlavi'], 'Z')}uživateli{else}uživatelce{/if} upravit heslo, přidat školení nebo upravit údaje.*}
+    {*</div>*}
+
+</div>
+{/block}

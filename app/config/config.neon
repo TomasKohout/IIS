@@ -9,6 +9,7 @@ application:
 	errorPresenter: Error
 	mapping:
 		*: App\*Module\Presenters\*Presenter
+	catchExceptions: false
 
 
 session:
@@ -36,3 +37,4 @@ services:
 extensions:
     extendedFormmMacros: Instante\ExtendedFormMacros\DI\ExtendedFormMacrosExtension
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
+    replicator: Kdyby\Replicator\DI\ReplicatorExtension

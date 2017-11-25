@@ -1,6 +1,8 @@
 <?php
 namespace App\Presenters;
+use App\Forms\MyValidation;
 use App\Model\AnimalModel;
+use App\Model\KeeperModel;
 use App\Model\TrainingModel;
 use Nette\Application\UI\Form;
 use Nette;
@@ -9,13 +11,29 @@ use Nette;
 class TrainingPresenter extends BasePresenter
 {
     protected $database;
-    protected $model;
-    protected $id_skoleni;
+    protected $trainingModel;
+    /**
+     * @persistent
+     * @var
+     */
+    public $id_skoleni;
+    protected $keeperModel;
+    /**
+     * @persistent
+     * @var int
+     */
+    public $id_keeper;
+    /**
+     * @persistent
+     * @var int
+     */
+    public $rodne_cislo;
 
     public function __construct(Nette\Database\Context $database)
     {
         $this->database = $database;
-        $this->model    = new TrainingModel($database);
+        $this->trainingModel    =   new TrainingModel($database);
+        $this->keeperModel      =   new KeeperModel($database);
     }
 
     protected function startup(){
@@ -37,9 +55,17 @@ class TrainingPresenter extends BasePresenter
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
-        $this->model->deleteTraining($id_skoleni);
-        $this->flashMessage('Školení smazáno!', 'success');
-        $this->redirect('Training:show');
+        $this->id_skoleni = $id_skoleni;
+
+        try{
+            $this->trainingModel->deleteTraining($id_skoleni);
+        }
+        catch (Nette\Database\ForeignKeyConstraintViolationException $exception){
+            $this->flashMessage('Nelze smazat školení, které již někdo má!', 'warning');
+            $this->redirect('Training:search');
+        }
+        $this->flashMessage('Školení smazáno!'. $id_skoleni, 'success');
+        $this->redirect('Training:search');
 
     }
 
@@ -50,16 +76,41 @@ class TrainingPresenter extends BasePresenter
             $this->redirect('MainPage:default');
         }
         $this->id_skoleni = $id_skoleni;
+
+        $this->trainingModel->isValidID($this->id_skoleni);
+
     }
 
 
-    public function renderSearch(){
+    public function renderSearch($page = 1, $nazev = null){
         if (!$this->user->isAllowed('training', 'view'))
         {
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
-        $this->template->dataAll = $this->model->getAllTrainings();
+
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+        if ($nazev != null){
+            $values = ['nazev' => $nazev];
+            $count = $this->trainingModel->getCountOfTrainings($values);
+            $paginator->setItemCount($count);
+            $this->template->data = $this->trainingModel->searchTrainings($paginator->getLength(), $paginator->getOffset(), $values);
+
+            $this->template->show = true;
+            $this->template->nazev = $nazev;
+        }
+        else{
+
+            $count = $this->trainingModel->getCountOfTrainings();
+            $paginator->setItemCount($count);
+            $this->template->dataAll = $this->trainingModel->searchTrainings($paginator->getLength(), $paginator->getOffset());
+        }
+
+        $this->template->paginator = $paginator;
+
+
     }
 
     public function createComponentSearchTraining(){
@@ -72,10 +123,64 @@ class TrainingPresenter extends BasePresenter
         return $form;
     }
 
-    public function searchTrainingSucceed(Form $form){
+    public function searchTrainingSucceed(Form $form, Nette\Utils\ArrayHash $values){
+        $this->redirect('Training:search',1, $values->nazev);
+    }
 
-        $this->template->data = $this->model->searchTrainings($form->getValues(true));
-        $this->template->show = true;
+    public function renderAddTrainingToKeeper($id_keeper){
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+
+        $this->keeperModel->isValidRodneCislo($id_keeper);
+        
+
+    }
+
+    public function renderRemoveTrainingToKeeper($rd){
+        if (!$this->user->isAllowed('admin'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+
+        $this->keeperModel->isValidRodneCislo($rd);
+        $this->rodne_cislo = $rd;
+    }
+
+
+
+    public function createComponentRemoveTrainingToKeeper(){
+        $form = $this->form();
+        $form->addSelect('id', 'Školení: ', $this->trainingModel->getAllTrainingsSelectByRodneCislo($this->rodne_cislo));
+        $form->addSubmit('submit','Odebrat školení');
+        $form->onSuccess[] = [$this, 'removeTrainingToKeeperSucceed'];
+        return $form;
+    }
+
+    public function removeTrainingToKeeperSucceed(Form $form){
+        $this->trainingModel->removeTrainingToKeeper($form->getValues(true));
+
+        $this->flashMessage('Školení úspěšně odebráno.', 'success');
+        $this->redirect('Keeper:search');
+    }
+
+    public function createComponentAddTrainingToKeeper(){
+        $form = $this->form();
+        $form->addSelect('id_skoleni', 'Školení: ', $this->trainingModel->getAllTrainingsSelect());
+        $form->addHidden('rd_osetrovatel', $this->id_keeper);
+        $form->addSubmit('submit','Udělit školení');
+        $form->onSuccess[] = [$this, 'addTrainingToKeeperSucceed'];
+        return $form;
+    }
+
+    public function addTrainingToKeeperSucceed(Form $form){
+        $this->trainingModel->addTrainingToKeeper($form->getValues(true));
+
+        $this->flashMessage('Školení úspěšně přidáno.', 'success');
+        $this->redirect('Keeper:search');
     }
 
     public function createComponentAddSkoleni(){
@@ -87,10 +192,11 @@ class TrainingPresenter extends BasePresenter
             ->setRequired('Název je povinný údaj.');
 
         $form->addText('datum', "Datum:")
+            ->setDefaultValue(StrFTime("%Y-%m-%d", Time()))
             ->setRequired("Datum je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY.MM.DD", "(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addTextArea('popis','Popis školení:', 2,2)
             ->setRequired(false);
@@ -104,18 +210,17 @@ class TrainingPresenter extends BasePresenter
     }
 
     public function addSkoleniSucceed(Form $form, Nette\Utils\ArrayHash $values){
-        $model = new AnimalModel($this->database);
-        $this->model->addTraining($form->getValues(true));
+        $this->trainingModel->addTraining($form->getValues(true));
 
         $this->flashMessage('Školení přidáno!' ,'success');
-        $this->redirect('Training:add');
+        $this->redirect('Training:search');
 
 
     }
 
     public function createComponentUpdateTraining(){
         $form = $this->form();
-        $row = $this->model->getTraining($this->id_skoleni);
+        $row = $this->trainingModel->getTraining($this->id_skoleni);
 
         $form->addHidden('id_skoleni', $row['id_skoleni']);
         $form->addText('nazev', 'Název školení:')
@@ -127,8 +232,8 @@ class TrainingPresenter extends BasePresenter
             ->setRequired("Datum je povinný údaj")
             ->setAttribute("class", "dtpicker col-sm-2")
             ->setDefaultValue(substr($row['datum'],0,10))
-            ->setAttribute('placeholder', 'rrrr.mm.dd')
-            ->addRule($form::PATTERN, "Datum musí být ve formátu YYYY-MM-DD", "(19|20)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|r[01])");
+            ->setAttribute('placeholder', 'rrrr-mm-dd')
+            ->addRule(MyValidation::DATUM, "Datum musí být ve formátu YYYY-MM-DD");
 
         $form->addTextArea('popis','Popis školení:', 2,2)
             ->setDefaultValue($row['popis'])
@@ -144,9 +249,9 @@ class TrainingPresenter extends BasePresenter
 
     public function updateTrainingSucceed(Form $form){
 
-        $this->model->updateTraining($form->getValues(true));
+        $this->trainingModel->updateTraining($form->getValues(true));
         $this->flashMessage('Školení upraveno!', 'success');
-        $this->redirect('Training:show');
+        $this->redirect('Training:search');
 
     }
 }

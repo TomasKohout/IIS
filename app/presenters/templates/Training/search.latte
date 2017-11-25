@@ -1,12 +1,14 @@
 {block content}
-<div class="container">
-    <div class="col-md-offset-4 col-md-4">
-        {control searchTraining}
+    <div class="container-fluid">
+        <div class="h3" align="center">Hledat školení</div>
+        <div class="col-md-offset-4 col-md-4">
+            {control searchTraining}
+        </div>
     </div>
-    <div class="col-md-12 table-responsive">
+    <div class="container">
         {default $show = false}
         {if $show}
-        <table class="table">
+        <table class="table table-striped table-responsive">
             <thead>
             <tr>
                 <th>ID</th>
@@ -23,14 +25,16 @@
                 <td>{$data_row->nazev}</td>
                 <td>{substr($data_row->datum,0,10)}</td>
                 <td>{$data_row->popis}</td>
-               {if $user->isAllowed('admin')} <td><a n:href="Training:update $data_row->id_skoleni" class="btn btn-default">Upravit</a></td>
-                <td><a n:href="Training:delete $data_row->id_skoleni" class="btn btn-default">Smazat</a></td>{/if}
+               {if $user->isAllowed('admin')}
+                    <td><a n:href="Training:update $data_row->id_skoleni" class="btn btn-default">Upravit</a></td>
+                    <td><a n:href="Training:delete $data_row->id_skoleni" class="btn btn-default">Smazat</a></td>
+               {/if}
             </tr>
             {/foreach}
             </tbody>
         </table>
         {else}
-        <table class="table">
+        <table class="table table-striped table-responsive">
             <thead>
             <tr>
                 <th>ID</th>
@@ -47,13 +51,33 @@
                 <td>{$data_row->nazev}</td>
                 <td>{substr($data_row->datum,0,10)}</td>
                 <td>{$data_row->popis}</td>
-                {if $user->isAllowed('admin')}<td><a n:href="Training:update $data_row->id_skoleni" class="btn btn-default">Upravit</a></td>
-                <td><a n:href="Training:delete $data_row->id_skoleni" class="btn btn-default">Smazat</a></td>{/if}
+                {if $user->isAllowed('admin')}
+                    <td><a n:href="Training:update $data_row->id_skoleni" class="btn btn-default">Upravit</a></td>
+                    <td><a n:href="Training:delete $data_row->id_skoleni" class="btn btn-default">Smazat</a></td>
+                {/if}
             </tr>
             {/foreach}
             </tbody>
         </table>
         {/if}
+        {default $nazev = null}
+        <div class="pagination">
+            {if !$paginator->isFirst()}
+                <a  n:href="search, 1 ,$nazev" >První</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page-1, $nazev">Předchozí</a>
+                &nbsp;|&nbsp;
+            {/if}
+
+            Stránka {$paginator->page} z {$paginator->pageCount}
+
+            {if !$paginator->isLast()}
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page+1, $nazev" >Další</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->pageCount, $nazev" >Poslední</a>
+
+            {/if}
+        </div>
     </div>
-</div>
 {/block}

@@ -1,8 +1,8 @@
 {block content}
 <div class="container-fluid">
-    <div class="h3" align="center">Přidat druh zvířete</div>
+    <div class="h3" align="center">Přidat typ výběhu</div>
     <div class="col-md-offset-4 col-md-4">
-        {form addDruhZvirete}
+        {form addTypVybehu}
         <form n:name=$form class=form-horizontal>
             <ul class=error n:if="$form->hasErrors()">
                 <li n:foreach="$form->errors as $error">{$error}</li>
@@ -19,7 +19,7 @@
                 {input $input class => form-control}
                 {elseif $input->getOption(type) in [select, p]}
                 {input $input class => form-control}
-                <span class="help-block">Pokud není vytvořeno školení pro daný druh, tak nelze tento druh přidat! Vytvoř proto nejdříve školení a poté druh <a href="{link :Training:add}">zde</a>.</span>
+                <span class="help-block">Pokud není vytvořeno školení pro daný typ, tak nelze tento typ přidat! Vytvoř proto nejdříve školení a poté druh <a href="{link :Training:add}">zde</a>.</span>
 
                 {elseif $input->getOption(type) === button}
                 {input $input class => "btn btn-primary button"}

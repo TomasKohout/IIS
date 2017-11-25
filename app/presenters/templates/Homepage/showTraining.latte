@@ -1,0 +1,32 @@
+{block content}
+    <div class="container-fluid">
+            <div class="h3" align="center">Získaná školení</div>
+    </div>
+    <div class="container">
+            {default $data = false}
+            {if $data}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Název</th>
+                        <th>Datum</th>
+                        <th>Popis</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $data as $data_row}
+                        <tr>
+                            <td>{$data_row['nazev']}</td>
+                            <td>{$data_row['datum']}</td>
+                            <td>{$data_row['popis']}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {else}
+                <div class="jumbotron h3">
+                    Zatím nemáte vypsané žádné školení. Napište prosím na tuto adresu a domluvte se s personálním pracovníkem. <a href="mailto:personal@zoowis.cz">personal@zoowis.cz</a>
+                </div>
+            {/if}
+        </div>
+{/block}

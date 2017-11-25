@@ -24,7 +24,16 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 
     }
+    protected function removeEmpty(array $array){
 
+        foreach ($array as $key => $value){
+            if ($array[$key] == null || $array[$key] === '0')
+                unset($array[$key]);
+
+        }
+        return $array;
+
+    }
     public function checkRequirements($element){
 
     }
@@ -50,5 +59,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
          return $ret;
 
+    }
+
+    public function arrayHasDupes($array){
+        return count(array_map("serialize",$array)) != count(array_unique(array_map("serialize",$array)));
     }
 }

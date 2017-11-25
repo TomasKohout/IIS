@@ -8,6 +8,7 @@
 
 namespace App\Model;
 
+use Nette\Application\BadRequestException;
 use Nette;
 
 class AnimalModel {
@@ -19,12 +20,18 @@ class AnimalModel {
     }
 
 
-    /**
-     * @param $id_zvire
-     * @return Nette\Database\Table\ActiveRow
-     */
     public function getAnimalValues($id_zvire){
         return $this->database->table('zvire')->get($id_zvire);
+    }
+
+    public function getAnimalKindValues($id_druh_zvirete){
+        return $this->database->table('druh_zvirete')->get($id_druh_zvirete);
+    }
+
+    public function isValidId($id_zvire){
+        $testIfIsFalse = $this->database->table('zvire')->get($id_zvire);
+        if (!$testIfIsFalse)
+            throw new BadRequestException("Bad Request", 404);
     }
 
     public function addAnimal(array $values)
@@ -37,13 +44,70 @@ class AnimalModel {
             ->update($values);
     }
 
+    public function updateAnimalKind($values){
+        $this->database->table('druh_zvirete')->where('id_druh_zvirete', $values['id_druh_zvirete'])
+            ->update($values);
+    }
+
+
+    public function deleteAnimalKind($id_druh_zvirete){
+        $this->database->table('druh_zvirete')->get($id_druh_zvirete)->delete();
+    }
+
+    public function killAnimal(array $values){
+        $this->database->table('zvire')->where('id_zvire', $values['id_zvire'])
+            ->update([  'datum_umrti' =>$values['datum_umrti'],
+                        'obyva' => null]);
+    }
+
     public function searchAnimal(array $values){
         return $this->database->table('zvire')->where(array_filter($values));
     }
 
-    public function allAnimals(){
+    public function searchKind($limit, $offset, $getValues)
+    {
+        return $this->database->table('druh_zvirete')->where(array_filter($getValues))->order('id_druh_zvirete ASC')->limit($limit, $offset);
+    }
 
-        return $this->database->table('zvire');
+    public function getAllKind(){
+        return $this->database->table('druh_zvirete')->fetchPairs('nazev', 'nazev');
+    }
+
+    public function getKindCount(array $values = null){
+        if (empty($values)){
+            return $this->database->table('druh_zvirete')->count('id_druh_zvirete');
+        }
+        else{
+            return $this->database->table('druh_zvirete')->where($values)->count('id_druh_zvirete');
+        }
+    }
+
+    /**
+     * @param $id_zvire
+     * @return bool
+     */
+    public function isDead($id_zvire){
+        $tmp = $this->database->table('zvire')->get($id_zvire);
+        if (!$tmp)
+            throw new BadRequestException("", 404);
+        return "" != $tmp->datum_umrti;
+
+    }
+
+    public function allAnimals($limit, $offset,array $array = null){
+
+        if (empty($array))
+            return $this->database->table('zvire')->order('id_zvire ASC')->limit($limit, $offset);
+        else
+            return $this->database->table('zvire')->where(array_filter($array))->order('id_zvire ASC')->limit($limit, $offset);
+    }
+
+    public function getCountOfAnimals($array = null)
+    {
+        if (empty($array))
+            return $this->database->table('zvire')->count('id_zvire');
+        else
+            return $this->database->table('zvire')->where(array_filter($array))->count('id_zvire');
     }
 
     public function getTypVybehu()
@@ -97,8 +161,12 @@ class AnimalModel {
 
     }
 
-    public function getDefaultValuesForZvireTable(){
-
+    public function kindIsNotExist($id_druh_zvirete){
+        $tmp = $this->database->table('druh_zvirete')->get($id_druh_zvirete);
+        if (!$tmp) {
+            throw new BadRequestException("", 404);
+        }
+        return true;
     }
 
     public function addDruh(array $values){

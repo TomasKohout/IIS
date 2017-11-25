@@ -5,12 +5,8 @@
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
-.top-buffer{
-  margin-top: 10px;
-}
-.color-mtf{
-  background-color: #eee;
-}
+
+
 html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;

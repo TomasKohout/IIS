@@ -23,12 +23,33 @@ class CoopModel
         $this->database->table('vybeh')->insert($values);
     }
 
+    public function addCoopKind($values){
+        $this->database->table('typ_vybehu')->insert($values);
+    }
+
+    public function deleteCoopKind($id_typ_vybehu){
+        $this->database->table('typ_vybehu')->get($id_typ_vybehu)->delete();
+    }
+
+
+    public function updateCoopKind($values){
+        $this->database->table('typ_vybehu')->where('id_typ_vybehu', $values['id_typ_vybehu'])->update($values);
+    }
+
     public function updateCoop($values){
-        $this->database->table('vybeh')->where('id_vybeh', $values['id_vybeh'])->update($values);
+        $this->database->table('vybeh')->where(array_filter($values))->update($values);
     }
 
     public function showCoop(){
         return $this->database->table('vybeh')->fetchAll();
+    }
+
+    public function searchCoopKind($limit, $offset, $values = []){
+        return $this->database->table('typ_vybehu')->where(array_filter($values))->order('id_typ_vybehu')->limit($limit, $offset);
+    }
+
+    public function getCoopKindValues($id_typ_vybehu){
+        return $this->database->table('typ_vybehu')->get($id_typ_vybehu);
     }
 
     public function getTypeOfCoop(){
@@ -38,19 +59,58 @@ class CoopModel
 
         foreach ($typ as $row){
             $ret_array[$row->id_typ_vybehu] = array();
-            $ret_array[$row->id_typ_vybehu] = $row->velikost;
+            $ret_array[$row->id_typ_vybehu] = $row->nazev;
         }
 
         return $ret_array;
     }
 
-    public function getCoopCalues($id_vybeh){
+
+    public function kindIsNotExist($id_typ_vybehu){
+        $tmp = $this->database->table('typ_vybehu')->get($id_typ_vybehu);
+        if (!$tmp) {
+            throw new BadRequestException("", 404);
+        }
+        return true;
+
+    }
+
+    public function getCoops(){
+        $coops = $this->database->table('vybeh')->select('id_vybeh');
+
+        $ret_array = array();
+
+        foreach ($coops as $row){
+            $ret_array[$row->id_vybeh] = array();
+            $ret_array[$row->id_vybeh] = $row->id_vybeh;
+        }
+
+        return $ret_array;
+    }
+
+    public function isValidID($id_vybeh){
+        $testIfIsFalse = $this->database->table('vybeh')->get($id_vybeh);
+        if (!$testIfIsFalse)
+            throw new Nette\Application\BadRequestException("Bad Request", "404");
+    }
+
+    public function getCoopValues($id_vybeh){
         return $this->database->table('vybeh')->get($id_vybeh);
     }
 
-    public function searchCoop($values)
+    public function searchCoop($limit, $offset, $values = [])
     {
-        return $this->database->table('vybeh')->where(array_filter($values));
+        return $this->database->table('vybeh')->where(array_filter($values))->order('id_vybeh ASC')->limit($limit, $offset);
+    }
+
+    public function getCountOfCoops($array = [])
+    {
+        return $this->database->table('vybeh')->where(array_filter($array))->count('id_vybeh');
+    }
+
+    public function getCountOfCoopKinds($value = [])
+    {
+        return $this->database->table('typ_vybehu')->where(array_filter($value))->count('id_typ_vybehu');
     }
 
 }

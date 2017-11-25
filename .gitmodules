@@ -1,0 +1,2 @@
+[submodule "vendor/kdyby/forms-replicator"]
+	url = https://github.com/Kdyby/FormsReplicator/

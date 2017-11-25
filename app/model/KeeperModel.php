@@ -19,6 +19,11 @@ class KeeperModel
         $this->database = $database;
     }
 
+    public function checkForPass($id_keeper)
+    {
+        return "1234567" === $this->database->table('osetrovatel')->get($id_keeper)->heslo;
+    }
+
     public function getKeeperValues($rodne_cislo){
         return $this->database->table('osetrovatel')->get($rodne_cislo);
     }
@@ -38,8 +43,8 @@ class KeeperModel
         return $this->database->table('osetrovatel');
     }
 
-    public function searchKeeper($values){
-        return $this->database->table('osetrovatel')->where(array_filter($values))->order('login');
+    public function searchKeeper($limit, $offset, $values = []){
+        return $this->database->table('osetrovatel')->where(array_filter($values))->order('login')->limit($limit, $offset);
     }
 
     public function updateKeeper( $values){
@@ -79,13 +84,14 @@ class KeeperModel
             ->insert(['jmeno' =>$values->jmeno,
                       'prijmeni' =>$values->prijmeni,
                       'login' =>$values->login,
-                      'rodne_cislo' =>$values->rodne_cislo,
+                      'rodne_cislo' => str_replace("/", "", $values->rodne_cislo),
                       'datum_narozeni' =>$values->datum_narozeni,
+                      'datum_nastupu' =>$values->datum_nastupu,
                       'titul' =>$values->titul,
                       'adresa' =>$values->adresa,
                       'tel_cislo' =>$values->tel_cislo,
                       'pohlavi' =>$values->pohlavi,
-                      'heslo' =>$values->heslo,
+                      'heslo' => "1234567",
                       'role' => $values->role]);
     }
 
@@ -98,7 +104,7 @@ class KeeperModel
             ->insert(['mzda' =>$values->mzda,
                       'pozice' =>$values->pozice,
                       'specializace' =>$values->specializace,
-                      'osetrovatel' =>$values->rodne_cislo]);
+                      'osetrovatel' =>str_replace("/", "", $values->rodne_cislo)]);
     }
 
     public function addKeeperVolunteer(Nette\Utils\ArrayHash $values)
@@ -120,6 +126,9 @@ class KeeperModel
 
         foreach ($osetrovatel as $one){
 
+            if (strcmp($one->login, "admin") == 0)
+                continue;
+
             $ret_array[$one->rodne_cislo] = array();
             $ret_array[$one->rodne_cislo] = $one->login;
         }
@@ -127,19 +136,26 @@ class KeeperModel
         return $ret_array;
     }
 
+    public function getLogin($login){
+        return $this->database->table('osetrovatel')->where('login', $login);
+    }
+
+    public function isValidRodneCislo($rodne_cislo){
+        $testIfIsFalse = $this->database->table('osetrovatel')->get($rodne_cislo);
+        if (!$testIfIsFalse)
+            throw new Nette\Application\BadRequestException("Bad Request", 404);
+    }
+
+    public function getAllLogins()
+    {
+        return $this->database->table('osetrovatel')->fetchPairs('login', 'login');
+    }
+
+    public function getKeeperCount($value = [])
+    {
+        return $this->database->table('osetrovatel')->where($value)->count('rodne_cislo');
+    }
+
 
 }
 
-
-
-class RodneCisloException extends \Exception{
-    public function __construct($message = "", $code = 0, Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
-
-    public function __toString()
-    {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
-    }
-}

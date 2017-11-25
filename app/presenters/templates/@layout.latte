@@ -16,9 +16,25 @@
 	<link href="{$basePath}/css/bootstrap.css" rel="stylesheet" >
 	<script src="{$basePath}/js/jquery-3.2.1.min.js"></script>
 	<script src="{$basePath}/js/bootstrap.min.js"></script>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<style>
 
+
+		.nav a{
+
+			font-size: 1.2em !important;
+		}
+
+
+		.top-buffer{
+			margin-top: 10px;
+		}
+		.color-mtf{
+			background-color: #eee;
+		}
+	</style>
 
 </head>
 
@@ -40,26 +56,34 @@
 			</div>
 			<ul class="nav navbar-nav">
 
-            <li class="active"><a n:href="MainPage:">Home</a></li>
+            {if $user->isAllowed('admin')}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Ošetřovatel<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a n:href="Keeper:search">Hledat ošetřovatele</a></li>
+                        <li><a n:href="Keeper:add">Přidat ošetřovatele</a></li>
+                    </ul>
+                </li>
+            {/if}
+
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Zvíře<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a n:href="Animal:search">Hledat zvíře</a></li>
-                    {if $user->isAllowed('animal','add')}<li><a n:href="Animal:add">Přidat zvíře</a></li>
-                    <li><a n:href="Animal:umrti">Úmrtí zvířete</a></li>{/if}
-                    {if $user->isAllowed('addKind','add')}<li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>{/if}
-                </ul>
+
+                    {if $user->isAllowed('animal','add')}
+						<li><a n:href="Animal:add">Přidat zvíře</a></li>
+					{/if}
+                    {if $user->isAllowed('animal','view')}
+                        <li><a n:href="AnimalKind:search">Hledat druhy zviřat</a></li>
+                    {/if}
+                    {if $user->isAllowed('addKind','add')}
+                        <li><a n:href="AnimalKind:add">Přidat druh zviřete</a></li>
+                    {/if}
+				</ul>
             </li>
 
-			{if $user->isAllowed('admin')}
-				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Ošetřovatel<span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a n:href="Keeper:search">Hledat ošetřovatele</a></li>
-						<li><a n:href="Keeper:add">Přidat ošetřovatele</a></li>
-					</ul>
-				</li>
-			{/if}
+
 
 
             <li class="dropdown">
@@ -67,6 +91,8 @@
                 <ul class="dropdown-menu">
                     {if $user->isAllowed('coop', 'view')}<li><a n:href="Coop:search">Hledat výběh</a></li>{/if}
                     {if $user->isAllowed('coop','add')}	<li><a n:href="Coop:add">Přidat výběh</a></li>{/if}
+                    {if $user->isAllowed('coop','view')}<li><a n:href="CoopKind:search">Hledat typ výběhu</a></li>{/if}
+                    {if $user->isAllowed('coop','add')}	<li><a n:href="CoopKind:add">Přidat typ výběhu</a></li>{/if}
                 </ul>
             </li>
 
@@ -74,7 +100,7 @@
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Školení<span class="caret"></span> </a>
                 <ul class="dropdown-menu">
-                    {if $user->isAllowed('training', 'view')}<li><a n:href="Training:search">Vypsat školení</a></li>{/if}
+                    {if $user->isAllowed('training', 'view')}<li><a n:href="Training:search">Hledat školení</a></li>{/if}
                     {if $user->isAllowed('training','add')}	<li><a n:href="Training:add">Přidat školení</a></li>{/if}
                 </ul>
             </li>
@@ -83,7 +109,6 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Krmení<span class="caret"></span> </a>
                 <ul class="dropdown-menu">
                     {if $user->isAllowed('feed','view')}<li><a n:href="Feed:search">Hledat krmení</a></li>{/if}
-                    {if $user->isAllowed('feed', 'add')}<li><a n:href="Feed:add">Přidat krmení</a></li>{/if}
                 </ul>
             </li>
 
@@ -91,7 +116,6 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Čištění<span class="caret"></span> </a>
                 <ul class="dropdown-menu">
                     {if $user->isAllowed('clean','view')}<li><a n:href="Clean:search">Hledat čištění</a></li>{/if}
-                    {if $user->isAllowed('clean', 'add')}<li><a n:href="Clean:add">Přidat čištění</a></li>{/if}
                 </ul>
             </li>
 
@@ -100,6 +124,7 @@
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Uživatelský panel({$user->getIdentity()->login})<span class="caret"></span> </a>
 						<ul class="dropdown-menu">
+							<li><a n:href="Homepage:showTraining">Zobrazit vlastní školení</a></li>
 							<li><a n:href="Homepage:changePass">Změnit heslo</a> </li>
 							<li><a n:href="Homepage:changeCredentials">Změnit osobní údaje</a> </li>
 							<li><a n:href="Homepage:logout">Odhlásit se</a> </li>

@@ -34,10 +34,10 @@ CREATE TABLE druh_zvirete (
 CREATE TABLE typ_vybehu (
   id_typ_vybehu int NOT NULL AUTO_INCREMENT,
   naSkoleni int NOT NULL,
-  velikost char(1) NOT NULL,
+  nazev varchar(30) NOT NULL UNIQUE,
   pocet_osetrovatelu int NOT NULL,
-  pomucka_k_cisteni varchar(30) NOT NULL,
-  doba_cisteni int NOT NULL,
+  pomucka_k_cisteni varchar(30),
+  doba_cisteni int,
   PRIMARY KEY (id_typ_vybehu),
   CONSTRAINT FK_NaSkoleniTypVybehu FOREIGN KEY (naSkoleni) REFERENCES skoleni(id_skoleni)
 )ENGINE=InnoDB, CHARSET=utf8;
@@ -54,7 +54,7 @@ CREATE TABLE vybeh (
 
 CREATE TABLE zvire (
   id_zvire int NOT NULL AUTO_INCREMENT,
-  obyva int NOT NULL,
+  obyva int NULL,
   jeDruhu int NOT NULL,
   jmeno varchar(30) NOT NULL,
   pohlavi varchar(1) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE zvire (
 CREATE TABLE krmeni (
   id_krmeni int NOT NULL AUTO_INCREMENT,
   jeKrmeno int NOT NULL,
-  cas date NOT NULL,
+  datum date NOT NULL,
   druh varchar(30) NOT NULL,
   mnozstvi int NOT NULL,
   PRIMARY KEY (id_krmeni),
@@ -83,16 +83,16 @@ CREATE TABLE krmeni (
 CREATE TABLE cisteni (
   id_cisteni int NOT NULL AUTO_INCREMENT,
   jeCisten int NOT NULL,
-  cas date NOT NULL,
+  datum date NOT NULL,
   PRIMARY KEY(id_cisteni),
   CONSTRAINT FK_JeCistenCisteni FOREIGN KEY (jeCisten) REFERENCES vybeh(id_vybeh)
 )ENGINE=InnoDB, CHARSET=utf8;
 
 CREATE TABLE osetrovatel (
   role INT(1) NOT NULL,
-  login VARCHAR(255) NOT NULL,
+  login VARCHAR(255) NOT NULL UNIQUE,
   heslo VARCHAR(255) NOT NULL,
-  rodne_cislo bigint(10) NOT NULL,
+  rodne_cislo VARCHAR(10) NOT NULL,
   jmeno varchar(20) NOT NULL,
   prijmeni varchar(30) NOT NULL,
   datum_narozeni date NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE osetrovatel (
 
 CREATE TABLE ma_skoleni (
   id int NOT NULL AUTO_INCREMENT,
-  rd_osetrovatel bigint(10) NOT NULL,
+  rd_osetrovatel VARCHAR(10) NOT NULL,
   id_skoleni int NOT NULL,
   PRIMARY KEY(id),
   CONSTRAINT FK_RdOsetrovatelMaSkoleni FOREIGN KEY (rd_osetrovatel) REFERENCES osetrovatel(rodne_cislo),
@@ -116,8 +116,9 @@ CREATE TABLE ma_skoleni (
 
 CREATE TABLE provadi_krmeni (
   id int NOT NULL AUTO_INCREMENT,
-  rd_osetrovatel bigint(10) NOT NULL,
+  rd_osetrovatel VARCHAR(10) NOT NULL,
   id_krmeni int NOT NULL,
+  provedl TINYINT(1) DEFAULT '0',
   PRIMARY KEY(id),
   CONSTRAINT FK_RdOsetrovatelProvadiKrmeni FOREIGN KEY (rd_osetrovatel) REFERENCES osetrovatel(rodne_cislo),
   CONSTRAINT FK_IdKrmeniProvadiKrmeni FOREIGN KEY (id_krmeni) REFERENCES krmeni(id_krmeni)
@@ -125,25 +126,26 @@ CREATE TABLE provadi_krmeni (
 
 CREATE TABLE provadi_cisteni (
   id int NOT NULL AUTO_INCREMENT,
-  rd_osetrovatel bigint(10) NOT NULL,
+  rd_osetrovatel VARCHAR(10) NOT NULL,
   id_cisteni int NOT NULL,
+  provedl TINYINT(1) DEFAULT '0',
   PRIMARY KEY(id),
   CONSTRAINT FK_RdOsetrovatelProvadiCisteni FOREIGN KEY (rd_osetrovatel) REFERENCES osetrovatel(rodne_cislo),
   CONSTRAINT FK_IdCisteniProvadiCisteni FOREIGN KEY (id_cisteni) REFERENCES cisteni(id_cisteni)
 )ENGINE=InnoDB, CHARSET=utf8;
 
 CREATE TABLE dobrovolnik (
-  osetrovatel bigint(10) NOT NULL,
+  osetrovatel VARCHAR(10) NOT NULL,
   organizace VARCHAR(30),
-  zodpovedna_osoba bigint(10) NOT NULL,
+  zodpovedna_osoba VARCHAR(10) NOT NULL,
   PRIMARY KEY(osetrovatel),
   CONSTRAINT FK_ZodpovednaOsoba FOREIGN KEY (zodpovedna_osoba) REFERENCES osetrovatel(rodne_cislo),
   CONSTRAINT FK_RDPropojeniDobrovolnik FOREIGN KEY (osetrovatel) REFERENCES osetrovatel(rodne_cislo)
 )ENGINE=InnoDB, CHARSET=utf8;
 
 CREATE TABLE zamestnanec (
-  osetrovatel bigint(10),
-  mzda int NOT NULL,
+  osetrovatel VARCHAR(10),
+  mzda int,
   pozice VARCHAR(25),
   specializace VARCHAR(25),
   PRIMARY KEY(osetrovatel),
@@ -184,10 +186,12 @@ INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('95010
 INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('9502021232', '42000', 'Zoolog', 'Ptáci');
 INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('8712121231', '1100000', 'Vrchní zoolog', 'Želvy');
 INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('7002021224', '55000', 'Sekretářka', '');
+INSERT INTO zamestnanec (osetrovatel, mzda, pozice, specializace) VALUES ('7002021235', '550000', 'Administrátor', 'Adminování');
 
-INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','A','1','Malá sada','30');
-INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','B','2','Střední sada','120');
-INSERT INTO typ_vybehu (naSkoleni,velikost,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','C','3','Velká sada','300');
+INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('6','A','1','Malá sada','30');
+INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('7','B','2','Střední sada','120');
+INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('8','C','3','Velká sada','300');
+INSERT INTO typ_vybehu (naSkoleni,nazev,pocet_osetrovatelu,pomucka_k_cisteni,doba_cisteni) VALUES('8','Ohrada','1','Velká sada','30');
 
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('1','Pavilon-A','1','');
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('2','Pavilon-B','5','Moderni typ vyběhu.');
@@ -195,21 +199,25 @@ INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('2','Pavilon-B','6',
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('3','Pavilon-C','20','');
 INSERT INTO vybeh (naTypVybehu,poloha,rozloha,popis) VALUES('3','Pavilon-C','40','');
 
-INSERT INTO cisteni(jeCisten,cas) VALUES('1','2014.3.12');
-INSERT INTO cisteni(jeCisten,cas) VALUES('2','2014.3.1');
-INSERT INTO cisteni(jeCisten,cas) VALUES('3','2014.5.22');
-INSERT INTO cisteni(jeCisten,cas) VALUES('1','2014.3.18');
-INSERT INTO cisteni(jeCisten,cas) VALUES('2','2014.7.13');
+INSERT INTO cisteni(jeCisten,datum) VALUES('1','2014.3.12');
+INSERT INTO cisteni(jeCisten,datum) VALUES('2','2014.3.1');
+INSERT INTO cisteni(jeCisten,datum) VALUES('3','2014.5.22');
+INSERT INTO cisteni(jeCisten,datum) VALUES('1','2014.3.18');
+INSERT INTO cisteni(jeCisten,datum) VALUES('2','2014.7.13');
 
 
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9508041235', '1');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9501011234', '2');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9502021232', '3');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '4');
+INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '5');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9508041235', '6');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9501011234', '6');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9502021232', '7');
 INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '7');
+INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('8712121231', '8');
+INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9501011234', '8');
+INSERT INTO ma_skoleni(rd_osetrovatel, id_skoleni) VALUES ('9508041235', '8');
 
 
 
@@ -230,29 +238,43 @@ INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jme
 INSERT INTO zvire (obyva, jeDruhu, jmeno, pohlavi, vaha, vyska, zeme_puvodu, jmeno_otce, jmeno_matky, datum_narozeni) VALUES ('1', '1', 'Božena', 'Z', '7', '8', 'Belgie', 'Fufin', 'Pipi','2006.02.27');
 
 
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('1', '2008.12.20', 'zrní', '50');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('2', '2008.12.21', 'zrní', '20');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('3', '2008.12.22', 'tráva', '20');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('4', '2008.12.21', 'seno', '2000');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('5', '2008.12.24', 'seno', '6000');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('6', '2008.12.26', 'brouci', '40');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('7', '2008.12.01', 'salát', '200');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('8', '2008.12.20', 'zrní', '50');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('9', '2008.12.21', 'zrní', '20');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('10', '2008.12.21', 'tráva', '20');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('11', '2008.12.21', 'seno', '2000');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('12', '2008.12.21', 'seno', '6000');
-INSERT INTO krmeni (jeKrmeno, cas, druh, mnozstvi) VALUES ('13', '2008.12.11', 'salát', '150');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('2', '2008.12.20', 'zrní', '50');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('1', '2008.12.21', 'zrní', '20');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('3', '2008.12.22', 'tráva', '20');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('4', '2008.12.21', 'seno', '2000');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('5', '2008.12.24', 'seno', '6000');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('6', '2008.12.26', 'brouci', '40');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('7', '2008.12.01', 'salát', '200');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('8', '2008.12.20', 'zrní', '50');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('9', '2008.12.21', 'zrní', '20');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('10', '2008.12.21', 'tráva', '20');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('11', '2008.12.21', 'seno', '2000');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('12', '2008.12.21', 'seno', '6000');
+INSERT INTO krmeni (jeKrmeno, datum, druh, mnozstvi) VALUES ('13', '2008.12.11', 'salát', '150');
 
 
-INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('7002021224', '1');
-INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9502021232', '2');
-INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9501011234', '3');
-INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9509121237', '4');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9502021232', '1');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9508041235', '2');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '3');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '4');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '5');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9501011234', '6');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '7');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9502021232', '8');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9508041235', '9');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '10');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '11');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('8712121231', '12');
+INSERT INTO provadi_krmeni (rd_osetrovatel, id_krmeni) VALUES ('9501011234', '13');
 
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('7002021224', '1');
+
+
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9508041235', '1');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('8712121231', '2');
 INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9502021232', '2');
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9501011234', '3');
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9509121237', '4');
-INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9509121237', '5');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('8712121231', '3');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9502021232', '3');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9508041235', '4');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('9502021232', '5');
+INSERT INTO provadi_cisteni (rd_osetrovatel, id_cisteni) VALUES ('8712121231', '5');
 

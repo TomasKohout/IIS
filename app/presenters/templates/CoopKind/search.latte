@@ -1,0 +1,95 @@
+{block content}
+    <div class="container-fluid">
+        <div class="h3" align="center">Vyhledat typ výběhu</div>
+        <div class="col-md-offset-4 col-md-4">
+            {control searchCoopKind}
+        </div>
+    </div>
+    <div class="container">
+            {default $show = false}
+            {if $show}
+                <table class="table table-striped table-responsive">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Název</th>
+                        <th>Školení</th>
+                        <th>Počet ošetřovatelů</th>
+                        <th>Pomůcka k čištění</th>
+                        <th>Doba čištění</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $data as $data_row}
+                        <tr>
+                            <td>{$data_row->id_typ_vybehu}</td>
+                            <td>{$data_row->nazev}</td>
+                            <td>{$data_row->naSkoleni}</td>
+                            <td>{$data_row->pocet_osetrovatelu}</td>
+                            <td>{$data_row->pomucka_k_cisteni}</td>
+                            <td>{$data_row->doba_cisteni}</td>
+                            {if $user->isAllowed('admin')}
+                                <td><a n:href="CoopKind:update $data_row->id_typ_vybehu" class="btn btn-default">Upravit</a></td>
+                                <td><a n:href="CoopKind:delete $data_row->id_typ_vybehu" class="btn btn-default">Smazat</a></td>
+                            {/if}
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {else}
+                <table class="table table-striped table-responsive">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Název</th>
+                        <th>Školení</th>
+                        <th>Počet ošetřovatelů</th>
+                        <th>Pomůcka k čištění</th>
+                        <th>Doba čištění</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $dataAll as $data_row}
+                        <tr>
+                            <td>{$data_row->id_typ_vybehu}</td>
+                            <td>{$data_row->nazev}</td>
+                            <td>{$data_row->naSkoleni}</td>
+                            <td>{$data_row->pocet_osetrovatelu}</td>
+                            <td>{$data_row->pomucka_k_cisteni}</td>
+                            <td>{$data_row->doba_cisteni}</td>
+                            {if $user->isAllowed('admin')}
+                                <td><a n:href="CoopKind:update $data_row->id_typ_vybehu" class="btn btn-default">Upravit</a></td>
+                                <td><a n:href="CoopKind:delete $data_row->id_typ_vybehu" class="btn btn-default">Smazat</a></td>
+                            {/if}
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {/if}
+
+        {default $id_typ_vybehu = null}
+        {default $nazev = null}
+        <div class="pagination">
+            {if !$paginator->isFirst()}
+                <a  n:href="search, 1 ,$id_typ_vybehu, $nazev" >První</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page-1, $id_typ_vybehu, $nazev">Předchozí</a>
+                &nbsp;|&nbsp;
+            {/if}
+
+            Stránka {$paginator->page} z {$paginator->pageCount}
+
+            {if !$paginator->isLast()}
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page+1, $id_typ_vybehu, $nazev" >Další</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->pageCount, $id_typ_vybehu, $nazev" >Poslední</a>
+
+            {/if}
+        </div>
+        </div>
+{/block}

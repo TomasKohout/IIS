@@ -8,8 +8,9 @@
 
 namespace App\Forms;
 
+use App\Model\KeeperModel;
 use Nette,
-    Nette\Application\UI\Form,
+    Nette\Database\Context,
     Nette\Forms\IControl;
 
 
@@ -17,7 +18,23 @@ class MyValidation
 {
 
     const RODNECISLO = 'App\Forms\MyValidation::checkRodneCislo';
+    const DATUM = 'App\Forms\MyValidation::checkDatum';
 
+    public static function checkDatum(IControl $control){
+
+        if (strpos($control->getValue(), "#"))
+            return false;
+        if (!preg_match("#(19|20|21)\d\d\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])#", $control->getValue()))
+            return false;
+
+        try {
+            new \DateTime($control->getValue());
+        } catch (\Exception $exc) {
+            return false;
+        }
+
+        return true;
+    }
     public static function checkRodneCislo(IControl $control)
     {
         // be liberal in what you receive
@@ -58,5 +75,6 @@ class MyValidation
         return true;
 
     }
+
 
 }
