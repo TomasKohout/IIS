@@ -43,8 +43,8 @@ class KeeperModel
         return $this->database->table('osetrovatel');
     }
 
-    public function searchKeeper($values){
-        return $this->database->table('osetrovatel')->where(array_filter($values))->order('login');
+    public function searchKeeper($limit, $offset, $values = []){
+        return $this->database->table('osetrovatel')->where(array_filter($values))->order('login')->limit($limit, $offset);
     }
 
     public function updateKeeper( $values){
@@ -148,6 +148,11 @@ class KeeperModel
     public function getAllLogins()
     {
         return $this->database->table('osetrovatel')->fetchPairs('login', 'login');
+    }
+
+    public function getKeeperCount($value = [])
+    {
+        return $this->database->table('osetrovatel')->where($value)->count('rodne_cislo');
     }
 
 

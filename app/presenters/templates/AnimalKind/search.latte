@@ -61,4 +61,24 @@
                 </table>
             {/ifset}
         </div>
+    {default $id_druh_zvirete = null}
+    {default $nazev = null}
+    <div class="pagination">
+        {if !$paginator->isFirst()}
+            <a  n:href="search, 1 ,$id_druh_zvirete, $nazev" >První</a>
+            &nbsp;|&nbsp;
+            <a n:href="search, $paginator->page-1, $id_druh_zvirete, $nazev">Předchozí</a>
+            &nbsp;|&nbsp;
+        {/if}
+
+        Stránka {$paginator->page} z {$paginator->pageCount}
+
+        {if !$paginator->isLast()}
+            &nbsp;|&nbsp;
+            <a n:href="search, $paginator->page+1, $id_druh_zvirete, $nazev" >Další</a>
+            &nbsp;|&nbsp;
+            <a n:href="search, $paginator->pageCount, $id_druh_zvirete, $nazev" >Poslední</a>
+
+        {/if}
+    </div>
 {/block}

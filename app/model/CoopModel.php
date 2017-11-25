@@ -98,9 +98,14 @@ class CoopModel
         return $this->database->table('vybeh')->get($id_vybeh);
     }
 
-    public function searchCoop($values)
+    public function searchCoop($limit, $offset, $values = [])
     {
-        return $this->database->table('vybeh')->where(array_filter($values));
+        return $this->database->table('vybeh')->where(array_filter($values))->order('id_vybeh ASC')->limit($limit, $offset);
+    }
+
+    public function getCountOfCoops($array = [])
+    {
+        return $this->database->table('vybeh')->where(array_filter($array))->count('id_vybeh');
     }
 
 }

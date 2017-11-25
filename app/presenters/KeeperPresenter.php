@@ -68,9 +68,49 @@ class KeeperPresenter extends BasePresenter
     }
 
 
-    public function renderSearch(){
-        $this->template->dataAll = $this->model->allKeeper();
 
+    public function renderSearch($page = 1, $login = null, $jmeno = null, $prijmeni = null){
+
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+        if ($login != null || $jmeno != null || $prijmeni != null)
+        {
+            $value = $this->removeEmpty(['login' => $login, 'jmeno' => $jmeno , 'prijmeni' => $prijmeni]);
+            $keeperCount = $this->model->getKeeperCount($value);
+            $paginator->setItemCount($keeperCount);
+            $this->template->data = $this->model->searchKeeper($paginator->getLength(), $paginator->getOffset(),$value);
+            $this->template->login = $login;
+            $this->template->jmeno = $jmeno;
+            $this->template->prijmeni = $prijmeni;
+            $this->template->show = true;
+        }
+        else{
+            $keeperCount = $this->model->getKeeperCount();
+            $paginator->setItemCount($keeperCount);
+            $this->template->dataAll = $this->model->searchKeeper($paginator->getLength(), $paginator->getOffset());
+        }
+
+        $this->template->paginator = $paginator;
+
+    }
+    public function createComponentSearchKeeper(){
+        $form = $this->form();
+
+        $form->addText('login', 'Login: ');
+
+        $form->addText('jmeno', 'Jméno ošetřovatele: ');
+
+        $form->addText('prijmeni', 'Příjmení ošetřovatele: ');
+
+
+        $form->addSubmit('submit', 'Vyhledat ošetřovatele');
+        $form->onSuccess[] = [$this, 'renderSearchKeeperSucceed'];
+        return $form;
+    }
+
+    public function renderSearchKeeperSucceed(Nette\Application\UI\Form $form , Nette\Utils\ArrayHash $values){
+        $this->redirect('Keeper:search', 1, $values->login, $values->jmeno, $values->prijmeni);
     }
 
     public function renderUpdate($rodne_cislo){
@@ -317,25 +357,7 @@ class KeeperPresenter extends BasePresenter
 
 
 
-    public function createComponentSearchKeeper(){
-        $form = $this->form();
 
-        $form->addText('login', 'Login: ');
-
-        $form->addText('jmeno', 'Jméno ošetřovatele: ');
-
-        $form->addText('prijmeni', 'Příjmení ošetřovatele: ');
-
-
-        $form->addSubmit('submit', 'Vyhledat ošetřovatele');
-        $form->onSuccess[] = [$this, 'renderSearchKeeperSucceed'];
-        return $form;
-    }
-
-    public function renderSearchKeeperSucceed(Nette\Application\UI\Form $form){
-        $this->template->data = $this->model->searchKeeper($form->getValues(true));
-        $this->template->show = true;
-    }
 
 
 }

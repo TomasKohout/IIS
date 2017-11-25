@@ -64,10 +64,22 @@ class AnimalModel {
         return $this->database->table('zvire')->where(array_filter($values));
     }
 
-    public function searchKind($getValues)
+    public function searchKind($limit, $offset, $getValues)
     {
-        return $this->database->table('druh_zvirete')->where(array_filter($getValues));
+        return $this->database->table('druh_zvirete')->where(array_filter($getValues))->order('id_druh_zvirete ASC')->limit($limit, $offset);
+    }
 
+    public function getAllKind(){
+        return $this->database->table('druh_zvirete')->fetchPairs('nazev', 'nazev');
+    }
+
+    public function getKindCount(array $values = null){
+        if (empty($values)){
+            return $this->database->table('druh_zvirete')->count('id_druh_zvirete');
+        }
+        else{
+            return $this->database->table('druh_zvirete')->where($values)->count('id_druh_zvirete');
+        }
     }
 
     /**

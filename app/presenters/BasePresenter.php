@@ -24,7 +24,16 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 
     }
+    protected function removeEmpty(array $array){
 
+        foreach ($array as $key => $value){
+            if ($array[$key] == null || $array[$key] === '0')
+                unset($array[$key]);
+
+        }
+        return $array;
+
+    }
     public function checkRequirements($element){
 
     }

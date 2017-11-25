@@ -50,9 +50,29 @@ class AnimalKindPresenter extends BasePresenter
         }
     }
 
-    public function renderSearch(){
-        $this->template->dataAll = $this->animalModel->searchKind([]);
+    public function renderSearch($page = 1, $id_druh_zvirete = null, $nazev = null){
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+        if ($id_druh_zvirete != null || $nazev != null)
+        {
+            $tmp = $this->removeEmpty(['nazev' => $nazev,'id_druh_zvirete' => $id_druh_zvirete]);
+            $kindCount = $this->animalModel->getKindCount(array($tmp));
+            $paginator->setItemCount($kindCount);
+            $this->template->data = $this->animalModel->searchKind($paginator->getLength(), $paginator->getOffset(), $tmp);
+
+            $this->template->nazev = $nazev;
+            $this->template->id_druh_zvirete = $id_druh_zvirete;
+        }
+        else
+        {
+            $kindCount = $this->animalModel->getKindCount();
+            $paginator->setItemCount($kindCount);
+            $this->template->dataAll = $this->animalModel->searchKind($paginator->getLength(), $paginator->getOffset(),[]);
+        }
         $this->template->skoleni = $this->trainingModel->getTrainings();
+        $this->template->paginator = $paginator;
+
     }
 
     public function createComponentSearch(){
@@ -60,9 +80,9 @@ class AnimalKindPresenter extends BasePresenter
         $form->addText('id_druh_zvirete', 'ID druhu:')
             ->setRequired(false)
             ->setHtmlType('number');
-        $form->addText('nazev', 'Název druhu:')
-            ->setRequired(false)
-            ->addRule(Nette\Forms\Form::MAX_LENGTH, 'Maximální délka je 30 znaků.', 30);
+        $form->addSelect('nazev', 'Název druhu:', $this->animalModel->getAllKind())
+            ->setPrompt('Vyber druh')
+            ->setRequired(false);
 
         $form->addSubmit('submit', 'Hledat');
 
@@ -70,9 +90,8 @@ class AnimalKindPresenter extends BasePresenter
         return $form;
     }
 
-    public function searchSucceed(Form $form){
-        $values = $form->getValues(true);
-        $this->template->data = $this->animalModel->searchKind($values);
+    public function searchSucceed(Form $form, Nette\Utils\ArrayHash $val){
+        $this->redirect('AnimalKind:search',1, $val->id_druh_zvirete, $val->nazev);
     }
 
     public function renderUpdate($id_druh_zvirete){

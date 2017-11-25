@@ -52,25 +52,11 @@ class AnimalPresenter extends BasePresenter
         if ($jmeno != null || $jeDruhu != null)
         {
 
+            $value = $this->removeEmpty(['jmeno'=> $jmeno,'jeDruhu' => $jeDruhu]);
+            $animalCount = $this->animalModel->getCountOfAnimals($value);
+            $paginator->setItemCount($animalCount);
+            $this->template->data = $this->animalModel->allAnimals($paginator->getLength(), $paginator->getOffset(), $value);
 
-            if (empty($jmeno) && !empty($jeDruhu))
-            {
-                $animalCount = $this->animalModel->getCountOfAnimals(array(['jeDruhu' => $jeDruhu]));
-                $paginator->setItemCount($animalCount);
-                $this->template->data = $this->animalModel->allAnimals($paginator->getLength(), $paginator->getOffset(), array(['jeDruhu' => $jeDruhu]));
-            }
-            elseif (empty($jeDruhu) && !empty($jmeno))
-            {
-                $animalCount = $this->animalModel->getCountOfAnimals(array(['jmeno' => $jmeno]));
-                $paginator->setItemCount($animalCount);
-                $this->template->data = $this->animalModel->allAnimals($paginator->getLength(), $paginator->getOffset(), array(['jmeno' => $jmeno]));
-            }
-            else
-            {
-                $animalCount = $this->animalModel->getCountOfAnimals(array(['jmeno'=> $jmeno,'jeDruhu' => $jeDruhu]));
-                $paginator->setItemCount($animalCount);
-                $this->template->data = $this->animalModel->allAnimals($paginator->getLength(), $paginator->getOffset(), array(['jmeno' => $jmeno, 'jeDruhu' => $jeDruhu]));
-            }
 
             $this->template->jmeno = $jmeno;
             $this->template->jeDruhu = $jeDruhu;
