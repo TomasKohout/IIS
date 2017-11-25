@@ -9,6 +9,7 @@
 namespace App\Model;
 
 use Nette;
+use function Sodium\library_version_minor;
 
 
 class FeedModel {
@@ -20,12 +21,25 @@ class FeedModel {
         $this->database = $database;
     }
 
-    public function searchFeed(array $values){
+    public function searchByDatum($date){
+        return $this->database->table('krmeni')->where('datum' , $date)->count('id_krmeni');
+    }
+
+    public function searchByLogin($login){
+        $row = $this->database->table('osetrovatel')->where('login', $login);
+        return $this->database->table('provadi_krmeni')->where('rd_osetrovatel')->count('rd_osetrovatel');
+    }
+
+    public function searchFeed(array $values = []){
+
         $date = "";
         $searchingLogin = "";
         if(isset($values['datum'])) {
             $date = $values['datum'];
             unset($values['datum']);
+        }
+        if(isset($values['login']))
+        {
             $searchingLogin = $values['login'];
             unset($values['login']);
         }
@@ -33,11 +47,10 @@ class FeedModel {
 
 
 
+
         $ret_array = array();
-        $i = 0;
         $k = 0;
         foreach ($animals as $animal) {
-            $ret_array[$i] = array();
             foreach ($animal->related('krmeni') as $krmeni) {
                 if ($date != "" && $date != substr($krmeni->datum, 0, 10)) {
                     continue;
@@ -51,52 +64,34 @@ class FeedModel {
                         $login .= ', ';
                     }
                     $login = $login.$tmp->login;
-                    $tmp = $tmp->login;
                 }
-                if ($searchingLogin != "" && !(strpos( $tmp, $searchingLogin) !== false)) {
+                if ($searchingLogin != "" && !(strpos( $login, $searchingLogin) !== false)) {
                     continue;
                 }
-                $ret_array[$i][$k] = array();
-                $ret_array[$i][$k]['login'] = array();
-                $ret_array[$i][$k]['login'] = $login;
-                $ret_array[$i][$k]['id_krmeni'] = array();
-                $ret_array[$i][$k]['id_krmeni'] = $krmeni->id_krmeni;
-                $ret_array[$i][$k]['jmeno'] = array();
-                $ret_array[$i][$k]['jmeno'] = $animal->jmeno;
-                $ret_array[$i][$k]['jeKrmeno'] = array();
-                $ret_array[$i][$k]['jeKrmeno'] = $krmeni->jeKrmeno;
-                $ret_array[$i][$k]['datum'] = array();
-                $ret_array[$i][$k]['datum'] = substr($krmeni->datum, 0, 10);
-                $ret_array[$i][$k]['druh'] = array();
-                $ret_array[$i][$k]['druh'] = $krmeni->druh;
-                $ret_array[$i][$k]['mnozstvi'] = array();
-                $ret_array[$i][$k]['mnozstvi'] = $krmeni->mnozstvi;
+                $ret_array[$k] = array();
+                $ret_array[$k]['id_krmeni'] = array();
+                $ret_array[$k]['id_krmeni'] = $krmeni->id_krmeni;
+                $ret_array[$k]['login'] = array();
+                $ret_array[$k]['login'] = $login;
+                $ret_array[$k]['jmeno'] = array();
+                $ret_array[$k]['jmeno'] = $animal->jmeno;
+                $ret_array[$k]['jeKrmeno'] = array();
+                $ret_array[$k]['jeKrmeno'] = $krmeni->jeKrmeno;
+                $ret_array[$k]['datum'] = array();
+                $ret_array[$k]['datum'] = substr($krmeni->datum, 0, 10);
+                $ret_array[$k]['druh'] = array();
+                $ret_array[$k]['druh'] = $krmeni->druh;
+                $ret_array[$k]['mnozstvi'] = array();
+                $ret_array[$k]['mnozstvi'] = $krmeni->mnozstvi;
                 //echo $animal->jmeno." ";
                 //echo $krmeni->id_krmeni ."</br>";
                 $k++;
             }
-            $k = 0;
-            $i++;
         }
 
-        $i = 0;
-        $sorted_ret = array();
-        foreach ($ret_array as $zvire){
-            foreach ($zvire as $krmeni){
-                $sorted_ret[$i] = array();
-                $sorted_ret[$i]['id_krmeni'] = $krmeni['id_krmeni'];
-                $sorted_ret[$i]['jeKrmeno'] = $krmeni['jeKrmeno'];
-                $sorted_ret[$i]['jmeno'] = $krmeni['jmeno'];
-                $sorted_ret[$i]['login'] = $krmeni['login'];
-                $sorted_ret[$i]['druh'] = $krmeni['druh'];
-                $sorted_ret[$i]['mnozstvi'] = $krmeni['mnozstvi'];
-                $sorted_ret[$i]['datum'] = $krmeni['datum'];
-                $i++;
-            }
-        }
-        arsort($sorted_ret);
 
-        return $sorted_ret;
+        arsort($ret_array);
+        return $ret_array;
     }
 
     public function addFeed(array $values)
@@ -140,6 +135,11 @@ class FeedModel {
             }
         }
         return $ret_array;
+    }
+
+    public function getCountOfFeeds($array = [])
+    {
+        return $this->database->table('krmeni')->where(array_filter($array))->count('id_krmeni');
     }
 
 

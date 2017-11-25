@@ -24,30 +24,26 @@ class CleanModel {
 //        return $this->database->table('cisteni')->where(array_filter($values));
 //    }
 
-    public function searchClean(array $values){
+    public function searchClean( array $values =[]){
         $date = "";
         $searchingLogin = "";
         if(isset($values['datum'])) {
             $date = $values['datum'];
             unset($values['datum']);
+        }
+        if(isset($values['login'])){
             $searchingLogin = $values['login'];
             unset($values['login']);
         }
         $vybehy =  $this->database->table('vybeh')->where(array_filter($values));
 
-
-
         $ret_array = array();
-        $i = 0;
         $k = 0;
         foreach ($vybehy as $vybeh) {
-            $ret_array[$i] = array();
             foreach ($vybeh->related('cisteni') as $cisteni) {
                 if ($date != "" && $date != substr($cisteni->datum, 0, 10)) {
                     continue;
                 }
-
-
                 $login = "";
                 $tmp = "";
                 foreach($cisteni->related('provadi_cisteni') as $provadi){
@@ -57,42 +53,27 @@ class CleanModel {
                         $login .= ', ';
                     }
                     $login = $login.$tmp->login;
-                    $tmp = $tmp->login;
                 }
-                if ($searchingLogin != "" && !(strpos( $tmp, $searchingLogin) !== false)) {
+                if ($searchingLogin != "" && !(strpos( $login, $searchingLogin) !== false)) {
                     continue;
                 }
-                $ret_array[$i][$k] = array();
-                $ret_array[$i][$k]['id_cisteni'] = array();
-                $ret_array[$i][$k]['id_cisteni'] = $cisteni->id_cisteni;
-                $ret_array[$i][$k]['jeCisten'] = array();
-                $ret_array[$i][$k]['jeCisten'] = $cisteni->jeCisten;
-                $ret_array[$i][$k]['login'] = array();
-                $ret_array[$i][$k]['login'] = $login;
-                $ret_array[$i][$k]['datum'] = array();
-                $ret_array[$i][$k]['datum'] = substr($cisteni->datum, 0, 10);
+                $ret_array[$k] = array();
+                $ret_array[$k]['id_cisteni'] = array();
+                $ret_array[$k]['id_cisteni'] = $cisteni->id_cisteni;
+                $ret_array[$k]['jeCisten'] = array();
+                $ret_array[$k]['jeCisten'] = $cisteni->jeCisten;
+                $ret_array[$k]['login'] = array();
+                $ret_array[$k]['login'] = $login;
+                $ret_array[$k]['datum'] = array();
+                $ret_array[$k]['datum'] = substr($cisteni->datum, 0, 10);
                 //echo $vybeh->jmeno." ";
                 //echo $cisteni->id_krmeni ."</br>";
                 $k++;
             }
-            $k = 0;
-            $i++;
-        }
 
-        $i = 0;
-        $sorted_ret = array();
-        foreach ($ret_array as $vybeh){
-            foreach ($vybeh as $cisteni){
-                $sorted_ret[$i] = array();
-                $sorted_ret[$i]['id_cisteni'] = $cisteni['id_cisteni'];
-                $sorted_ret[$i]['jeCisten'] = $cisteni['jeCisten'];
-                $sorted_ret[$i]['login'] = $cisteni['login'];
-                $sorted_ret[$i]['datum'] = $cisteni['datum'];
-                $i++;
-            }
         }
-        arsort($sorted_ret);
-        return $sorted_ret;
+        arsort($ret_array);
+        return $ret_array;
     }
 
 
@@ -156,6 +137,18 @@ class CleanModel {
             }
         }
         return $ret_array;
+    }
+
+    public function getCountOfCisteniByDatum($datum)
+    {
+        return $this->database->table('cisteni')->where('datum', $datum)->count('id_cisteni');
+    }
+
+    public function getCountOfCisteniByLogin($login)
+    {
+        $selection = $this->database->table('osetrovatel')->where('login', $login);
+        $row = $selection->fetch();
+        return $this->database->table('provadi_cisteni')->where([])->count('rd_osetrovatel');
     }
 
 }

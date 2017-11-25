@@ -77,13 +77,49 @@ class TrainingPresenter extends BasePresenter
     }
 
 
-    public function renderSearch(){
+    public function renderSearch($page = 1, $nazev = null){
         if (!$this->user->isAllowed('training', 'view'))
         {
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
-        $this->template->dataAll = $this->trainingModel->getAllTrainings();
+
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(2);
+        $paginator->setPage($page);
+        if ($nazev != null){
+            $values = ['nazev' => $nazev];
+            $count = $this->trainingModel->getCountOfTrainings($values);
+            $paginator->setItemCount($count);
+            $this->template->data = $this->trainingModel->searchTrainings($paginator->getLength(), $paginator->getOffset(), $values);
+
+            $this->template->show = true;
+            $this->template->nazev = $nazev;
+        }
+        else{
+
+            $count = $this->trainingModel->getCountOfTrainings();
+            $paginator->setItemCount($count);
+            $this->template->dataAll = $this->trainingModel->searchTrainings($paginator->getLength(), $paginator->getOffset());
+        }
+
+        $this->template->paginator = $paginator;
+
+
+    }
+
+    public function createComponentSearchTraining(){
+        $form = $this->form();
+        $form->addText("nazev", "Název:");
+
+        $form->addSubmit('submit', "Hledat");
+        $form->onSuccess[] = [$this, 'searchTrainingSucceed'];
+
+        return $form;
+    }
+
+    public function searchTrainingSucceed(Form $form, Nette\Utils\ArrayHash $values){
+        $this->redirect('Training:search',1, $values->nazev);
     }
 
     public function renderAddTrainingToKeeper($id_keeper){
@@ -112,21 +148,6 @@ class TrainingPresenter extends BasePresenter
 
         $this->flashMessage('Školení úspěšně přidáno.', 'success');
         $this->redirect('Keeper:search');
-    }
-    public function createComponentSearchTraining(){
-        $form = $this->form();
-        $form->addText("nazev", "Název:");
-
-        $form->addSubmit('submit', "Hledat");
-        $form->onSuccess[] = [$this, 'searchTrainingSucceed'];
-
-        return $form;
-    }
-
-    public function searchTrainingSucceed(Form $form){
-
-        $this->template->data = $this->trainingModel->searchTrainings($form->getValues(true));
-        $this->template->show = true;
     }
 
     public function createComponentAddSkoleni(){

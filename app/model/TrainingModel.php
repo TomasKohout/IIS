@@ -22,8 +22,8 @@ class TrainingModel
         return $this->database->table('skoleni')->fetchAll();
     }
 
-    public function searchTrainings($values){
-        return $this->database->table('skoleni')->where(array_filter($values));
+    public function searchTrainings($limit, $offset, $values = []){
+        return $this->database->table('skoleni')->where(array_filter($values))->order('id_skoleni')->limit($limit, $offset);
     }
 
     public function getAllTrainingsSelect(){
@@ -79,6 +79,11 @@ class TrainingModel
 
     public function addTrainingToKeeper(array  $values){
         $this->database->table('ma_skoleni')->insert($values);
+    }
+
+    public function getCountOfTrainings($values = [])
+    {
+        return $this->database->table('skoleni')->where(array_filter($values))->count('id_skoleni');
     }
 
 }

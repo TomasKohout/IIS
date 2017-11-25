@@ -44,8 +44,8 @@ class CoopModel
         return $this->database->table('vybeh')->fetchAll();
     }
 
-    public function searchCoopKind($values){
-        return $this->database->table('typ_vybehu')->where(array_filter($values));
+    public function searchCoopKind($limit, $offset, $values = []){
+        return $this->database->table('typ_vybehu')->where(array_filter($values))->order('id_typ_vybehu')->limit($limit, $offset);
     }
 
     public function getCoopKindValues($id_typ_vybehu){
@@ -106,6 +106,11 @@ class CoopModel
     public function getCountOfCoops($array = [])
     {
         return $this->database->table('vybeh')->where(array_filter($array))->count('id_vybeh');
+    }
+
+    public function getCountOfCoopKinds($value = [])
+    {
+        return $this->database->table('typ_vybehu')->where(array_filter($value))->count('id_typ_vybehu');
     }
 
 }

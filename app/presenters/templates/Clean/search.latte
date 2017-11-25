@@ -50,6 +50,27 @@
                     </tbody>
                 </table>
             {/if}
+        {default $id_vybeh = null}
+        {default $datum = null}
+        {default $login = null}
+        <div class="pagination">
+            {if !$paginator->isFirst()}
+                <a  n:href="search, 1 ,$id_vybeh, $datum, $login" >První</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page-1, $id_vybeh, $datum, $login">Předchozí</a>
+                &nbsp;|&nbsp;
+            {/if}
+
+            Stránka {$paginator->page} z {$paginator->pageCount}
+
+            {if !$paginator->isLast()}
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page+1, $id_vybeh, $datum, $login" >Další</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->pageCount, $id_vybeh, $datum, $login" >Poslední</a>
+
+            {/if}
+        </div>
         </div>
 
 {/block}

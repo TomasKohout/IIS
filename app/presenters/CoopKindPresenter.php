@@ -48,6 +48,50 @@ class CoopKindPresenter extends BasePresenter
 
     }
 
+    public function renderSearch($page = 1 , $id_typ_vybehu = null, $nazev = null)
+    {
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+
+        if ($id_typ_vybehu != null | $nazev != null)
+        {
+            $value = $this->removeEmpty(['id_typ_vybehu' => $id_typ_vybehu , 'nazev' => $nazev]);
+            $count = $this->coopModel->getCountOfCoopKinds($value);
+            $paginator->setItemCount($count);
+            $this->template->data = $this->coopModel->searchCoopKind($paginator->getLength(), $paginator->getOffset(), $value);
+
+            $this->template->id_typ_vybehu = $id_typ_vybehu;
+            $this->template->nazev = $nazev;
+            $this->template->show = true;
+        }
+        else{
+            $count = $this->coopModel->getCountOfCoopKinds();
+            $paginator->setItemCount($count);
+            $this->template->dataAll = $this->coopModel->searchCoopKind($paginator->getLength(), $paginator->getOffset());
+
+        }
+        $this->template->paginator = $paginator;
+
+    }
+
+    public function createComponentSearchCoopKind(){
+        $form = $this->form();
+
+        $form->addText('id_typ_vybehu', 'ID Typ výběhu:');
+        $form->addText('nazev', 'Název:');
+
+
+        $form->addSubmit('submit', 'Hledat');
+        $form->onSuccess[] = [$this, 'searchSearchCoopKindSucceed'];
+        return $form;
+    }
+
+    public function searchSearchCoopKindSucceed(Nette\Application\UI\Form $form, Nette\Utils\ArrayHash $values)
+    {
+       $this->redirect('CoopKind:search', 1, $values->id_typ_vybehu, $values->nazev);
+    }
+
     public function renderDelete($id_typ_vybehu)
     {
         if (!$this->getUser()->isAllowed('admin')){
@@ -123,29 +167,7 @@ class CoopKindPresenter extends BasePresenter
     }
 
 
-    public function renderSearch()
-    {
-        $arr = array();
-        $this->template->dataAll = $this->coopModel->searchCoopKind($arr);
-    }
 
-    public function createComponentSearchCoopKind(){
-        $form = $this->form();
-
-        $form->addText('id_typ_vybehu', 'ID Typ výběhu:');
-        $form->addText('nazev', 'Název:');
-
-
-        $form->addSubmit('submit', 'Hledat');
-        $form->onSuccess[] = [$this, 'searchSearchCoopKindSucceed'];
-        return $form;
-    }
-
-    public function searchSearchCoopKindSucceed(Nette\Application\UI\Form $form, Nette\Utils\ArrayHash $values)
-    {
-        $this->template->data = $this->coopModel->searchCoopKind($form->getValues(true));
-        $this->template->show = true;
-    }
 
 
     public function createComponentAddTypVybehu(){

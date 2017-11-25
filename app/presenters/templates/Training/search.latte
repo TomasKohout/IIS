@@ -60,5 +60,24 @@
             </tbody>
         </table>
         {/if}
+        {default $nazev = null}
+        <div class="pagination">
+            {if !$paginator->isFirst()}
+                <a  n:href="search, 1 ,$nazev" >První</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page-1, $nazev">Předchozí</a>
+                &nbsp;|&nbsp;
+            {/if}
+
+            Stránka {$paginator->page} z {$paginator->pageCount}
+
+            {if !$paginator->isLast()}
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->page+1, $nazev" >Další</a>
+                &nbsp;|&nbsp;
+                <a n:href="search, $paginator->pageCount, $nazev" >Poslední</a>
+
+            {/if}
+        </div>
     </div>
 {/block}

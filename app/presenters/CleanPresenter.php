@@ -46,20 +46,40 @@ class CleanPresenter extends BasePresenter
     }
 
 
-    public function renderSearch(){
-        $arr = array();
-        $this->template->dataAll = $this->cleanModel->searchClean($arr);
-    }
+    public function renderSearch($page = 1, $id_vybeh = null, $datum = null, $login = null){
 
-    public function renderAdd($id_vybeh){
-        if (!$this->user->isAllowed('clean', 'add'))
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+        $count = 0;
+        if ($id_vybeh != null || $datum != null || $login  != null){
+            $tmp = $this->removeEmpty(['id_vybeh' => $id_vybeh, 'datum' => $datum, 'login' => $login]);
+            $tmp = $this->cleanModel->searchClean($tmp);
+
+            $paginator->setItemCount(count($tmp));
+
+            $wtf = array_slice($tmp, $paginator->getOffset(), $paginator->getLength());
+
+            $this->template->data = $wtf;
+            $this->template->show = true;
+            $this->template->id_vybeh = $id_vybeh;
+            $this->template->datum = $datum;
+            $this->template->login = $login;
+        }
+        else
         {
-            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
-            $this->redirect('MainPage:default');
+            $tmp = $this->cleanModel->searchClean();
+
+            $paginator->setItemCount(count($tmp));
+
+            $wtf = array_slice($tmp, $paginator->getOffset(), $paginator->getLength());
+
+            $paginator->setItemCount(count($tmp));
+            $this->template->dataAll = $wtf;
         }
 
-        $this->coopModel->isValidId($id_vybeh);
-        $this->id_vybeh = $id_vybeh;
+        $this->template->paginator = $paginator;
+
     }
 
     public function createComponentSearchClean(){
@@ -75,10 +95,19 @@ class CleanPresenter extends BasePresenter
         return $form;
     }
 
-    public function searchCleanSucceed(Nette\Application\UI\Form $form){
-        $this->template->data = $this->cleanModel->searchClean($form->getValues(true));
-        $this->cleanModel->getCleaners("1");
-        $this->template->show = true;
+    public function searchCleanSucceed(Nette\Application\UI\Form $form, Nette\Utils\ArrayHash $values){
+        $this->redirect('Clean:search', 1, $values->id_vybeh, $values->datum, $values->login);
+    }
+
+    public function renderAdd($id_vybeh){
+        if (!$this->user->isAllowed('clean', 'add'))
+        {
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
+
+        $this->coopModel->isValidId($id_vybeh);
+        $this->id_vybeh = $id_vybeh;
     }
 
     public function createComponentAddClean()

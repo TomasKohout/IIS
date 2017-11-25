@@ -9,6 +9,7 @@
 namespace App\Presenters;
 use App\Forms\MyValidation;
 use App\Model\KeeperModel;
+use App\Model\TasksModel;
 use Nette;
 use App\Model\AnimalModel;
 use App\Model\FeedModel;
@@ -47,10 +48,54 @@ class FeedPresenter extends BasePresenter
     }
 
 
-    public function renderSearch(){
-        $arr = array();
-        $this->template->dataAll = $this->feedModel->searchFeed($arr);
+    public function renderSearch($page = 1, $id_zvire = null, $jmeno = null, $datum = null, $login = null){
+
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+        $count = '';
+        if ($id_zvire != null || $jmeno != null || $datum != null || $login != null)
+        {
+            $array = $this->removeEmpty(['id_zvire'=> $id_zvire,'jmeno' => $jmeno, 'datum' => $datum, 'login' => $login]);
+
+            $tmp = $this->removeEmpty(['id_zvire' => $id_zvire ,'jmeno' => $jmeno]);
+
+            $tmp = $this->feedModel->searchFeed($array);
+            $paginator->setItemCount(count($tmp));
+            $wtf = array_slice($tmp, $paginator->getOffset(), $paginator->getLength());
+
+            $this->template->data = $wtf;
+            $this->template->show = true;
+            $this->template->id_zvire = $id_zvire;
+            $this->template->jmeno = $jmeno;
+            $this->template->datum = $datum;
+            $this->template->login = $login;
+        }else{
+            $tmp = $this->feedModel->searchFeed();
+            $paginator->setItemCount(count($tmp));
+
+            $wtf = $wtf = array_slice($tmp, $paginator->getOffset(), $paginator->getLength());
+            $this->template->dataAll = $wtf;
+        }
+        $this->template->paginator = $paginator;
         $this->template->druh = $this->animalModel->getZvire();
+    }
+
+    public function createComponentSearchFeed(){
+        $form = $this->form();
+        $form->addText('id_zvire', 'ID zvířete: ');
+        $form->addText('jmeno', 'Jméno zvířete: ');
+        $form->addText('datum', 'Datum: ');
+        $form->addText('login', 'Ošetřovatel: ');
+
+
+        $form->addSubmit('submit', 'Vyhledat krmení');
+        $form->onSuccess[] = [$this, 'searchFeedSucceed'];
+        return $form;
+    }
+
+    public function searchFeedSucceed(Nette\Application\UI\Form $form, Nette\Utils\ArrayHash $values){
+        $this->redirect('Feed:search', 1, $values->id_zvire, $values->jmeno, $values->datum, $values->login);
     }
 
     public function renderAdd($id_zvire){
@@ -67,29 +112,6 @@ class FeedPresenter extends BasePresenter
         $this->animalModel->isValidId($id_zvire);
         $this->id_zvire = $id_zvire;
     }
-
-
-    public function createComponentSearchFeed(){
-        $form = $this->form();
-        $form->addText('id_zvire', 'ID zvířete: ');
-        $form->addText('jmeno', 'Jméno zvířete: ');
-        $form->addText('datum', 'Datum: ');
-        $form->addText('login', 'Ošetřovatel: ');
-
-
-        $form->addSubmit('submit', 'Vyhledat krmení');
-        $form->onSuccess[] = [$this, 'searchFeedSucceed'];
-        return $form;
-    }
-
-    public function searchFeedSucceed(Nette\Application\UI\Form $form){
-        $this->template->data = $this->feedModel->searchFeed($form->getValues(true));
-        if(!empty($this->template->data)){
-            $this->template->show = true;
-        }
-    }
-
-
 
     public function createComponentAddFeed()
     {
