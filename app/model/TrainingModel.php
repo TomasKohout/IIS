@@ -90,11 +90,14 @@ class TrainingModel
         $osetrovatele = $this->database->table('osetrovatel')->get($rd);
 
         $skoleni = "";
+        $i = 1;
         foreach ($osetrovatele->related('ma_skoleni') as $maSkoleni){
             if($skoleni != ""){
-                $skoleni .= ", ";
+                $skoleni .= "\n";
             }
-            $skoleni .= ($this->database->table('skoleni')->get(($maSkoleni)->id_skoleni))->nazev;
+            $item_skoleni = $this->database->table('skoleni')->get($maSkoleni->id_skoleni);
+            $skoleni .= "[".substr($item_skoleni->datum,0,10).'] '.$item_skoleni->nazev;
+            $i++;
         }
 
         return $skoleni;

@@ -85,7 +85,7 @@ class TrainingPresenter extends BasePresenter
         }
 
         $paginator = new Nette\Utils\Paginator();
-        $paginator->setItemsPerPage(2);
+        $paginator->setItemsPerPage(10);
         $paginator->setPage($page);
         if ($nazev != null){
             $values = ['nazev' => $nazev];
