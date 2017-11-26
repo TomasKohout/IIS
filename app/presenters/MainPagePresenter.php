@@ -29,8 +29,8 @@ class MainPagePresenter extends BasePresenter
         if ($this->keeperModel->checkForPass($this->user->getId()))
             $this->flashMessage("Změňte si heslo!", "danger");
 
-        $this->template->dataClean = $this->tasksModel->tasksClean($this->user->getId());
-        $this->template->dataFeed  = $this->tasksModel->tasksFeed($this->user->getId());
+        $this->template->dataClean = $this->tasksModel->tasksClean($this->user->getId(), "");
+        $this->template->dataFeed  = $this->tasksModel->tasksFeed($this->user->getId(), "");
     }
 
     public function renderCleaned($id){

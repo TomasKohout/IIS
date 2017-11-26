@@ -8,6 +8,8 @@
 
 namespace App\Presenters;
 use App\Model\CoopModel;
+use App\Model\KeeperModel;
+use App\Model\TasksModel;
 use Nette;
 use App\Model\CleanModel;
 use Nette\Application\UI\Form;
@@ -22,6 +24,8 @@ class CleanPresenter extends BasePresenter
     protected $database;
     protected $cleanModel;
     protected $coopModel;
+    protected $keeperModel;
+    protected $tasksModel;
     /**
      * @persistent
      * @var int;
@@ -33,6 +37,8 @@ class CleanPresenter extends BasePresenter
         $this->database = $database;
         $this->cleanModel = new CleanModel($this->database);
         $this->coopModel = new CoopModel($this->database);
+        $this->keeperModel = new KeeperModel($this->database);
+        $this->tasksModel = new TasksModel($this->database);
     }
 
     protected function startup(){
@@ -46,12 +52,50 @@ class CleanPresenter extends BasePresenter
     }
 
 
+    public function renderTasks($page = 1, $rd_osetrovatel, $datum){
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+
+        $tmp = $this->tasksModel->tasksClean($rd_osetrovatel, $datum);
+
+        $paginator->setItemCount(count($tmp));
+
+        $wtf = array_slice($tmp, $paginator->getOffset(), $paginator->getLength());
+        $this->template->dataClean = $wtf;
+        $this->template->paginator = $paginator;
+
+    }
+
+    public function createComponentTasks(){
+        $form = $this->form();
+        $form->addSelect('rd_osetrovatel', 'Ošetřovatel: ', $this->keeperModel->getRodneCisloByLogin())
+            ->setPrompt("Vyber ošetřovatele");
+        $form->addText('datum', "Datum:");
+
+        $form->addSubmit('submit', 'Hledat');
+        $form->onSuccess[] = [$this, 'tasksCleanSucced'];
+        return $form;
+
+    }
+
+    public function tasksCleanSucced(Nette\Application\UI\Form $form, Nette\Utils\ArrayHash $values){
+        $this->redirect('Clean:tasks', 1, $values->rd_osetrovatel, $values->datum);
+    }
+
+    public function renderCleaned($id){
+
+        $this->tasksModel->isValid($id, 'provadi_cisteni');
+        $this->tasksModel->taskCleanDone($id);
+        $this->redirect('Clean:tasks');
+    }
+
+
     public function renderSearch($page = 1, $id_vybeh = null, $datum = null, $login = null){
 
         $paginator = new Nette\Utils\Paginator();
         $paginator->setItemsPerPage(10);
         $paginator->setPage($page);
-        $count = 0;
         if ($id_vybeh != null || $datum != null || $login  != null){
             $tmp = $this->removeEmpty(['id_vybeh' => $id_vybeh, 'datum' => $datum, 'login' => $login]);
             $tmp = $this->cleanModel->searchClean($tmp);

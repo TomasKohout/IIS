@@ -23,6 +23,7 @@ class FeedPresenter extends BasePresenter
     protected $feedModel;
     protected $animalModel;
     protected $keeperModel;
+    protected $tasksModel;
     /**
      * @persistent
      * @var int
@@ -35,6 +36,7 @@ class FeedPresenter extends BasePresenter
         $this->feedModel = new FeedModel($this->database);
         $this->animalModel = new AnimalModel($this->database);
         $this->keeperModel = new KeeperModel($this->database);
+        $this->tasksModel = new TasksModel($this->database);
     }
 
     protected function startup(){
@@ -45,6 +47,43 @@ class FeedPresenter extends BasePresenter
             $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
             $this->redirect('MainPage:default');
         }
+    }
+
+    public function renderTasks($page = 1, $rd_osetrovatel, $datum){
+        $paginator = new Nette\Utils\Paginator();
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+
+        $tmp = $this->tasksModel->tasksFeed($rd_osetrovatel, $datum);
+
+        $paginator->setItemCount(count($tmp));
+
+        $wtf = array_slice($tmp, $paginator->getOffset(), $paginator->getLength());
+        $this->template->dataFeed = $wtf;
+        $this->template->paginator = $paginator;
+
+    }
+
+    public function createComponentTasks(){
+        $form = $this->form();
+        $form->addSelect('rd_osetrovatel', 'Ošetřovatel: ', $this->keeperModel->getRodneCisloByLogin())
+            ->setPrompt("Vyber ošetřovatele");
+        $form->addText('datum', "Datum:");
+
+        $form->addSubmit('submit', 'Hledat');
+        $form->onSuccess[] = [$this, 'tasksFeedSucced'];
+        return $form;
+
+    }
+
+    public function tasksFeedSucced(Nette\Application\UI\Form $form, Nette\Utils\ArrayHash $values){
+        $this->redirect('Feed:tasks', 1, $values->rd_osetrovatel, $values->datum);
+    }
+
+    public function renderFeeded($id){
+        $this->tasksModel->isValid($id, 'provadi_krmeni');
+        $this->tasksModel->taskFeedDone($id);
+        $this->redirect('Feed:tasks');
     }
 
 

@@ -91,7 +91,6 @@ class CleanModel {
         }
     }
 
-
     public function getCleaners($id_cisteni){
 
         $cisteni = $this->database->table('provadi_cisteni')->where('id_cisteni', $id_cisteni);

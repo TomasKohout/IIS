@@ -1,0 +1,56 @@
+{block content}
+
+    <div class="container">
+        <div class="h3" align="center">Náplánované nevykonané úlohy</div>
+        <div class="col-md-offset-4 col-md-4">
+            {control tasks}
+        </div>
+    </div>
+    <div class="container">
+        <table class="table table-striped table-responsive">
+            <thead>
+            <tr>
+                <th>ID výběhu</th>
+                <th>Login</th>
+                <th>Poloha výběhu</th>
+                <th>Pomůcka k čištění</th>
+                <th>Datum plánovaného čištění</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $dataClean as $clean}
+                <tr>
+                    <td>{$clean['id_vybeh']}</td>
+                    <td>{$clean['login']}</td>
+                    <td>{$clean['poloha']}</td>
+                    <td>{$clean['pomucka_k_cisteni']}</td>
+                    <td>{substr($clean['datum'],0,10)}</td>
+                    <td><a n:href="Clean:cleaned $clean['id']" class="btn btn-default">Vyčistit</a></td>
+
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {default $datum = null}
+        {default $login = null}
+        <div class="pagination">
+            {if !$paginator->isFirst()}
+                <a  n:href="tasks, 1 , $datum, $login" >První</a>
+                &nbsp;|&nbsp;
+                <a n:href="tasks, $paginator->page-1, $datum, $login">Předchozí</a>
+                &nbsp;|&nbsp;
+            {/if}
+
+            Stránka {$paginator->page} z {$paginator->pageCount}
+
+            {if !$paginator->isLast()}
+                &nbsp;|&nbsp;
+                <a n:href="tasks, $paginator->page+1, $datum, $login" >Další</a>
+                &nbsp;|&nbsp;
+                <a n:href="tasks, $paginator->pageCount, $datum, $login" >Poslední</a>
+
+            {/if}
+        </div>
+    </div>
+{/block}

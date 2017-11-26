@@ -23,8 +23,13 @@ class TasksModel
             throw new Nette\Application\BadRequestException("Takové čištění pro daného uživatele neexistuje", 404);
     }
 
-    public function tasksClean($rodne_cislo){
-        $results = $this->database->table('provadi_cisteni')->where(['rd_osetrovatel' => $rodne_cislo, 'provedl' => '0']);
+    public function tasksClean($rodne_cislo, $date){
+        if($rodne_cislo){
+            $results = $this->database->table('provadi_cisteni')->where(['rd_osetrovatel' => $rodne_cislo, 'provedl' => 0]);
+        }else{
+            $results = $this->database->table('provadi_cisteni')->where(['provedl' => 0]);
+        }
+        $osetrovatele = $this->database->table('osetrovatel');
         $cisteni = $this->database->table('cisteni');
         $vybeh   = $this->database->table('vybeh');
         $typVybehu   = $this->database->table('typ_vybehu');
@@ -35,6 +40,9 @@ class TasksModel
             $cisteniRow = $cisteni->get($row->id_cisteni);
             $vybehRow = $vybeh->get($cisteniRow->jeCisten);
             $typVybehuRow = $typVybehu->get($vybehRow->naTypVybehu);
+            if ($date != "" && $date != substr($cisteniRow->datum, 0, 10)) {
+                continue;
+            }
 
             $ret_array[$i] = array();
             $ret_array[$i]['id_vybeh'] = array();
@@ -49,7 +57,10 @@ class TasksModel
             $ret_array[$i]['datum']      = $cisteniRow->datum;
             $ret_array[$i]['id']         = array();
             $ret_array[$i]['id']         = $row->id;
-            //dump($row->id);
+            $ret_array[$i]['login'] = array();
+            $ret_array[$i]['login'] = $osetrovatele->get($row->rd_osetrovatel)->login;
+
+            //dump($osetrovatele->get($rodne_cislo)->login);
 
             $i++;
         }
@@ -57,11 +68,17 @@ class TasksModel
         return $ret_array;
     }
 
-    public function tasksFeed($rodne_cislo){
-        $results = $this->database->table('provadi_krmeni')->where(['rd_osetrovatel' => $rodne_cislo, 'provedl' => '0']);
+    public function tasksFeed($rodne_cislo, $date){
+        if($rodne_cislo) {
+            $results = $this->database->table('provadi_krmeni')->where(['rd_osetrovatel' => $rodne_cislo, 'provedl' => '0']);
+        }else{
+            $results = $this->database->table('provadi_krmeni')->where(['provedl' => '0']);
+        }
+
         $krmeni  = $this->database->table('krmeni');
         $vybeh     = $this->database->table('vybeh');
         $zvire   = $this->database->table('zvire');
+        $osetrovatele = $this->database->table('osetrovatel');
 
         $ret_array = array();
         $i = 0;
@@ -70,6 +87,10 @@ class TasksModel
             $krmeniRow = $krmeni->get($row->id_krmeni);
             $zvireRow  = $zvire->get($krmeniRow->jeKrmeno);
             $vybehRow  = $vybeh->get($zvireRow->obyva);
+
+            if ($date != "" && $date != substr($krmeniRow->datum, 0, 10)) {
+                continue;
+            }
             $ret_array[$i]  =   array();
             $ret_array[$i]['jmeno'] =   array();
             $ret_array[$i]['jmeno'] =   $zvireRow->jmeno;
@@ -85,6 +106,9 @@ class TasksModel
             $ret_array[$i]['mnozstvi'] = $krmeniRow->mnozstvi;
             $ret_array[$i]['id'] = array();
             $ret_array[$i]['id'] = $row->id;
+            $ret_array[$i]['login'] = array();
+            $ret_array[$i]['login'] = $osetrovatele->get($row->rd_osetrovatel)->login;
+
             $i++;
 
         }

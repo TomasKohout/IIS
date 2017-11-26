@@ -16,21 +16,16 @@
 	<link href="{$basePath}/css/bootstrap.css" rel="stylesheet" >
 	<script src="{$basePath}/js/jquery-3.2.1.min.js"></script>
 	<script src="{$basePath}/js/bootstrap.min.js"></script>
+	<link rel="shortcut icon" href="{$basePath}/lev.ico" type="image/x-icon">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style>
-
-
 		.nav a{
 
 			font-size: 1.2em !important;
 		}
 
-
-		.top-buffer{
-			margin-top: 10px;
-		}
 		.color-mtf{
 			background-color: #eee;
 		}
@@ -109,14 +104,17 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Krmení<span class="caret"></span> </a>
                 <ul class="dropdown-menu">
                     {if $user->isAllowed('feed','view')}<li><a n:href="Feed:search">Hledat krmení</a></li>{/if}
+                    {if $user->isAllowed('admin','view')}<li><a n:href="Feed:tasks">Naplánované úkoly</a></li>{/if}
                 </ul>
+
             </li>
 
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Čištění<span class="caret"></span> </a>
                 <ul class="dropdown-menu">
                     {if $user->isAllowed('clean','view')}<li><a n:href="Clean:search">Hledat čištění</a></li>{/if}
-                </ul>
+                    {if $user->isAllowed('admin','view')}<li><a n:href="Clean:tasks">Naplánované úkoly</a></li>{/if}
+				</ul>
             </li>
 
 			</ul>
