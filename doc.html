@@ -1,0 +1,99 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Projekt IIS</title>
+    <style type="text/css">
+        table { border-collapse: collapse; }
+        td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+        dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu
+     podle použitého editoru -->
+
+<h1> Správa ZOO</h1> <!-- Nahradte názvem svého zadání -->
+
+<dl>
+    <dt>Autoři</dt>
+    <dd>Tomáš Blažek <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+        <a href="mailto:xblaze31@stud.fit.vutbr.cz">xblaze31@stud.fit.vutbr.cz</a> -
+        presentery, modely a templaty pro čištění, krmení, ošetřovatele, zvířata, mechanismus hledání
+    </dd>
+    <dd>Tomáš Kohout <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+        <a href="mailto:xkohou08@stud.fit.vutbr.cz">xkohou08@stud.fit.vutbr.cz</a> -
+        presentery, modely a templaty pro výběh, školení, uživatelský panel, uživatelské oprávnění, zvířata
+    </dd>
+    <dt>URL aplikace</dt>
+    <dd><a href="http://zoowis.php5.cz/">http://zoowis.php5.cz/</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<table>
+    <tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+    <tr><td>admin</td><td>admin</td><td>Administrátor</td></tr>
+    <tr><td>xblaze31</td><td>1234567</td><td>zaměstnanec</td></tr>
+    <tr><td>xkohou08</td><td>1234567</td><td>dobrovolník</td></tr>
+</table>
+
+<h2>Implementace</h2>
+<p>Skripty, ktere používáme jsou rozděleny dle frameworku Nette 2.4 na presentery, které implementují formuláře a modely, které propojují databázy s grafickým rozhraním.</p>
+<ul>
+	<b>Presentery</b>
+    <li>AnimalKindPresenter.php - Implementuje formuláře pro práci s druhy zvířat.</li>
+    <li>AnimalPresenter.php - Implementuje formuláře pro práci se zvířaty.</li>
+	<li>BasePresenter.php - Presenter ve kterém jsou vloženy funkce pro obecné použití v ostatních presenterech.</li>
+	<li>CleanPresenter.php - Implementuje formuláře pro práci s čištěním.</li>
+	<li>CoopPresenter.php - Implementuje formuláře pro práci s výběhy.</li>
+	<li>CoopKindPresenter.php - Implementuje formuláře pro práci s druhy výběhů.</li>
+	<li>FeedPresenter.php - Implementuje formuláře pro práci s krmením.</li>
+	<li>HomepagePresenter.php - Implementuje formulář pro přihlášení.</li>
+	<li>KeeperPresenter.php - Implementuje formuláře pro práci s ošetřovateli.</li>
+	<li>MainPagePresenter.php - Implementuje zobrazení plánu krmení a čištění pro jednotlivé ošetřovatele.</li>
+	<li>TrainingPresenter.php - Implementuje formuláře pro školení.</li>
+	<b>Modely</b>
+    <li>AnimalModel.php - Implementuje funkce pro práci s databází pro práci se zvířaty a jejich druhy.</li>
+	<li>CleanModel.php - Implementuje funkce pro práci s databází ohledně čištěním.</li>
+	<li>CoopPresenter.php - Implementuje funkce pro práci s databází ohledně výběhů.</li>
+	<li>FeedPresenter.php - Implementuje funkce pro práci s databází ohledně krmením.</li>
+	<li>KeeperPresenter.php - Implementuje funkce pro práci s databází pro práci s  ošetřovateli.</li>
+	<li>TrainingPresenter.php - Implementuje funkce pro práci s databází ohledně školení.</li>
+	<li>UserManager.php -  Implementuje funkce pro s databází pro přihlášení.</li>
+	<li>AuthorizationFactory.php -  Implementuje funkce pro rozdělení rolí uživatelů.</li>
+	<li>MyValidation.php -  Implementuje funkce pro kontrolu dat ve formulářích.</li>
+</ul>
+
+
+
+<h2>Instalace</h2>
+<ul>
+    <li>Instalace Composeru (Linux):</li>
+    <li>$ curl -s http://getcomposer.org/installer | php</li>
+    <li>$ mv ./composer.phar ~/bin/composer # nebo /usr/local/bin/composer</li>
+    <li>$ composer</li>
+    <li>Konfigurace, composer -g config preferred-install dist</li>
+    <li>Vytvoření projektu: composer create-project nette/sandbox nazev-projektu</li>
+    <li>cd nazev-projektu && composer require nextras/forms && composer require kdyby/forms-replicator:@dev</li>
+    <li>ve složce s projektem, tedy v té, která obsahuje složky app, vendor atd. spustit příkaz $sudo chmod -R a+rw temp log</li>
+    <li><a href="https://getbootstrap.com/docs/3.3/getting-started/">Zde</a> stáhnout bootstrap a složky js, css a fonts překopírovat do složky www</li>
+    <li><a href="https://jquery.com/download/">Zde</a> stáhnout komprimovanou jQuery ve verzi 3.2.1 a umístit jí do složky www/js</li>
+    <li>Pro implementaci byl použit framework Nette ve verzi 2.4, PHP ve verzi 5.6 a MySQL 5.0.11.</li>
+    <li>Pro inicializaci databáze vytvořte v libovolném nástroji pro správu databází (Adminer, PhpMyadmin) databázi s názvem IIS. Následně zkopírujte všechno ze souboru database.sql a nahrajte data do databáze.</li>
+    <li>Nakonec je potřeba smazat složku app a rozbalit do projeku naši implementaci.</li>
+    <li>Pokud máte jinak pojmneovanou databázi nebo uživatele, tak změňta infromace v souboru neon.config ve složce app/config</li>
+    <li>Příklad nastavení databáze v config.neon:</li>
+    database:
+		<br/>  &nbsp; &nbsp; dsn: 'mysql:host=adresaDatabázovéhoServeru;dbname=názevDatabáze'
+		<br/>  &nbsp; &nbsp; user: uživatel
+		<br/>  &nbsp; &nbsp; password: heslo/popřípadě ponechat prázdné, pokud žádné neexistuje
+		<br/>  &nbsp; &nbsp; options:
+		<br/>  &nbsp; &nbsp; lazy: yes
+
+</ul>
+
+</body>
+</html>
