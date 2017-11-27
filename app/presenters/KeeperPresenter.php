@@ -238,7 +238,7 @@ class KeeperPresenter extends BasePresenter
 
                 $flashMessage = "Záznam uživatele '";
                 $flashMessage .= $values->login;
-                $flashMessage .= "' přidán!";
+                $flashMessage .= "' s heslem '1234567' přidán!";
                 $this->flashMessage($flashMessage ,'success');
                 $this->redirect('Keeper:add');
             }

@@ -45,6 +45,8 @@ class TasksModel
             }
 
             $ret_array[$i] = array();
+            $ret_array[$i]['datum']      = array();
+            $ret_array[$i]['datum']      = $cisteniRow->datum;
             $ret_array[$i]['id_vybeh'] = array();
             $ret_array[$i]['id_vybeh'] = $vybehRow->id_vybeh;
             $ret_array[$i]['poloha']   = array();
@@ -53,8 +55,6 @@ class TasksModel
             $ret_array[$i]['id_cisteni'] = $row->id_cisteni;
             $ret_array[$i]['pomucka_k_cisteni'] = array();
             $ret_array[$i]['pomucka_k_cisteni'] = $typVybehuRow->pomucka_k_cisteni;
-            $ret_array[$i]['datum']      = array();
-            $ret_array[$i]['datum']      = $cisteniRow->datum;
             $ret_array[$i]['id']         = array();
             $ret_array[$i]['id']         = $row->id;
             $ret_array[$i]['login'] = array();
@@ -65,6 +65,7 @@ class TasksModel
             $i++;
         }
 
+        asort($ret_array);
         return $ret_array;
     }
 
@@ -92,14 +93,14 @@ class TasksModel
                 continue;
             }
             $ret_array[$i]  =   array();
+            $ret_array[$i]['datum'] = array();
+            $ret_array[$i]['datum'] = $krmeniRow->datum;
             $ret_array[$i]['jmeno'] =   array();
             $ret_array[$i]['jmeno'] =   $zvireRow->jmeno;
             $ret_array[$i]['poloha'] = array();
             $ret_array[$i]['poloha'] = $vybehRow->poloha;
             $ret_array[$i]['id_vybeh'] = array();
             $ret_array[$i]['id_vybeh'] = $vybehRow->id_vybeh;
-            $ret_array[$i]['datum'] = array();
-            $ret_array[$i]['datum'] = $krmeniRow->datum;
             $ret_array[$i]['druh'] = array();
             $ret_array[$i]['druh'] = $krmeniRow->druh;
             $ret_array[$i]['mnozstvi'] = array();
@@ -112,7 +113,7 @@ class TasksModel
             $i++;
 
         }
-
+    asort($ret_array);
         return $ret_array;
     }
 
