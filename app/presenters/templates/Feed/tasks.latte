@@ -14,8 +14,8 @@
                 <th>ID výběhu</th>
                 <th>Poloha</th>
                 <th>Druh krmení</th>
-                <th>Množství</th>
                 <th>Datum</th>
+                <th>Množství</th>
                 <th></th>
             </tr>
             </thead>
@@ -26,8 +26,8 @@
                     <td>{$feed['id_vybeh']}</td>
                     <td>{$feed['poloha']}</td>
                     <td>{$feed['druh']}</td>
-                    <td>{$feed['mnozstvi']}</td>
                     <td>{substr($feed['datum'],0,10)}</td>
+                    <td>{$feed['mnozstvi']}</td>
                     <td><a n:href="Feed:feeded $feed['id']" class="btn btn-default">Nakrmeno</a></td>
                 </tr>
 

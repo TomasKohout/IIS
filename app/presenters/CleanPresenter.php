@@ -53,6 +53,10 @@ class CleanPresenter extends BasePresenter
 
 
     public function renderTasks($page = 1, $rd_osetrovatel, $datum){
+        if (!$this->getUser()->isAllowed('admin', 'view')){
+            $this->flashMessage('Pro přístup na tuto stránku nemáte oprávnění. Obraťte se prosím na administrátora.', 'warning');
+            $this->redirect('MainPage:default');
+        }
         $paginator = new Nette\Utils\Paginator();
         $paginator->setItemsPerPage(10);
         $paginator->setPage($page);

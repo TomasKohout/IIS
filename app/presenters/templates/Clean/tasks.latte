@@ -13,8 +13,8 @@
                 <th>ID výběhu</th>
                 <th>Login</th>
                 <th>Poloha výběhu</th>
-                <th>Pomůcka k čištění</th>
                 <th>Datum plánovaného čištění</th>
+                <th>Pomůcka k čištění</th>
                 <th></th>
             </tr>
             </thead>
@@ -24,9 +24,9 @@
                     <td>{$clean['id_vybeh']}</td>
                     <td>{$clean['login']}</td>
                     <td>{$clean['poloha']}</td>
-                    <td>{$clean['pomucka_k_cisteni']}</td>
                     <td>{substr($clean['datum'],0,10)}</td>
-                    <td><a n:href="Clean:cleaned $clean['id']" class="btn btn-default">Vyčistit</a></td>
+                    <td>{$clean['pomucka_k_cisteni']}</td>
+                    <td><a n:href="Clean:cleaned $clean['id']" class="btn btn-default">Vyčištěno</a></td>
 
                 </tr>
             {/foreach}
