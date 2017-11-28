@@ -15,7 +15,7 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
     protected $model;
     protected $keeperModel;
     /**
-     * @persist
+     * @persistent
      * @var string
      */
     public $rodne_cislo;
@@ -116,10 +116,13 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
             $this->flashMessage('Hesla se neshodují!', 'danger');
             $this->redirect('Homepage:changePass');
         }
+        else{
+            $this->model->changePass($values->heslo, $this->rodne_cislo);
+            $this->flashMessage('Heslo bylo úspěšně změněno.', 'success');
+            $this->redirect('Keeper:search');
+        }
 
-        $this->model->changePass($values->heslo, $this->rodne_cislo);
-        $this->flashMessage('Heslo bylo úspěšně změněno.', 'success');
-       // $this->redirect('Keeper:search');
+
 
     }
 
