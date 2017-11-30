@@ -341,10 +341,7 @@ class KeeperPresenter extends BasePresenter
 
         try{
             $model = new KeeperModel($this->database);
-            if($values['roleToChoose'] == 0){
-                unset($values['roleToChoose']);
-                $model->updateKeeper($values);
-            } else if($values['roleToChoose'] == 1) {
+            if($values['roleToChoose'] <= 1) {
                 unset($values['roleToChoose']);
                 $model->updateKeeperEmployee($values);
             } else {
