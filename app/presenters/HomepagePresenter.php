@@ -31,9 +31,9 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
     {
         $form = $this->form();
         $form->addText('user', 'Uživatelské jméno:')
-             ->setRequired('Zadejte uživatelské jméno.');
+             ->setRequired(False);
         $form->addPassword('password', 'Uživatelské heslo:')
-             ->setRequired('Zadejte uživatelské heslo.');
+             ->setRequired(False);
         $form->addSubmit('send', 'Přihlásit');
         $form->onSuccess[] = [$this, 'singInFormSucceeded'];
         return $form;
